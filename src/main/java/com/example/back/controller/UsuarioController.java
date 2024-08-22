@@ -37,5 +37,12 @@ public class UsuarioController {
 
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Usuario> obterUsuarioPorId(@PathVariable Long id){
+
+        Optional<Usuario> usuario = usuarioService.obterUsuarioPorId(id);
+
+        return usuario.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
 }
