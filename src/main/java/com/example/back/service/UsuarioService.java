@@ -6,6 +6,9 @@ import com.example.back.exception.UsuarioExistenteException;
 import com.example.back.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class UsuarioService {
 
@@ -27,6 +30,18 @@ public class UsuarioService {
         Usuario usuario = dto.toUsuario();
 
         return usuarioRepository.save(usuario);
+    }
+
+    public List<Usuario> obterTodosUSuarios(){
+
+        return usuarioRepository.findAll();
+
+    }
+
+    public Optional<Usuario> obterUsuarioPorId(Long id){
+
+        return usuarioRepository.findById(id);
+
     }
 
 }
