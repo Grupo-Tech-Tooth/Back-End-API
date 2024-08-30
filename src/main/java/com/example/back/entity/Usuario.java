@@ -1,10 +1,7 @@
 package com.example.back.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "usuario")
@@ -33,5 +30,7 @@ public class Usuario {
     @Column(name = "senha")
     private String senha;
 
+    public Usuario(String nome, String sobrenome, String email, String cpf, String senha) {
+    }
 }
 
