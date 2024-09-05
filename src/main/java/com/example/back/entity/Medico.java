@@ -20,6 +20,7 @@ public class Medico extends Funcionario {
     @Column(name = "especializacao")
     private EspecializacaoOdontologica especializacao;
 
+    @Transient
     private Comissao comissaoStrategy;
 
     public Medico(String nome, String sobrenome, String email, String cpf, String senha, String matricula, String crm, Comissao comissaoStrategy, EspecializacaoOdontologica especializacao) {
