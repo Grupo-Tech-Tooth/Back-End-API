@@ -1,7 +1,5 @@
 package com.example.back.controller;
 
-import com.example.back.controller.dto.CriarFuncionarioDto;
-import com.example.back.controller.dto.FuncionarioDto;
 import com.example.back.entity.Funcionario;
 import com.example.back.service.FuncionarioService;
 import jakarta.validation.Valid;
@@ -21,8 +19,8 @@ public class FuncionarioController {
     private FuncionarioService service;
 
     @PostMapping
-    public ResponseEntity<Funcionario> criarFuncionario(@RequestBody @Valid CriarFuncionarioDto dto) {
-        Funcionario novoFuncionario = service.salvarFuncionario(dto);
+    public ResponseEntity<Funcionario> criarFuncionario(@RequestBody @Valid Funcionario funcionario) {
+        Funcionario novoFuncionario = service.salvarFuncionario(funcionario);
         return ResponseEntity.status(HttpStatus.CREATED).body(novoFuncionario);
     }
 

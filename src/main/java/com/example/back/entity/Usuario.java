@@ -3,13 +3,12 @@ package com.example.back.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
-@Table(name = "usuario")
+@MappedSuperclass
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Usuario {
+public abstract class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +30,10 @@ public class Usuario {
     private String senha;
 
     public Usuario(String nome, String sobrenome, String email, String cpf, String senha) {
+        this.nome = nome;
+        this.sobrenome = sobrenome;
+        this.email = email;
+        this.cpf = cpf;
+        this.senha = senha;
     }
 }
-

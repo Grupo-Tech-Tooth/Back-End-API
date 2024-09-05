@@ -1,6 +1,5 @@
 package com.example.back.controller;
 
-import com.example.back.controller.dto.CriarUsuarioDto;
 import com.example.back.entity.Usuario;
 import com.example.back.service.UsuarioService;
 import jakarta.validation.Valid;
@@ -21,18 +20,18 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<Usuario> criarUsuario(@RequestBody @Valid CriarUsuarioDto dto){
+    public ResponseEntity<Usuario> criarUsuario(@RequestBody @Valid Usuario usuario){
 
-        var usuario = usuarioService.criarUsuario(dto);
+        var novoUsuario = usuarioService.criarUsuario(usuario);
 
-        return ResponseEntity.ok(usuario);
+        return ResponseEntity.ok(novoUsuario);
 
     }
 
     @GetMapping
     public ResponseEntity<List<Usuario>> obterTodosUsuarios(){
 
-        List<Usuario> usuarios = usuarioService.obterTodosUSuarios();
+        List<Usuario> usuarios = usuarioService.obterTodosUsuarios();
         return ResponseEntity.ok(usuarios);
 
     }

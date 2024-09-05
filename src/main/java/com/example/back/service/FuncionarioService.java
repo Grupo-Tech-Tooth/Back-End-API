@@ -1,11 +1,8 @@
 package com.example.back.service;
 
-import com.example.back.controller.dto.CriarFuncionarioDto;
 import com.example.back.entity.Funcionario;
-import com.example.back.entity.Usuario;
 import com.example.back.exception.UsuarioExistenteException;
 import com.example.back.repository.FuncionarioRepository;
-import com.example.back.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,17 +19,15 @@ public class FuncionarioService {
         this.funcionarioRepository = funcionarioRepository;
     }
 
-    public Funcionario salvarFuncionario(CriarFuncionarioDto dto) {
+    public Funcionario salvarFuncionario(Funcionario funcionarioCadastrar) {
 
-        var funcionarioDb = funcionarioRepository.findByCpf(dto.cpf());
+        var funcionarioDb = funcionarioRepository.findByCpf(funcionarioCadastrar.getCpf());
 
         if (funcionarioDb.isPresent()){
             throw new UsuarioExistenteException("Funcionário já existe com esse CPF");
         }
 
-        Funcionario funcionario = dto.toFuncionario();
-
-        return funcionarioRepository.save(funcionario);
+        return funcionarioRepository.save(funcionarioCadastrar);
     }
 
     public List<Funcionario> listarFuncionarios() {

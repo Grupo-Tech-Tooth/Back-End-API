@@ -1,6 +1,5 @@
 package com.example.back.service;
 
-import com.example.back.controller.dto.CriarUsuarioDto;
 import com.example.back.entity.Usuario;
 import com.example.back.exception.UsuarioExistenteException;
 import com.example.back.repository.UsuarioRepository;
@@ -19,20 +18,18 @@ public class UsuarioService {
         this.usuarioRepository = usuarioRepository;
     }
 
-    public Usuario criarUsuario(CriarUsuarioDto dto){
+    public Usuario criarUsuario(Usuario usuarioCadastrar){
 
-        var usuarioDb = usuarioRepository.findByCpf(dto.cpf());
+        var usuarioDb = usuarioRepository.findByCpf(usuarioCadastrar.getCpf());
 
         if (usuarioDb.isPresent()){
             throw new UsuarioExistenteException("Usuario já existe com esse CPF");
         }
 
-        Usuario usuario = dto.toUsuario();
-
-        return usuarioRepository.save(usuario);
+        return usuarioRepository.save(usuarioCadastrar);
     }
 
-    public List<Usuario> obterTodosUSuarios(){
+    public List<Usuario> obterTodosUsuarios(){
 
         return usuarioRepository.findAll();
 

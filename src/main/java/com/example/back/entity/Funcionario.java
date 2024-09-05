@@ -1,7 +1,9 @@
 package com.example.back.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.*;
-import jakarta.persistence.*;
 
 @Entity
 @Table(name = "funcionario")
@@ -9,30 +11,13 @@ import jakarta.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Funcionario {
+public class Funcionario extends Usuario {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "matricula")
+    private String matricula;
 
-    @Column(name = "nome")
-    private String nome;
-
-    @Column(name = "sobrenome")
-    private String sobrenome;
-
-    @Column(name = "especialidade")
-    private String especialidade;
-
-    @Column(name = "email", unique = true)
-    private String email;
-
-    @Column(name = "cpf", unique = true)
-    private String cpf;
-
-    @Column(name = "senha")
-    private String senha;
-
-    public Funcionario(String nome, String sobrenome, String especialidade, String email, String cpf, String senha){
+    public Funcionario(String nome, String sobrenome, String email, String cpf, String senha, String matricula) {
+        super(nome, sobrenome, email, cpf, senha);
+        this.matricula = matricula;
     }
 }
