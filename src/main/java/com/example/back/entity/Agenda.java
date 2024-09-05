@@ -29,8 +29,4 @@ public class Agenda {
 
     @OneToMany(mappedBy = "agenda")
     private List<Agendamento> agendamentos;
-
-    public List<LocalDateTime> getDisponibilidade() {
-        return disponibilidade;
-    }
 }
