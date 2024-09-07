@@ -12,12 +12,18 @@ import java.time.LocalDateTime;
 public class MyExceptionHandler {
 
     @ExceptionHandler(UsuarioExistenteException.class)
-    public ResponseEntity<ErrorResponseDto> usuarioException(UsuarioExistenteException exception, HttpServletResponse response){
-        ErrorResponseDto erro = new ErrorResponseDto();
-        erro.setMessage(exception.getMessage());
-        erro.setStatusCode(HttpStatus.NOT_FOUND.value());
-        erro.setTime(LocalDateTime.now());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erro);
+    public ResponseEntity<String> usuarioException(UsuarioExistenteException exception, HttpServletResponse response){
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleGeneralException(Exception ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }
