@@ -22,10 +22,14 @@ public class FuncionarioController {
 
     // Cria um novo Funcionario (Medico ou Funcional).
     @PostMapping
-    public ResponseEntity<Funcionario> criarFuncionario(@RequestBody @Valid Funcionario funcionario,
-                                                        @RequestParam String tipoFuncionario) {
+    public ResponseEntity<Funcionario> criarFuncionario(
+            @RequestBody @Valid Funcionario funcionario,
+            @RequestParam String tipoFuncionario) 
+    {
+
         Funcionario novoFuncionario = service.salvarFuncionario(funcionario, tipoFuncionario);
         return ResponseEntity.status(HttpStatus.CREATED).body(novoFuncionario);
+
     }
 
     // Lista todos os Funcionarios.
@@ -91,8 +95,18 @@ public class FuncionarioController {
     // Deleta um Funcionario por ID.
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarFuncionario(@PathVariable Long id) {
-        service.deletarFuncionario(id);
-        return ResponseEntity.noContent().build();
+
+//        service.deletarFuncionario(id);
+//        return ResponseEntity.noContent().build();
+
+        Optional<Funcionario> funcionario = service.buscarFuncionarioPorId(id);
+        if (funcionario.isPresent()) {
+            service.deletarFuncionario(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
     }
 
     // Busca Funcionarios por nome ou sobrenome.
