@@ -146,7 +146,15 @@ public class FuncionarioController {
     // Lista todos os Funcionais.
     @GetMapping("/funcionais")
     public ResponseEntity<List<Funcional>> listarFuncionais() {
+
+//        List<Funcional> funcionais = service.listarFuncionais();
+//        return ResponseEntity.ok(funcionais);
+
         List<Funcional> funcionais = service.listarFuncionais();
+        if(funcionais.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
         return ResponseEntity.ok(funcionais);
+
     }
 }
