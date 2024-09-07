@@ -139,7 +139,13 @@ public class FuncionarioController {
     // Lista todos os Medicos.
     @GetMapping("/medicos")
     public ResponseEntity<List<Medico>> listarMedicos() {
+//        List<Medico> medicos = service.listarMedicos();
+//        return ResponseEntity.ok(medicos);
+
         List<Medico> medicos = service.listarMedicos();
+        if(medicos.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
         return ResponseEntity.ok(medicos);
     }
 
