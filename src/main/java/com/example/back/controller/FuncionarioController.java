@@ -31,7 +31,13 @@ public class FuncionarioController {
     // Lista todos os Funcionarios.
     @GetMapping
     public ResponseEntity<List<Funcionario>> listarFuncionarios() {
+
         List<Funcionario> funcionarios = service.listarFuncionarios();
+
+        if(funcionarios.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+
         return ResponseEntity.ok(funcionarios);
     }
 
