@@ -4,6 +4,7 @@ import com.example.back.controller.dto.Api;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,18 +51,24 @@ public class ApiController {
     }
 
     @GetMapping("/nao-ordenado/{quantidade}")
-    public Api[] buscarUsuario(
+    public static ResponseEntity<Api[]> buscarUsuario(
             @PathVariable int quantidade
     ){
+        if (quantidade <= 0){
+            return ResponseEntity.status(204).build();
+        }
         Api[] vetor = requisicaoHttp(quantidade);
-        return vetor;
+        return ResponseEntity.status(200).body(vetor);
     }
 
 
     @GetMapping("/ordenado-por-nome/{quantidade}")
-    public static Api[] ordenarUsuario(
+    public static ResponseEntity<Api[]> ordenarUsuario(
             @PathVariable int quantidade
     ){
+        if (quantidade <= 0){
+            return ResponseEntity.status(204).build();
+        }
         Api[] vetor = requisicaoHttp(quantidade);
         for (int i = 0; i < vetor.length; i++) {
             int indiceMenor = i;
@@ -74,13 +81,16 @@ public class ApiController {
             vetor[i] = vetor[indiceMenor];
             vetor[indiceMenor] = aux;
         }
-        return vetor;
+        return ResponseEntity.status(200).body(vetor);
     }
 
     @GetMapping("/ordenado-por-data/{quantidade}")
-    public static Api[] ordenarData(
+    public static ResponseEntity<Api[]> ordenarData(
             @PathVariable int quantidade
     ){
+        if (quantidade <= 0){
+            return ResponseEntity.status(204).build();
+        }
         Api[] vetor = requisicaoHttp(quantidade);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -99,6 +109,6 @@ public class ApiController {
             vetor[i] = vetor[indiceMenor];
             vetor[indiceMenor] = aux;
         }
-        return vetor;
+        return ResponseEntity.status(200).body(vetor);
     }
 }
