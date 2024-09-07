@@ -6,7 +6,7 @@ import jakarta.persistence.Table;
 import lombok.*;
 
 @Entity
-@Table(name = "funcional")
+//@Table(name = "funcional")
 @Getter
 @Setter
 @NoArgsConstructor
