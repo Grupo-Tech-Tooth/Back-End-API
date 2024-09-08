@@ -4,6 +4,8 @@ import com.example.back.entity.Cliente;
 import com.example.back.repository.ClienteRepository;
 import feign.Client;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,8 +26,8 @@ public class ClienteService {
         this.clienteRepository = clienteRepository;
     }
 
-    public List<Cliente> listarClientes() {
-        return clienteRepository.findAll();
+    public Page<Cliente> listarClientes(Pageable pageable) {
+        return clienteRepository.findAll(pageable).map(Cliente::new);
     }
 
     public Cliente salvarCliente(Cliente cliente) {
