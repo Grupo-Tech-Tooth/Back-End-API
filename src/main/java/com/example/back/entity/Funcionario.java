@@ -2,16 +2,14 @@ package com.example.back.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 import lombok.*;
 
 @Entity
-@Table(name = "funcionario")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Funcionario extends Usuario {
+public abstract class Funcionario extends Usuario {
 
     @Column(name = "matricula")
     private String matricula;
