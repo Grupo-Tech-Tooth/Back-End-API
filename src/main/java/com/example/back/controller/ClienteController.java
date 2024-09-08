@@ -5,6 +5,8 @@ import com.example.back.entity.Cliente;
 import com.example.back.service.ClienteService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,16 +29,15 @@ public class ClienteController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Cliente>> listarClientes() {
+    public ResponseEntity<Page<Cliente>> listarClientes(Pageable pageable) {
 
-        List<Cliente> clientes = service.listarClientes();
+        Page<Cliente> clientes = service.listarClientes(pageable);
 
         if (clientes.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
 
         return ResponseEntity.ok(clientes);
-
     }
 
     @GetMapping("/{id}")
