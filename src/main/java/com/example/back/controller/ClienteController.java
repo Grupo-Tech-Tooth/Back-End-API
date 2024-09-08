@@ -38,7 +38,6 @@ public class ClienteController {
         }
 
         return ResponseEntity.ok(clientes);
-        
     }
 
     @GetMapping("/{id}")
@@ -56,6 +55,7 @@ public class ClienteController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarClientePorId(@PathVariable Long id){
         service.deletarClientePorId(id);
+
         return ResponseEntity.noContent().build();
     }
 
@@ -65,7 +65,11 @@ public class ClienteController {
             @RequestParam(required = false) String sobrenome) {
             List<Cliente> clientes = service.buscarPorNomeOuSobrenome(nome, sobrenome);
 
-            return  ResponseEntity.ok(clientes);
+            if (clientes.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+
+            return ResponseEntity.ok(clientes);
     }
 
     @GetMapping("/email")
