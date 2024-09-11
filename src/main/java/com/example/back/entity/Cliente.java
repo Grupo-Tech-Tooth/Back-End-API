@@ -23,4 +23,7 @@ public class Cliente extends Usuario {
         this.dataNascimento = dataNascimento;
         this.genero = genero;
     }
+
+    public Cliente(Cliente cliente) {
+    }
 }
