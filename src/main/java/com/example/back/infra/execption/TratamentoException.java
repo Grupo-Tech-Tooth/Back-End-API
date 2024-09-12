@@ -1,4 +1,4 @@
-package com.example.back.exception;
+package com.example.back.infra.execption;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;

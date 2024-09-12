@@ -1,7 +1,7 @@
 package com.example.back.service;
 
 import com.example.back.entity.Funcional;
-import com.example.back.exception.UsuarioExistenteException;
+import com.example.back.infra.execption.UsuarioExistenteException;
 import com.example.back.repository.FuncionalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

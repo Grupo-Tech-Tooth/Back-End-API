@@ -1,7 +1,7 @@
 package com.example.back.service;
 
 import com.example.back.entity.Medico;
-import com.example.back.exception.UsuarioExistenteException;
+import com.example.back.infra.execption.UsuarioExistenteException;
 import com.example.back.repository.MedicoRepository;
 import com.example.back.strategy.Comissao;
 import com.example.back.strategy.ComissaoMedico;
