@@ -21,6 +21,9 @@ public class Medico extends Funcionario {
     @Column(name = "especializacao")
     private EspecializacaoOdontologica especializacao;
 
+    @Column(name = "ativo")
+    private Boolean ativo;
+
     @Transient
     @JsonIgnore
     private Comissao comissao;
@@ -30,6 +33,7 @@ public class Medico extends Funcionario {
         this.crm = crm;
         this.comissao = comissao;
         this.especializacao = especializacao;
+        this.ativo = true;
     }
 
     public double calcularComissao(double valorServico) {

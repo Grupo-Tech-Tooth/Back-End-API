@@ -58,7 +58,10 @@ public class MedicoService {
     }
 
     public void deletarMedico(Long id) {
-        medicoRepository.deleteById(id);
+        Medico medicoIdDb = medicoRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Médico não encontrado"));
+        medicoIdDb.setAtivo(false);
+        medicoRepository.save(medicoIdDb);
     }
 
     public List<Medico> buscarPorNomeOuSobrenome(String nome, String sobrenome) {
