@@ -45,7 +45,9 @@ public class ClienteService {
     }
 
     public void deletarClientePorId(Long id) {
-        clienteRepository.deleteById(id);
+        Cliente clienteIdDb = clienteRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
+        clienteIdDb.setAtivo(false);
+        clienteRepository.save(clienteIdDb);
     }
 
     public Cliente atualizarCliente(Cliente cliente) {
