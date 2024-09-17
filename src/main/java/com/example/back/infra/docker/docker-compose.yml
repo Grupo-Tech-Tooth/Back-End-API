@@ -1,0 +1,26 @@
+version: '3.1'
+
+services:
+  app:
+    image: app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      DB_URL: jdbc:mysql://db:3306/sorria
+      DB_USER: aluno
+      DB_PASS: sptech
+
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: sorria
+      MYSQL_USER: aluno
+      MYSQL_PASSWORD: sptech
+    ports:
+      - "3307:3307"
