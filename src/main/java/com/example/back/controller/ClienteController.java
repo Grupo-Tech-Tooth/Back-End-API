@@ -1,6 +1,8 @@
 package com.example.back.controller;
 
 
+import com.example.back.controller.dto.req.ClienteRequestDto;
+import com.example.back.controller.dto.res.ClienteResponseDto;
 import com.example.back.entity.Cliente;
 import com.example.back.service.ClienteService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -34,6 +36,7 @@ public class ClienteController {
     public ResponseEntity<Page<Cliente>> listarClientes(Pageable pageable) {
 
         Page<Cliente> clientes = service.listarClientes(pageable);
+        System.out.println(clientes);
 
         if (clientes.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -49,9 +52,11 @@ public class ClienteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Cliente> atualizarCliente(@PathVariable Long id){
-        Optional<Cliente> cliente = service.buscarClientePorId(id);
-        return cliente.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<ClienteResponseDto> atualizarCliente(@PathVariable Long id, @RequestBody @Valid ClienteRequestDto clienteRequestDto) {
+
+        ClienteResponseDto cliente = service.atualizarCliente(id, clienteRequestDto);
+        return ResponseEntity.ok(cliente);
+
     }
 
     @DeleteMapping("/{id}")

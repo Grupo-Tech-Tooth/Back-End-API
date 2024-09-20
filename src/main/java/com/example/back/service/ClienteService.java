@@ -1,5 +1,7 @@
 package com.example.back.service;
 
+import com.example.back.controller.dto.req.ClienteRequestDto;
+import com.example.back.controller.dto.res.ClienteResponseDto;
 import com.example.back.entity.Cliente;
 import com.example.back.repository.ClienteRepository;
 import feign.Client;
@@ -27,7 +29,9 @@ public class ClienteService {
     }
 
     public Page<Cliente> listarClientes(Pageable pageable) {
-        return clienteRepository.findAll(pageable).map(Cliente::new);
+
+        return clienteRepository.findAll(pageable);
+
     }
 
     public Cliente salvarCliente(Cliente cliente) {
@@ -50,16 +54,17 @@ public class ClienteService {
         clienteRepository.save(clienteIdDb);
     }
 
-    public Cliente atualizarCliente(Cliente cliente) {
-        var clienteDb = clienteRepository.findById(cliente.getId()).orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
+    public ClienteResponseDto atualizarCliente(Long id, ClienteRequestDto cliente) {
+        Cliente clienteDb = clienteRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
 
         clienteDb.setNome(cliente.getNome());
         clienteDb.setSobrenome(cliente.getSobrenome());
-        clienteDb.setEmail(cliente.getEmail());
-        clienteDb.setCpf(cliente.getCpf());
-        clienteDb.setSenha(cliente.getSenha());
+        clienteDb.setDataNascimento(cliente.getDataNascimento());
+        clienteDb.setGenero(cliente.getGenero());
 
-        return clienteRepository.save(clienteDb);
+        Cliente clienteAtualizado = clienteRepository.save(clienteDb);
+
+        return new ClienteResponseDto(clienteAtualizado);
     }
 
     public Optional<Cliente> buscarClientePorCpf(String cpf) {
