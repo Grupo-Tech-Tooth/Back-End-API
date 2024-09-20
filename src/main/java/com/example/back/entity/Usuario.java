@@ -35,12 +35,16 @@ public abstract class Usuario implements UserDetails {
     @Column(name = "senha")
     private String senha;
 
-    public Usuario(String nome, String sobrenome, String email, String cpf, String senha) {
+    @Column(name = "ativo")
+    private Boolean ativo;
+
+    public Usuario(String nome, String sobrenome, String email, String cpf, String senha, Boolean ativo) {
         this.nome = nome;
         this.sobrenome = sobrenome;
         this.email = email;
         this.cpf = cpf;
         this.senha = senha;
+        this.ativo = ativo;
     }
 
     public Long getId() {
@@ -89,6 +93,14 @@ public abstract class Usuario implements UserDetails {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public Boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
     }
 
     @Override
