@@ -29,7 +29,9 @@ public class ClienteService {
     }
 
     public Page<Cliente> listarClientes(Pageable pageable) {
-        return clienteRepository.findAll(pageable).map(Cliente::new);
+
+        return clienteRepository.findAll(pageable);
+
     }
 
     public Cliente salvarCliente(Cliente cliente) {

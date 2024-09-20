@@ -36,6 +36,7 @@ public class ClienteController {
     public ResponseEntity<Page<Cliente>> listarClientes(Pageable pageable) {
 
         Page<Cliente> clientes = service.listarClientes(pageable);
+        System.out.println(clientes);
 
         if (clientes.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -51,7 +52,8 @@ public class ClienteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ClienteResponseDto> atualizarCliente(@PathVariable Long id, @RequestBody ClienteRequestDto clienteRequestDto) {
+    public ResponseEntity<ClienteResponseDto> atualizarCliente(@PathVariable Long id, @RequestBody @Valid ClienteRequestDto clienteRequestDto) {
+
         ClienteResponseDto cliente = service.atualizarCliente(id, clienteRequestDto);
         return ResponseEntity.ok(cliente);
 
