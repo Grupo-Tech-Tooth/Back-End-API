@@ -44,17 +44,18 @@ public class MedicoService {
     public Medico atualizarMedico(Medico medico) {
         var medicoIdDb = medicoRepository.findById(medico.getId()).orElseThrow(() -> new IllegalArgumentException("Medico não encontrado"));
 
-        medicoIdDb.setId(medico.getId());
+        medicoIdDb.setId(medicoRepository.getReferenceById(medico.getId()).getId());
         medicoIdDb.setNome(medico.getNome());
         medicoIdDb.setSobrenome(medico.getSobrenome());
-        medicoIdDb.setEmail(medico.getEmail());
-        medicoIdDb.setCpf(medico.getCpf());
+        medicoIdDb.setEmail(medicoRepository.getReferenceById(medico.getId()).getEmail());
+        medicoIdDb.setCpf(medicoRepository.getReferenceById(medico.getId()).getCpf());
         medicoIdDb.setSenha(medico.getSenha());
-        medicoIdDb.setMatricula(medico.getMatricula());
-        medicoIdDb.setCrm(medico.getCrm());
-        medicoIdDb.setEspecializacao(medico.getEspecializacao());
+        medicoIdDb.setMatricula(medicoRepository.getReferenceById(medico.getId()).getMatricula());
+        medicoIdDb.setCrm(medicoRepository.getReferenceById(medico.getId()).getCrm());
+        medicoIdDb.setEspecializacao(medicoRepository.getReferenceById(medico.getId()).getEspecializacao());
+        medicoIdDb.setAtivo(medico.getAtivo());
 
-        return medicoRepository.save(medico);
+        return medicoRepository.save(medicoIdDb);
     }
 
     public void deletarMedico(Long id) {
