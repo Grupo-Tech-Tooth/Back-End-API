@@ -4,6 +4,7 @@ import com.example.back.entity.Funcional;
 import com.example.back.infra.execption.UsuarioExistenteException;
 import com.example.back.repository.FuncionalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +15,8 @@ public class FuncionalService {
 
     @Autowired
     private FuncionalRepository funcionalRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public Funcional salvarFuncional(Funcional funcional) {
         var funcionalDb = funcionalRepository.findByCpf(funcional.getCpf());
@@ -21,6 +24,9 @@ public class FuncionalService {
         if (funcionalDb.isPresent()) {
             throw new UsuarioExistenteException("Funcional já existe com esse CPF");
         }
+
+        funcional.setSenha(passwordEncoder.encode(funcional.getSenha()));
+
         return funcionalRepository.save(funcional);
     }
 

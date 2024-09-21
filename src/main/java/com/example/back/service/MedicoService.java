@@ -7,6 +7,7 @@ import com.example.back.strategy.Comissao;
 import com.example.back.strategy.ComissaoMedico;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +18,8 @@ public class MedicoService {
 
     @Autowired
     private MedicoRepository medicoRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public Medico salvarMedico(Medico medico) {
         var medicoCpfDb = medicoRepository.findByCpf(medico.getCpf());
@@ -30,6 +33,8 @@ public class MedicoService {
         Comissao comissaoStrategy = new ComissaoMedico(5.0); // ou algum outro cálculo
 
         medico.setComissao(comissaoStrategy); // define a comissão aqui
+        medico.setSenha(passwordEncoder.encode(medico.getSenha()));
+
         return medicoRepository.save(medico);
     }
 
