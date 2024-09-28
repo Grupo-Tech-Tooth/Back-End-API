@@ -3,6 +3,7 @@ package com.example.back.controller;
 import com.example.back.entity.Funcional;
 import com.example.back.entity.Medico;
 import com.example.back.service.FuncionalService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/funcionais")
+@SecurityRequirement(name = "bearer-key")
 public class FuncionalController {
 
     @Autowired

@@ -18,8 +18,8 @@ public class Cliente extends Usuario {
     @Column(name = "genero")
     private String genero;
 
-    public Cliente(String nome, String sobrenome, String email, String cpf, String senha, LocalDate dataNascimento, String genero) {
-        super(nome, sobrenome, email, cpf, senha);
+    public Cliente(String nome, String sobrenome, String email, String cpf, String senha, LocalDate dataNascimento, String genero, Boolean ativo) {
+        super(nome, sobrenome, email, cpf, senha, ativo);
         this.dataNascimento = dataNascimento;
         this.genero = genero;
     }

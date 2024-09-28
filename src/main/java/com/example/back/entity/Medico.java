@@ -21,15 +21,19 @@ public class Medico extends Funcionario {
     @Column(name = "especializacao")
     private EspecializacaoOdontologica especializacao;
 
+    @Column(name = "ativo")
+    private Boolean ativo;
+
     @Transient
     @JsonIgnore
     private Comissao comissao;
 
     public Medico(String nome, String sobrenome, String email, String cpf, String senha, String matricula, String crm, Comissao comissao, EspecializacaoOdontologica especializacao) {
-        super(nome, sobrenome, email, cpf, senha, matricula);
+        super(nome, sobrenome, email, cpf, senha, matricula, true);
         this.crm = crm;
         this.comissao = comissao;
         this.especializacao = especializacao;
+        this.ativo = true;
     }
 
     public double calcularComissao(double valorServico) {

@@ -1,14 +1,14 @@
-package com.example.back.exception;
+package com.example.back.infra.execption;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.time.LocalDateTime;
-
-@ControllerAdvice
+@RestControllerAdvice
 public class MyExceptionHandler {
 
     @ExceptionHandler(UsuarioExistenteException.class)

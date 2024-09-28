@@ -1,5 +1,7 @@
 package com.example.back.service;
 
+import com.example.back.controller.dto.req.ClienteRequestDto;
+import com.example.back.controller.dto.res.ClienteResponseDto;
 import com.example.back.entity.Cliente;
 import com.example.back.repository.ClienteRepository;
 import feign.Client;
@@ -7,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,13 +24,17 @@ public class ClienteService {
 
     @Autowired
     private ClienteRepository clienteRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public ClienteService(ClienteRepository clienteRepository) {
         this.clienteRepository = clienteRepository;
     }
 
     public Page<Cliente> listarClientes(Pageable pageable) {
-        return clienteRepository.findAll(pageable).map(Cliente::new);
+
+        return clienteRepository.findAll(pageable);
+
     }
 
     public Cliente salvarCliente(Cliente cliente) {
@@ -37,6 +44,8 @@ public class ClienteService {
             throw new IllegalArgumentException("Cliente já existe com esse CPF");
         }
 
+        cliente.setSenha(passwordEncoder.encode(cliente.getSenha()));
+
         return clienteRepository.save(cliente);
     }
 
@@ -45,19 +54,22 @@ public class ClienteService {
     }
 
     public void deletarClientePorId(Long id) {
-        clienteRepository.deleteById(id);
+        Cliente clienteIdDb = clienteRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
+        clienteIdDb.setAtivo(false);
+        clienteRepository.save(clienteIdDb);
     }
 
-    public Cliente atualizarCliente(Cliente cliente) {
-        var clienteDb = clienteRepository.findById(cliente.getId()).orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
+    public ClienteResponseDto atualizarCliente(Long id, ClienteRequestDto cliente) {
+        Cliente clienteDb = clienteRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
 
         clienteDb.setNome(cliente.getNome());
         clienteDb.setSobrenome(cliente.getSobrenome());
-        clienteDb.setEmail(cliente.getEmail());
-        clienteDb.setCpf(cliente.getCpf());
-        clienteDb.setSenha(cliente.getSenha());
+        clienteDb.setDataNascimento(cliente.getDataNascimento());
+        clienteDb.setGenero(cliente.getGenero());
 
-        return clienteRepository.save(clienteDb);
+        Cliente clienteAtualizado = clienteRepository.save(clienteDb);
+
+        return new ClienteResponseDto(clienteAtualizado);
     }
 
     public Optional<Cliente> buscarClientePorCpf(String cpf) {
