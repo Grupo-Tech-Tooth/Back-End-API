@@ -9,8 +9,6 @@ import java.time.LocalDateTime;
 @Table(name = "agendamento")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class Agendamento {
 
     @Id
@@ -28,11 +26,4 @@ public class Agendamento {
     @Column(name = "data_hora")
     private LocalDateTime dataHora;
 
-    @PrePersist
-    public void verificarDisponibilidade() {
-        // Lógica para verificar a disponibilidade da agenda antes de persistir o agendamento
-        if (!agenda.getDisponibilidade().contains(dataHora)) {
-            throw new IllegalArgumentException("Data e hora não disponíveis na agenda.");
-        }
-    }
 }

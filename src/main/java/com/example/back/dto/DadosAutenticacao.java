@@ -1,4 +1,4 @@
-package com.example.back.controller.dto;
+package com.example.back.dto;
 
 public record DadosAutenticacao(String email, String senha) {
 }

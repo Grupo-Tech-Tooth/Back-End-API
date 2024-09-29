@@ -1,5 +1,6 @@
 package com.example.back.service;
 
+import com.example.back.dto.res.MedicoResponseDto;
 import com.example.back.entity.Medico;
 import com.example.back.infra.execption.UsuarioExistenteException;
 import com.example.back.repository.MedicoRepository;
@@ -85,6 +86,6 @@ public class MedicoService {
             medico.setComissao(new ComissaoMedico(5.0)); // Aqui 5.0 é apenas um exemplo
         }
 
-        return medico.calcularComissao(valorServico);
+        return new MedicoResponseDto().calcularComissao(valorServico);
     }
 }

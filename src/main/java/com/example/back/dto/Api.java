@@ -1,4 +1,4 @@
-package com.example.back.controller.dto;
+package com.example.back.dto;
 
 import java.time.LocalDate;
 
