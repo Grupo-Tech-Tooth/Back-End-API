@@ -6,6 +6,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -26,10 +28,10 @@ public abstract class Usuario implements UserDetails {
     @Column(name = "sobrenome")
     private String sobrenome;
 
-    @Column(name = "email", unique = true)
+    @Column(name = "email")
     private String email;
 
-    @Column(name = "cpf", unique = true)
+    @Column(name = "cpf")
     private String cpf;
 
     @Column(name = "senha")
@@ -38,14 +40,11 @@ public abstract class Usuario implements UserDetails {
     @Column(name = "ativo")
     private Boolean ativo;
 
-    public Usuario(String nome, String sobrenome, String email, String cpf, String senha, Boolean ativo) {
-        this.nome = nome;
-        this.sobrenome = sobrenome;
-        this.email = email;
-        this.cpf = cpf;
-        this.senha = senha;
-        this.ativo = ativo;
-    }
+    @Column(name = "deletado")
+    private Boolean deletado;
+
+    @Column(name = "deletado_em")
+    private LocalDate deletadoEm;
 
     public Long getId() {
         return id;
@@ -101,6 +100,22 @@ public abstract class Usuario implements UserDetails {
 
     public void setAtivo(Boolean ativo) {
         this.ativo = ativo;
+    }
+
+    public Boolean getDeletado() {
+        return deletado;
+    }
+
+    public void setDeletado(Boolean deletado) {
+        this.deletado = deletado;
+    }
+
+    public LocalDate getDeletadoEm() {
+        return deletadoEm;
+    }
+
+    public void setDeletadoEm(LocalDate deletadoEm) {
+        this.deletadoEm = deletadoEm;
     }
 
     @Override

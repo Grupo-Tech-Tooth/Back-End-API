@@ -23,6 +23,9 @@ public class MedicoController {
     @PostMapping
     public ResponseEntity<Medico> criarMedico(@RequestBody @Valid Medico medico) {
         medico.setId(null);
+        medico.setAtivo(true);
+        medico.setDeletado(false);
+        medico.setDeletadoEm(null);
         Medico novoMedico = medicoService.salvarMedico(medico);
         return ResponseEntity.status(HttpStatus.CREATED).body(novoMedico);
     }
