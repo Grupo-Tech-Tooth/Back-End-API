@@ -1,5 +1,6 @@
 package com.example.back.entity;
 
+import com.example.back.conversor.BooleanConverter;
 import com.example.back.enums.EspecializacaoOdontologica;
 import com.example.back.strategy.Comissao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -21,20 +22,13 @@ public class Medico extends Funcionario {
     @Column(name = "especializacao")
     private EspecializacaoOdontologica especializacao;
 
-    @Column(name = "ativo")
-    private Boolean ativo;
+    @Column(name = "ativo", columnDefinition = "BOOLEAN")
+    @Convert(converter = BooleanConverter.class)
+    private boolean ativo;
 
     @Transient
     @JsonIgnore
     private Comissao comissao;
-
-    public Medico(String nome, String sobrenome, String email, String cpf, String senha, String matricula, String crm, Comissao comissao, EspecializacaoOdontologica especializacao) {
-        super(nome, sobrenome, email, cpf, senha, matricula, true);
-        this.crm = crm;
-        this.comissao = comissao;
-        this.especializacao = especializacao;
-        this.ativo = true;
-    }
 
     public double calcularComissao(double valorServico) {
         double comissaoBase = comissao.calcularComissao(valorServico);

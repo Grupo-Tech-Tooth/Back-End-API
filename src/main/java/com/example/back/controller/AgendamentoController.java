@@ -5,6 +5,7 @@ import com.example.back.controller.dto.AgendamentoDTO;
 import com.example.back.service.AgendamentoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,9 @@ import java.util.List;
 @RequestMapping("/api/agendamentos")
 @RequiredArgsConstructor
 public class AgendamentoController {
-    private final AgendamentoService agendamentoService;
+
+    @Autowired
+    private AgendamentoService agendamentoService;
 
     @PostMapping
     public ResponseEntity<AgendamentoDTO> criar(@RequestBody @Valid AgendamentoCreateDTO dto) {

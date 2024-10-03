@@ -8,6 +8,7 @@ import com.example.back.infra.execption.BusinessException;
 import com.example.back.infra.execption.ResourceNotFoundException;
 import com.example.back.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
@@ -21,12 +22,19 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class AgendamentoService {
-    private final AgendamentoRepository agendamentoRepository;
-    private final ClienteRepository clienteRepository;
-    private final MedicoRepository medicoRepository;
-    private final ServicoRepository servicoRepository;
-    private final AgendaRepository agendaRepository;
-    private final AgendamentoMapper agendamentoMapper;
+
+    @Autowired
+    private AgendamentoRepository agendamentoRepository;
+    @Autowired
+    private ClienteRepository clienteRepository;
+    @Autowired
+    private MedicoRepository medicoRepository;
+    @Autowired
+    private ServicoRepository servicoRepository;
+    @Autowired
+    private AgendaRepository agendaRepository;
+    @Autowired
+    private AgendamentoMapper agendamentoMapper;
 
     public AgendamentoDTO criar(AgendamentoCreateDTO dto) {
         validarRegrasDeNegocio(dto);
