@@ -1,11 +1,9 @@
 package com.example.back.controller;
 
-import com.example.back.controller.dto.DadosAutenticacao;
-import com.example.back.entity.Funcionario;
+import com.example.back.dto.DadosAutenticacao;
 import com.example.back.entity.Usuario;
 import com.example.back.infra.security.DadosTokenJWT;
 import com.example.back.infra.security.TokenService;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

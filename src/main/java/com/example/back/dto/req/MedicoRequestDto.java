@@ -1,28 +1,26 @@
-package com.example.back.entity;
+package com.example.back.dto.req;
 
 import com.example.back.enums.EspecializacaoOdontologica;
 import com.example.back.strategy.Comissao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Transient;
+import jakarta.validation.constraints.NotBlank;
 
-@Entity
-@Table(name = "medico")
-@Getter
-@Setter
-public class Medico extends Funcionario {
+public class MedicoRequestDto {
 
-    @Column(name = "crm")
+    @NotBlank
     private String crm;
 
+    @NotBlank
     @Enumerated(EnumType.STRING)
-    @Column(name = "especializacao")
     private EspecializacaoOdontologica especializacao;
 
-    @Column(name = "ativo")
+    @NotBlank
     private Boolean ativo;
 
-    @Transient
     @JsonIgnore
     private Comissao comissao;
 }

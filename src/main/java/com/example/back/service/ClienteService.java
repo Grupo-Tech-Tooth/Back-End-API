@@ -1,21 +1,15 @@
 package com.example.back.service;
 
-import com.example.back.controller.dto.req.ClienteRequestDto;
-import com.example.back.controller.dto.res.ClienteResponseDto;
+import com.example.back.dto.req.ClienteRequestDto;
+import com.example.back.dto.res.ClienteResponseDto;
 import com.example.back.entity.Cliente;
 import com.example.back.repository.ClienteRepository;
-import feign.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
