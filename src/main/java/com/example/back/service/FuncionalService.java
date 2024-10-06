@@ -1,12 +1,14 @@
 package com.example.back.service;
 
 import com.example.back.entity.Funcional;
+import com.example.back.entity.Medico;
 import com.example.back.infra.execption.UsuarioExistenteException;
 import com.example.back.repository.FuncionalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +21,7 @@ public class FuncionalService {
     private PasswordEncoder passwordEncoder;
 
     public Funcional salvarFuncional(Funcional funcional) {
-        var funcionalDb = funcionalRepository.findByCpf(funcional.getCpf());
+        var funcionalDb = funcionalRepository.findByCpfAndDeletadoFalse(funcional.getCpf());
 
         if (funcionalDb.isPresent()) {
             throw new UsuarioExistenteException("Funcional já existe com esse CPF");
@@ -31,11 +33,11 @@ public class FuncionalService {
     }
 
     public List<Funcional> listarFuncionais() {
-        return funcionalRepository.findAll();
+        return funcionalRepository.findByDeletadoFalse();
     }
 
     public Optional<Funcional> buscarFuncionalPorId(Long id) {
-        return funcionalRepository.findById(id);
+        return funcionalRepository.findByIdAndDeletadoFalse(id);
     }
 
     public Funcional atualizarFuncional(Funcional funcional) {
@@ -43,10 +45,15 @@ public class FuncionalService {
     }
 
     public void deletarFuncional(Long id) {
-        funcionalRepository.deleteById(id);
+        Funcional funcional = funcionalRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Funcional não encontrado"));
+        funcional.setDeletado(true);
+        funcional.setAtivo(false);
+        funcional.setDeletadoEm(LocalDate.now());
+        funcionalRepository.save(funcional);
     }
 
     public List<Funcional> buscarPorNomeOuSobrenome(String nome, String sobrenome) {
-        return funcionalRepository.findByNomeContainingOrSobrenomeContainingIgnoreCase(nome, sobrenome);
+        return funcionalRepository.findByDeletadoFalseAndNomeContainingOrSobrenomeContainingIgnoreCase(nome, sobrenome);
     }
 }
