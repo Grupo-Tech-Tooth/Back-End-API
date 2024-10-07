@@ -15,5 +15,4 @@ public abstract class Funcionario extends Usuario {
 
     @Column(name = "matricula")
     private String matricula;
-
 }

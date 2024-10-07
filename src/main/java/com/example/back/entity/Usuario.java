@@ -37,7 +37,7 @@ public abstract class Usuario implements UserDetails {
     @Column(name = "senha")
     private String senha;
 
-    @Column(name = "ativo")
+    @Column(name = "ativo", columnDefinition = "TINYINT(1)")
     private Boolean ativo;
 
     @Column(name = "deletado")
