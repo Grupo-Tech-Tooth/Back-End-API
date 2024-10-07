@@ -10,8 +10,6 @@ import java.util.List;
 @Table(name = "agendas")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class Agenda {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -18,4 +18,12 @@ public interface MedicoRepository extends JpaRepository<Medico, Long> {
             "(SELECT a.medico.id FROM Agendamento a WHERE a.dataHora BETWEEN :inicio AND :fim)")
     List<Medico> findAvailableMedicos(LocalDateTime inicio, LocalDateTime fim);
 
+    Optional<Medico> findByCpfAndDeletadoFalse(String cpf);
+    Optional<Medico> findByEmailAndDeletadoFalse(String email);
+
+    List<Medico> findByDeletadoFalse();
+
+    Optional<Medico> findByIdAndDeletadoFalse(Long id);
+
+    List<Medico> findByDeletadoFalseAndNomeContainingOrSobrenomeContainingIgnoreCase(String nome, String sobrenome);
 }

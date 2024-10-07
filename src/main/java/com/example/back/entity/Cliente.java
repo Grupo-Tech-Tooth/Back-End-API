@@ -8,8 +8,6 @@ import java.time.LocalDate;
 @Table(name = "cliente")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class Cliente extends Usuario {
 
     @Column(name = "data_nascimento")
@@ -17,4 +15,5 @@ public class Cliente extends Usuario {
 
     @Column(name = "genero")
     private String genero;
+
 }

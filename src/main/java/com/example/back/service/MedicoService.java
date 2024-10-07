@@ -1,5 +1,6 @@
 package com.example.back.service;
 
+import com.example.back.dto.res.MedicoResponseDto;
 import com.example.back.entity.Medico;
 import com.example.back.infra.execption.UsuarioExistenteException;
 import com.example.back.repository.MedicoRepository;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,8 +24,8 @@ public class MedicoService {
     private PasswordEncoder passwordEncoder;
 
     public Medico salvarMedico(Medico medico) {
-        var medicoCpfDb = medicoRepository.findByCpf(medico.getCpf());
-        var medicoEmailDb = medicoRepository.findByEmail(medico.getEmail());
+        var medicoCpfDb = medicoRepository.findByCpfAndDeletadoFalse(medico.getCpf());
+        var medicoEmailDb = medicoRepository.findByEmailAndDeletadoFalse(medico.getEmail());
 
         if (medicoCpfDb.isPresent()) {
             throw new UsuarioExistenteException("Médico já existe com esse CPF");
@@ -39,7 +41,7 @@ public class MedicoService {
     }
 
     public List<Medico> listarMedicos() {
-        return medicoRepository.findAll();
+        return medicoRepository.findByDeletadoFalse();
     }
 
     public Optional<Medico> buscarMedicoPorId(Long id) {
@@ -47,7 +49,7 @@ public class MedicoService {
     }
 
     public Medico atualizarMedico(Medico medico) {
-        var medicoIdDb = medicoRepository.findById(medico.getId()).orElseThrow(() -> new IllegalArgumentException("Medico não encontrado"));
+        var medicoIdDb = medicoRepository.findByIdAndDeletadoFalse(medico.getId()).orElseThrow(() -> new IllegalArgumentException("Medico não encontrado"));
 
         medicoIdDb.setId(medicoRepository.getReferenceById(medico.getId()).getId());
         medicoIdDb.setNome(medico.getNome());
@@ -66,12 +68,14 @@ public class MedicoService {
     public void deletarMedico(Long id) {
         Medico medicoIdDb = medicoRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Médico não encontrado"));
+        medicoIdDb.setDeletado(true);
         medicoIdDb.setAtivo(false);
+        medicoIdDb.setDeletadoEm(LocalDate.now());
         medicoRepository.save(medicoIdDb);
     }
 
     public List<Medico> buscarPorNomeOuSobrenome(String nome, String sobrenome) {
-        return medicoRepository.findByNomeContainingOrSobrenomeContainingIgnoreCase(nome, sobrenome);
+        return medicoRepository.findByDeletadoFalseAndNomeContainingOrSobrenomeContainingIgnoreCase(nome, sobrenome);
     }
 
     public double calcularComissao(Long id, double valorServico) {
@@ -85,6 +89,6 @@ public class MedicoService {
             medico.setComissao(new ComissaoMedico(5.0)); // Aqui 5.0 é apenas um exemplo
         }
 
-        return medico.calcularComissao(valorServico);
+        return new MedicoResponseDto().calcularComissao(valorServico);
     }
 }

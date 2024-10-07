@@ -9,10 +9,9 @@ import lombok.*;
 @Table(name = "funcional")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class Funcional extends Funcionario {
 
     @Column(name = "departamento")
     private String departamento;
+
 }

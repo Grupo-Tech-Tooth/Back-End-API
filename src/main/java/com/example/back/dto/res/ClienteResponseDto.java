@@ -1,7 +1,9 @@
-package com.example.back.controller.dto.res;
+package com.example.back.dto.res;
 
 import com.example.back.entity.Cliente;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.cglib.core.Local;
 
@@ -9,6 +11,8 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ClienteResponseDto {
 
     // Getters e Setters
