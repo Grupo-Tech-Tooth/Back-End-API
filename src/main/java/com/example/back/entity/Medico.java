@@ -22,10 +22,6 @@ public class Medico extends Funcionario {
     @Column(name = "especializacao")
     private EspecializacaoOdontologica especializacao;
 
-    @Column(name = "ativo", columnDefinition = "BOOLEAN")
-    @Convert(converter = BooleanConverter.class)
-    private boolean ativo;
-
     @Transient
     @JsonIgnore
     private Comissao comissao;

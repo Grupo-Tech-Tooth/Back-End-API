@@ -17,4 +17,5 @@ public interface MedicoRepository extends JpaRepository<Medico, Long> {
     @Query("SELECT m FROM Medico m WHERE m.ativo = true AND m.id NOT IN " +
             "(SELECT a.medico.id FROM Agendamento a WHERE a.dataHora BETWEEN :inicio AND :fim)")
     List<Medico> findAvailableMedicos(LocalDateTime inicio, LocalDateTime fim);
+
 }
