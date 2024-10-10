@@ -1,8 +1,8 @@
 package com.example.back.controller;
 
 
-import com.example.back.controller.dto.req.ClienteRequestDto;
-import com.example.back.controller.dto.res.ClienteResponseDto;
+import com.example.back.dto.req.ClienteRequestDto;
+import com.example.back.dto.res.ClienteResponseDto;
 import com.example.back.entity.Cliente;
 import com.example.back.service.ClienteService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 

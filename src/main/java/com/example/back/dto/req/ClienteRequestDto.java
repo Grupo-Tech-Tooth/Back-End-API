@@ -1,4 +1,4 @@
-package com.example.back.controller.dto.req;
+package com.example.back.dto.req;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -28,4 +28,9 @@ public class ClienteRequestDto {
     @NotNull
     private String genero;
 
+    private Boolean ativo;
+
+    private Boolean deletado;
+
+    private LocalDate deletadoEm;
 }

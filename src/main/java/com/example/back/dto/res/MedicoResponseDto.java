@@ -1,27 +1,31 @@
-package com.example.back.entity;
+package com.example.back.dto.res;
 
-import com.example.back.conversor.BooleanConverter;
 import com.example.back.enums.EspecializacaoOdontologica;
 import com.example.back.strategy.Comissao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Entity
-@Table(name = "medico")
+import java.time.LocalDate;
+
 @Getter
 @Setter
-public class Medico extends Funcionario {
+@NoArgsConstructor
+@AllArgsConstructor
+public class MedicoResponseDto {
 
-    @Column(name = "crm")
+    private String nome;
+    private String sobrenome;
+    private String email;
+    private String cpf;
     private String crm;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "especializacao")
     private EspecializacaoOdontologica especializacao;
-
-    @Transient
-    @JsonIgnore
+    private Boolean ativo;
     private Comissao comissao;
 
     public double calcularComissao(double valorServico) {
