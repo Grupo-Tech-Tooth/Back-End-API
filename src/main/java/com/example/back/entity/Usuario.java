@@ -1,5 +1,6 @@
 package com.example.back.entity;
 
+import com.example.back.dto.req.ClienteRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -45,6 +46,15 @@ public abstract class Usuario implements UserDetails {
 
     @Column(name = "deletado_em")
     private LocalDate deletadoEm;
+
+    public Usuario(ClienteRequestDto dto) {
+        this.nome = dto.getNome();
+        this.sobrenome = dto.getSobrenome();
+        this.email = dto.getEmail();
+        this.cpf = dto.getCpf();
+        this.senha = dto.getSenha();
+        this.ativo = true;
+    }
 
     public Long getId() {
         return id;
