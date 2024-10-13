@@ -1,6 +1,7 @@
 package com.example.back.service;
 
-import com.example.back.dto.req.ClienteRequestDto;
+import com.example.back.dto.req.AtualizarClienteRequestDto;
+import com.example.back.dto.req.SalvarClienteRequestDto;
 import com.example.back.dto.res.ClienteResponseDto;
 import com.example.back.entity.Cliente;
 import com.example.back.repository.ClienteRepository;
@@ -31,7 +32,7 @@ public class ClienteService {
 
     }
 
-    public Cliente salvarCliente(ClienteRequestDto dto) {
+    public Cliente salvarCliente(SalvarClienteRequestDto dto) {
         var clienteDb = clienteRepository.findByCpf(dto.getCpf());
 
         if (clienteDb.isPresent()) {
@@ -55,18 +56,8 @@ public class ClienteService {
         clienteRepository.save(clienteIdDb);
     }
 
-    public ClienteResponseDto atualizarCliente(Long id, ClienteRequestDto cliente) {
+    public ClienteResponseDto atualizarCliente(Long id, AtualizarClienteRequestDto cliente) {
         Cliente clienteDb = clienteRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
-
-        // Não permitir alterar o CPF
-        if (!clienteDb.getCpf().equals(cliente.getCpf())) {
-            throw new IllegalArgumentException("CPF não pode ser alterado");
-        }
-
-        // Não permitir alterar o email
-        if (!clienteDb.getEmail().equals(cliente.getEmail())) {
-            throw new IllegalArgumentException("Email não pode ser alterado");
-        }
 
         clienteDb.setNome(cliente.getNome());
         clienteDb.setSobrenome(cliente.getSobrenome());
