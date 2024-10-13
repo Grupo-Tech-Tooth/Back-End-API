@@ -28,4 +28,9 @@ public class ClienteRequestDto {
     @NotNull
     private String genero;
 
+    private Boolean ativo;
+
+    private Boolean deletado;
+
+    private LocalDate deletadoEm;
 }
