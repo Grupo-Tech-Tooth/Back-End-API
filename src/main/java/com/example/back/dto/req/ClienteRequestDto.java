@@ -28,4 +28,16 @@ public class ClienteRequestDto {
     @NotNull
     private String genero;
 
+    @NotBlank
+    @NotNull
+    private String cpf;
+
+    @NotBlank
+    @NotNull
+    private String email;
+
+    @NotBlank
+    @NotNull
+    private String senha;
+
 }

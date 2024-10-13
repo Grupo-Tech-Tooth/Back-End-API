@@ -1,5 +1,6 @@
 package com.example.back.entity;
 
+import com.example.back.dto.req.ClienteRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -45,6 +46,15 @@ public abstract class Usuario implements UserDetails {
         this.cpf = cpf;
         this.senha = senha;
         this.ativo = ativo;
+    }
+
+    public Usuario(ClienteRequestDto dto) {
+        this.nome = dto.getNome();
+        this.sobrenome = dto.getSobrenome();
+        this.email = dto.getEmail();
+        this.cpf = dto.getCpf();
+        this.senha = dto.getSenha();
+        this.ativo = true;
     }
 
     public Long getId() {

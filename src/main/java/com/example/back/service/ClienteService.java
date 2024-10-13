@@ -31,12 +31,14 @@ public class ClienteService {
 
     }
 
-    public Cliente salvarCliente(Cliente cliente) {
-        var clienteDb = clienteRepository.findByCpf(cliente.getCpf());
+    public Cliente salvarCliente(ClienteRequestDto dto) {
+        var clienteDb = clienteRepository.findByCpf(dto.getCpf());
 
         if (clienteDb.isPresent()) {
             throw new IllegalArgumentException("Cliente já existe com esse CPF");
         }
+
+        Cliente cliente = new Cliente(dto);
 
         cliente.setSenha(passwordEncoder.encode(cliente.getSenha()));
 
@@ -55,6 +57,16 @@ public class ClienteService {
 
     public ClienteResponseDto atualizarCliente(Long id, ClienteRequestDto cliente) {
         Cliente clienteDb = clienteRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
+
+        // Não permitir alterar o CPF
+        if (!clienteDb.getCpf().equals(cliente.getCpf())) {
+            throw new IllegalArgumentException("CPF não pode ser alterado");
+        }
+
+        // Não permitir alterar o email
+        if (!clienteDb.getEmail().equals(cliente.getEmail())) {
+            throw new IllegalArgumentException("Email não pode ser alterado");
+        }
 
         clienteDb.setNome(cliente.getNome());
         clienteDb.setSobrenome(cliente.getSobrenome());
