@@ -180,4 +180,16 @@ public class AgendamentoService {
                 .map(agendamentoMapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+    public AgendamentoDTO cancelarConsulta(Long id) {
+        Agendamento agendamento = agendamentoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Agendamento não encontrado"));
+
+        if (agendamentoRepository.existsByIdAndDataHoraBefore(id, LocalDateTime.now().plusHours(24))) {
+            throw new BusinessException("Não é permitido cancelar consultas com menos de 24 horas de antecedência");
+        }
+
+        agendamento.setCancelado(true);
+        return agendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
+    }
 }
