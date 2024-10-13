@@ -21,6 +21,11 @@ public class MyExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<String> handleBusinessException(BusinessException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST); // Regra de negócio geralmente retorna 400
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGeneralException(Exception ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

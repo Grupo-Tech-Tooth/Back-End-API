@@ -23,6 +23,10 @@ public class FuncionalController {
 
     @PostMapping
     public ResponseEntity<Funcional> criarFuncional(@RequestBody @Valid Funcional funcional) {
+        funcional.setId(null);
+        funcional.setAtivo(true);
+        funcional.setDeletado(false);
+        funcional.setDeletadoEm(null);
         Funcional novoFuncional = funcionalService.salvarFuncional(funcional);
         return ResponseEntity.status(HttpStatus.CREATED).body(novoFuncional);
     }
