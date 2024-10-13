@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "agendamentos")
@@ -35,4 +36,7 @@ public class Agendamento {
 
     @Column(nullable = false)
     private LocalDateTime dataHora;
+
+    public void setCancelado(boolean b) {
+    }
 }
