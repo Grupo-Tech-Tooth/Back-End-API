@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class ClienteRequestDto {
+public class SalvarClienteRequestDto {
 
     // Getters e Setters
 

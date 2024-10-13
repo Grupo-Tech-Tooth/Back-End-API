@@ -1,6 +1,6 @@
 package com.example.back.entity;
 
-import com.example.back.dto.req.ClienteRequestDto;
+import com.example.back.dto.req.SalvarClienteRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -8,7 +8,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -47,7 +46,7 @@ public abstract class Usuario implements UserDetails {
     @Column(name = "deletado_em")
     private LocalDate deletadoEm;
 
-    public Usuario(ClienteRequestDto dto) {
+    public Usuario(SalvarClienteRequestDto dto) {
         this.nome = dto.getNome();
         this.sobrenome = dto.getSobrenome();
         this.email = dto.getEmail();
