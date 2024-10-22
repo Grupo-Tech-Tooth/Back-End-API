@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class ClienteRequestDto {
+public class SalvarClienteRequestDto {
 
     // Getters e Setters
 
@@ -28,9 +28,16 @@ public class ClienteRequestDto {
     @NotNull
     private String genero;
 
-    private Boolean ativo;
+    @NotBlank
+    @NotNull
+    private String cpf;
 
-    private Boolean deletado;
+    @NotBlank
+    @NotNull
+    private String email;
 
-    private LocalDate deletadoEm;
+    @NotBlank
+    @NotNull
+    private String senha;
+
 }
