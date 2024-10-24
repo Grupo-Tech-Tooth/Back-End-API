@@ -1,0 +1,36 @@
+<configuration>
+
+    <!-- Define o nível padrão de log -->
+    <property name="LOG_LEVEL" value="${LOG_LEVEL:info}" /> <!-- Define o nível padrão como 'info' se não for especificado -->
+
+    <root level="${LOG_LEVEL}">
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+    <!-- Definindo o nível de log para pacotes específicos -->
+    <logger name="com.example.back" level="${LOG_LEVEL}"/>
+
+    <!-- Configuração de saída para o Console -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Configuração de saída para arquivo -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/meu_arquivo_log.log</file>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+
+        <!-- Definindo uma política de rotação de logs -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- Gera um novo arquivo a cada dia, renomeando o arquivo atual -->
+            <fileNamePattern>logs/meu_arquivo_log.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory> <!-- Mantém arquivos de logs dos últimos 30 dias -->
+        </rollingPolicy>
+    </appender>
+
+</configuration>
