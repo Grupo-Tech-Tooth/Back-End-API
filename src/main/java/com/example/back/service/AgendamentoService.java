@@ -11,6 +11,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Formatter;
+import java.util.FormatterClosedException;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -192,4 +197,46 @@ public class AgendamentoService {
         agendamento.setCancelado(true);
         return agendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
     }
+
+    public List<AgendamentoDTO> buscarTodosAgendamentos() {
+        return agendamentoRepository.findAll().stream()
+                .map(agendamentoMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public void gravarArquivoCsv(List<AgendamentoDTO> lista, String nomeArq) {
+        FileWriter arq = null;
+        Formatter saida = null;
+        nomeArq += ".csv";
+        try {
+            arq = new FileWriter(nomeArq);
+            saida = new Formatter(arq);
+
+            for (AgendamentoDTO agendamento : lista) {
+                saida.format("%d;%d;%d;%s;%d\n",
+                        agendamento.id(),
+                        agendamento.clienteId(),
+                        agendamento.medicoId(),
+                        agendamento.dataHora().toString(),
+                        agendamento.servicoId());
+            }
+        } catch (IOException | FormatterClosedException erro) {
+            System.out.println("Erro ao manipular o arquivo");
+            erro.printStackTrace();
+            throw new RuntimeException("Erro ao manipular o arquivo", erro);
+        } finally {
+            if (saida != null) {
+                saida.close();
+            }
+            try {
+                if (arq != null) {
+                    arq.close();
+                }
+            } catch (IOException erro) {
+                System.out.println("Erro ao fechar o arquivo");
+                throw new RuntimeException("Erro ao fechar o arquivo", erro);
+            }
+        }
+    }
+
 }
