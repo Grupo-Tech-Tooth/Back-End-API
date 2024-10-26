@@ -5,18 +5,18 @@
 
     <root level="${LOG_LEVEL}">
         <appender-ref ref="FILE"/>
-        <appender-ref ref="CONSOLE"/>
-    </root>
+    <!--<appender-ref ref="CONSOLE"/>-->
+</root>
 
-    <!-- Definindo o nível de log para pacotes específicos -->
-    <logger name="com.example.back" level="${LOG_LEVEL}"/>
+<!-- Definindo o nível de log para pacotes específicos -->
+    <logger name="com.example.back.controller" level="${LOG_LEVEL}"/>
 
-    <!-- Configuração de saída para o Console -->
+    <!-- Configuração de saída para o Console
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
-    </appender>
+    </appender>-->
 
     <!-- Configuração de saída para arquivo -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
