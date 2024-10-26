@@ -33,12 +33,8 @@ public class MedicoRequestDto {
     @NotBlank
     private String crm;
 
-    @NotBlank
     @Enumerated(EnumType.STRING)
     private EspecializacaoOdontologica especializacao;
-
-    @NotBlank
-    private Boolean ativo;
 
     public Medico toMedico() {
         Medico medico = new Medico();
@@ -49,7 +45,6 @@ public class MedicoRequestDto {
         medico.setSenha(this.senha);
         medico.setCrm(this.crm);
         medico.setEspecializacao(this.especializacao);
-        medico.setAtivo(this.ativo);
         return medico;
     }
 }
