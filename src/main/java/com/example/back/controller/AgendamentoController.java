@@ -3,6 +3,7 @@ package com.example.back.controller;
 import com.example.back.controller.dto.AgendamentoCreateDTO;
 import com.example.back.controller.dto.AgendamentoDTO;
 import com.example.back.service.AgendamentoService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/agendamentos")
+@RequestMapping("/agendamentos")
+@SecurityRequirement(name = "bearer-key")
 @RequiredArgsConstructor
 public class AgendamentoController {
 
