@@ -212,15 +212,25 @@ public class AgendamentoService {
             arq = new FileWriter(nomeArq);
             saida = new Formatter(arq);
 
+            saida.format("ID; ClienteNome; ClienteEmail; MedicoNome; DataHora; ServicoNome;\n");
+
             for (AgendamentoDTO agendamento : lista) {
-                saida.format("%d;%d;%d;%s;%d\n",
+                Cliente cliente = clienteRepository.findById(agendamento.clienteId())
+                        .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
+                Medico medico = medicoRepository.findById(agendamento.medicoId())
+                        .orElseThrow(() -> new ResourceNotFoundException("Médico não encontrado"));
+                Servico servico = servicoRepository.findById(agendamento.servicoId())
+                        .orElseThrow(() -> new ResourceNotFoundException("Serviço não encontrado"));
+
+                saida.format("%d;%s;%s;%s;%s;%s\n",
                         agendamento.id(),
-                        agendamento.clienteId(),
-                        agendamento.medicoId(),
+                        cliente.getNome(),
+                        cliente.getEmail(),
+                        medico.getNome(),
                         agendamento.dataHora().toString(),
-                        agendamento.servicoId());
+                        servico.getNome());
             }
-        } catch (IOException | FormatterClosedException erro) {
+        } catch (IOException | FormatterClosedException | ResourceNotFoundException erro) {
             System.out.println("Erro ao manipular o arquivo");
             erro.printStackTrace();
             throw new RuntimeException("Erro ao manipular o arquivo", erro);

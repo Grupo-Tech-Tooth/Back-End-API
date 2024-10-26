@@ -83,7 +83,7 @@ public class AgendamentoController {
     public ResponseEntity<InputStreamResource> exportarCsv() {
         List<AgendamentoDTO> agendamentos = agendamentoService.buscarTodosAgendamentos();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        agendamentoService.gravarArquivoCsv(agendamentos, String.valueOf(out));
+        agendamentoService.gravarArquivoCsv(agendamentos, "agendamentos");
 
         ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
         HttpHeaders headers = new HttpHeaders();
