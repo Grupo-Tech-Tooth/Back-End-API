@@ -1,5 +1,6 @@
 package com.example.back.entity;
 
+import com.example.back.enums.Hierarquia;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -45,6 +46,9 @@ public abstract class Usuario implements UserDetails {
 
     @Column(name = "deletado_em")
     private LocalDate deletadoEm;
+
+    @Column(name = "hierarquia")
+    private Hierarquia hierarquia;
 
     public Long getId() {
         return id;
@@ -116,6 +120,14 @@ public abstract class Usuario implements UserDetails {
 
     public void setDeletadoEm(LocalDate deletadoEm) {
         this.deletadoEm = deletadoEm;
+    }
+
+    public Hierarquia getHierarquia() {
+        return hierarquia;
+    }
+
+    public void setHierarquia(Hierarquia hierarquia) {
+        this.hierarquia = hierarquia;
     }
 
     @Override

@@ -180,4 +180,6 @@ public class AgendamentoService {
                 .map(agendamentoMapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+    public List<Servico> listarServicos() { return servicoRepository.findAll(); }
 }

@@ -2,6 +2,8 @@ package com.example.back.controller;
 
 import com.example.back.controller.dto.AgendamentoCreateDTO;
 import com.example.back.controller.dto.AgendamentoDTO;
+import com.example.back.entity.Medico;
+import com.example.back.entity.Servico;
 import com.example.back.infra.execption.BusinessException;
 import com.example.back.infra.execption.ResourceNotFoundException;
 import com.example.back.observer.LoggerObserver;
@@ -169,5 +171,11 @@ public class AgendamentoController {
             loggerObserver.logUnexpectedError(e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @GetMapping("/servico")
+    public ResponseEntity<List<Servico>> listarServicos() {
+        List<Servico> servicos = agendamentoService.listarServicos();
+        return servicos.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(servicos);
     }
 }

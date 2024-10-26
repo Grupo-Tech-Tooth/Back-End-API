@@ -1,35 +1,41 @@
 <configuration>
 
-    <!-- Define o nível padrão de log -->
-    <property name="LOG_LEVEL" value="${LOG_LEVEL:info}" /> <!-- Define o nível padrão como 'info' se não for especificado -->
+    <!-- Root Logger reduzido para evitar logs desnecessários de outros pacotes -->
+    <root level="warn">
+        <appender-ref ref="CONSOLE"/>
+    </root>
 
-    <root level="${LOG_LEVEL}">
+    <!-- Logger específico para AgendamentoController (registra info, warn e error) -->
+    <logger name="com.example.back.controller.AgendamentoController" level="info" additivity="false">
         <appender-ref ref="FILE"/>
-    <!--<appender-ref ref="CONSOLE"/>-->
-</root>
+        <!--<appender-ref ref="CONSOLE"/>-->
+    </logger>
 
-<!-- Definindo o nível de log para pacotes específicos -->
-    <logger name="com.example.back.controller" level="${LOG_LEVEL}"/>
+    <!-- Logger específico para LoggerObserver (registra info, warn e error) -->
+    <logger name="com.example.back.observer.LoggerObserver" level="info" additivity="false">
+        <appender-ref ref="FILE"/>
+        <!--<appender-ref ref="CONSOLE"/>-->
+    </logger>
 
-    <!-- Configuração de saída para o Console
+    <!-- Console Appender para ver logs localmente -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
-    </appender>-->
+    </appender>
 
-    <!-- Configuração de saída para arquivo -->
+    <!-- Configuração do appender de arquivo com rotação de logs -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>logs/meu_arquivo_log.log</file>
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
 
-        <!-- Definindo uma política de rotação de logs -->
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <!-- Gera um novo arquivo a cada dia, renomeando o arquivo atual -->
-            <fileNamePattern>logs/meu_arquivo_log.%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>30</maxHistory> <!-- Mantém arquivos de logs dos últimos 30 dias -->
+        <!-- Política de rotação por tempo e tamanho -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>logs/meu_arquivo_log.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>10MB</maxFileSize>
+            <maxHistory>30</maxHistory>
         </rollingPolicy>
     </appender>
 
