@@ -1,6 +1,7 @@
 package com.example.back.infra.security;
 
 import com.example.back.repository.FuncionalRepository;
+import com.example.back.repository.LoginInfoRepository;
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -22,7 +23,7 @@ public class SecurityFilter extends OncePerRequestFilter {
     private TokenService tokenService;
 
     @Autowired
-    private FuncionalRepository repository;
+    private LoginInfoRepository repository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
