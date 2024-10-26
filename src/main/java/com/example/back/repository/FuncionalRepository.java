@@ -14,8 +14,6 @@ public interface FuncionalRepository extends JpaRepository<Funcional, Long> {
     Optional<Funcional> findByCpf(String cpf);
     List<Funcional> findByNomeContainingOrSobrenomeContainingIgnoreCase(String nome, String sobrenome);
 
-    UserDetails findByEmail(String email);
-
     Optional<Funcional> findByCpfAndDeletadoFalse(String cpf);
 
     List<Funcional> findByDeletadoFalse();
