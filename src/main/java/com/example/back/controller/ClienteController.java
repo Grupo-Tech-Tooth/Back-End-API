@@ -1,7 +1,8 @@
 package com.example.back.controller;
 
 
-import com.example.back.dto.req.ClienteRequestDto;
+import com.example.back.dto.req.AtualizarClienteRequestDto;
+import com.example.back.dto.req.SalvarClienteRequestDto;
 import com.example.back.dto.res.ClienteResponseDto;
 import com.example.back.entity.Cliente;
 import com.example.back.service.ClienteService;
@@ -26,7 +27,7 @@ public class ClienteController {
     private ClienteService service;
 
     @PostMapping
-    public ResponseEntity<Cliente> criarCliente(@RequestBody @Valid Cliente cliente) {
+    public ResponseEntity<Cliente> criarCliente(@RequestBody @Valid SalvarClienteRequestDto cliente) {
         Cliente novoCliente = service.salvarCliente(cliente);
         return ResponseEntity.status(HttpStatus.CREATED).body(novoCliente);
     }
@@ -51,7 +52,7 @@ public class ClienteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ClienteResponseDto> atualizarCliente(@PathVariable Long id, @RequestBody @Valid ClienteRequestDto clienteRequestDto) {
+    public ResponseEntity<ClienteResponseDto> atualizarCliente(@PathVariable Long id, @RequestBody @Valid AtualizarClienteRequestDto clienteRequestDto) {
 
         ClienteResponseDto cliente = service.atualizarCliente(id, clienteRequestDto);
         return ResponseEntity.ok(cliente);

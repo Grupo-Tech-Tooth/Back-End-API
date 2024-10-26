@@ -16,4 +16,13 @@ O _type_ pode ser um desses tipos:
 | revert  | Reverter            | Reverte um commit anterior                    |
 
 
+## Categoria de códigos
+Os _códigos HTTP_ (ou HTTPS) possuem três dígitos, sendo que o primeiro dígito significa a classificação dentro das possíveis cinco categorias.
 
+| Código | Descrição   | Significado |
+|--------|-------------|-------------|
+| 1XX    | Informativo | A solicitação foi aceita ou o processo continua em andamento; |
+| 2XX    | Confirmação | A ação foi concluída ou entendida; |
+| 3XX    | Redirecionamento | Indica que algo mais precisa ser feito ou precisou ser feito para completar a solicitação; |
+| 4XX    | Erro do cliente | Indica que a solicitação não pode ser concluída ou contém a sintaxe incorreta; |
+| 5XX    | Erro no servidor | O servidor falhou ao concluir a solicitação. |
