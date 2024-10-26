@@ -9,7 +9,11 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class MedicoRequestDto {
 
     @NotBlank
@@ -35,9 +39,6 @@ public class MedicoRequestDto {
 
     @NotBlank
     private Boolean ativo;
-
-    @JsonIgnore
-    private Comissao comissao;
 
     public Medico toMedico() {
         Medico medico = new Medico();
