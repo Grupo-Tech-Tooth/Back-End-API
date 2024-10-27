@@ -36,6 +36,11 @@ public class AgendamentoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(agendamentoService.criar(dto));
     }
 
+    @GetMapping
+    public ResponseEntity<List<AgendamentoDTO>> buscarTodos() {
+        return ResponseEntity.ok(agendamentoService.buscarTodosAgendamentos());
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<AgendamentoDTO> atualizar(@PathVariable Long id, @RequestBody @Valid AgendamentoCreateDTO dto) {
         return ResponseEntity.ok(agendamentoService.atualizar(id, dto));
@@ -69,9 +74,24 @@ public class AgendamentoController {
 
     @GetMapping("/periodo")
     public ResponseEntity<List<AgendamentoDTO>> buscarPorPeriodo(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime inicio,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fim) {
-        return ResponseEntity.ok(agendamentoService.buscarPorPeriodo(inicio, fim));
+            @RequestParam LocalDateTime inicio,
+            @RequestParam LocalDateTime fim) {
+
+        if (inicio.isAfter(fim)) {
+            throw new IllegalArgumentException("A data de início deve ser anterior à data de fim");
+        }
+
+        if (inicio.isEqual(fim)) {
+            throw new IllegalArgumentException("A data de início não pode ser igual à data de fim");
+        }
+
+        List<AgendamentoDTO> agendamentos = agendamentoService.buscarPorPeriodo(inicio, fim);
+
+        if (agendamentos.isEmpty()) {
+            ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(agendamentos);
     }
 
     @PutMapping("/{id}/cancelar")
