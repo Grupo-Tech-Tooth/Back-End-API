@@ -21,6 +21,8 @@ public class FuncionalService {
     private FuncionalRepository funcionalRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private LoginInfoRepository loginInfoRepository;
 
     public Funcional salvarFuncional(Funcional funcional) {
         var funcionalDb = funcionalRepository.findByCpfAndDeletadoFalse(funcional.getCpf());
@@ -33,6 +35,8 @@ public class FuncionalService {
         loginInfo.setEmail(funcional.getEmail());
         loginInfo.setSenha(passwordEncoder.encode(funcional.getSenha()));
         loginInfo.setFuncionario(funcional);
+
+        loginInfoRepository.save(loginInfo);
 
         funcional.setLoginInfo(loginInfo);
 
