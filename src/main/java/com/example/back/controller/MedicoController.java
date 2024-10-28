@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+import static com.example.back.enums.Hierarquia.MEDICO;
+
 @RestController
 @RequestMapping("/medicos")
 @SecurityRequirement(name = "bearer-key")
@@ -30,6 +32,7 @@ public class MedicoController {
         medico.setAtivo(true);
         medico.setDeletado(false);
         medico.setDeletadoEm(null);
+        medico.setHierarquia(MEDICO);
         Medico novoMedico = medicoService.salvarMedico(medico);
         return ResponseEntity.status(HttpStatus.CREATED).body(novoMedico);
     }
