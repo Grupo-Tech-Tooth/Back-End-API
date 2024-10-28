@@ -21,6 +21,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/clientes")
 @SecurityRequirement(name = "bearer-key")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ClienteController {
 
     @Autowired

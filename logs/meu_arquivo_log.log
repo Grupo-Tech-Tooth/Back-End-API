@@ -720,3 +720,768 @@
         login_info li1_0 
     where
         li1_0.email=?
+2024-10-28 19:33:28 - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.example.back.entity.Funcional
+2024-10-28 19:33:28 - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.example.back.entity.Medico
+2024-10-28 19:33:31 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-28 19:33:35 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 19:33:35 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-28 19:33:35 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-28 19:33:35 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-28 19:37:49 - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.example.back.entity.Funcional
+2024-10-28 19:37:49 - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.example.back.entity.Medico
+2024-10-28 19:37:52 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-28 19:37:55 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 19:37:55 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-28 19:37:55 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-28 19:37:55 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-28 19:38:25 - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.example.back.entity.Funcional
+2024-10-28 19:38:25 - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.example.back.entity.Medico
+2024-10-28 19:38:28 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-28 19:38:31 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 19:38:31 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-28 19:38:31 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-28 19:38:31 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-28 19:39:47 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 19:41:09 - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.example.back.entity.Funcional
+2024-10-28 19:41:09 - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.example.back.entity.Medico
+2024-10-28 19:41:12 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-28 19:41:15 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 19:41:15 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-28 19:41:15 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-28 19:41:15 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-28 19:41:45 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 19:41:45 - 
+    select
+        c1_0.id,
+        c1_0.ativo,
+        c1_0.cpf,
+        c1_0.data_nascimento,
+        c1_0.deletado,
+        c1_0.deletado_em,
+        c1_0.email,
+        c1_0.genero,
+        c1_0.login_info_id,
+        c1_0.nome,
+        c1_0.senha,
+        c1_0.sobrenome 
+    from
+        cliente c1_0 
+    limit
+        ?, ?
+2024-10-28 19:41:45 - 
+    select
+        count(c1_0.id) 
+    from
+        cliente c1_0
+2024-10-28 19:41:45 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 19:41:45 - 
+    select
+        c1_0.id,
+        c1_0.ativo,
+        c1_0.cpf,
+        c1_0.data_nascimento,
+        c1_0.deletado,
+        c1_0.deletado_em,
+        c1_0.email,
+        c1_0.genero,
+        c1_0.login_info_id,
+        c1_0.nome,
+        c1_0.senha,
+        c1_0.sobrenome 
+    from
+        cliente c1_0 
+    limit
+        ?, ?
+2024-10-28 19:41:45 - 
+    select
+        count(c1_0.id) 
+    from
+        cliente c1_0
+2024-10-28 19:42:35 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 19:42:35 - 
+    select
+        c1_0.id,
+        c1_0.ativo,
+        c1_0.cpf,
+        c1_0.data_nascimento,
+        c1_0.deletado,
+        c1_0.deletado_em,
+        c1_0.email,
+        c1_0.genero,
+        c1_0.login_info_id,
+        c1_0.nome,
+        c1_0.senha,
+        c1_0.sobrenome 
+    from
+        cliente c1_0 
+    limit
+        ?, ?
+2024-10-28 19:42:35 - 
+    select
+        count(c1_0.id) 
+    from
+        cliente c1_0
+2024-10-28 19:42:35 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 19:42:35 - 
+    select
+        c1_0.id,
+        c1_0.ativo,
+        c1_0.cpf,
+        c1_0.data_nascimento,
+        c1_0.deletado,
+        c1_0.deletado_em,
+        c1_0.email,
+        c1_0.genero,
+        c1_0.login_info_id,
+        c1_0.nome,
+        c1_0.senha,
+        c1_0.sobrenome 
+    from
+        cliente c1_0 
+    limit
+        ?, ?
+2024-10-28 19:42:35 - 
+    select
+        count(c1_0.id) 
+    from
+        cliente c1_0
+2024-10-28 19:43:26 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 19:43:26 - 
+    select
+        c1_0.id,
+        c1_0.ativo,
+        c1_0.cpf,
+        c1_0.data_nascimento,
+        c1_0.deletado,
+        c1_0.deletado_em,
+        c1_0.email,
+        c1_0.genero,
+        c1_0.login_info_id,
+        c1_0.nome,
+        c1_0.senha,
+        c1_0.sobrenome 
+    from
+        cliente c1_0 
+    limit
+        ?, ?
+2024-10-28 19:43:26 - 
+    select
+        count(c1_0.id) 
+    from
+        cliente c1_0
+2024-10-28 19:43:26 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 19:43:26 - 
+    select
+        c1_0.id,
+        c1_0.ativo,
+        c1_0.cpf,
+        c1_0.data_nascimento,
+        c1_0.deletado,
+        c1_0.deletado_em,
+        c1_0.email,
+        c1_0.genero,
+        c1_0.login_info_id,
+        c1_0.nome,
+        c1_0.senha,
+        c1_0.sobrenome 
+    from
+        cliente c1_0 
+    limit
+        ?, ?
+2024-10-28 19:43:26 - 
+    select
+        count(c1_0.id) 
+    from
+        cliente c1_0
+2024-10-28 19:44:17 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 19:44:17 - 
+    select
+        c1_0.id,
+        c1_0.ativo,
+        c1_0.cpf,
+        c1_0.data_nascimento,
+        c1_0.deletado,
+        c1_0.deletado_em,
+        c1_0.email,
+        c1_0.genero,
+        c1_0.login_info_id,
+        c1_0.nome,
+        c1_0.senha,
+        c1_0.sobrenome 
+    from
+        cliente c1_0 
+    limit
+        ?, ?
+2024-10-28 19:44:17 - 
+    select
+        count(c1_0.id) 
+    from
+        cliente c1_0
+2024-10-28 19:44:17 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 19:44:17 - 
+    select
+        c1_0.id,
+        c1_0.ativo,
+        c1_0.cpf,
+        c1_0.data_nascimento,
+        c1_0.deletado,
+        c1_0.deletado_em,
+        c1_0.email,
+        c1_0.genero,
+        c1_0.login_info_id,
+        c1_0.nome,
+        c1_0.senha,
+        c1_0.sobrenome 
+    from
+        cliente c1_0 
+    limit
+        ?, ?
+2024-10-28 19:44:17 - 
+    select
+        count(c1_0.id) 
+    from
+        cliente c1_0
+2024-10-28 19:44:54 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 19:44:54 - 
+    select
+        c1_0.id,
+        c1_0.ativo,
+        c1_0.cpf,
+        c1_0.data_nascimento,
+        c1_0.deletado,
+        c1_0.deletado_em,
+        c1_0.email,
+        c1_0.genero,
+        c1_0.login_info_id,
+        c1_0.nome,
+        c1_0.senha,
+        c1_0.sobrenome 
+    from
+        cliente c1_0 
+    limit
+        ?, ?
+2024-10-28 19:44:54 - 
+    select
+        count(c1_0.id) 
+    from
+        cliente c1_0
+2024-10-28 19:44:54 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 19:44:54 - 
+    select
+        c1_0.id,
+        c1_0.ativo,
+        c1_0.cpf,
+        c1_0.data_nascimento,
+        c1_0.deletado,
+        c1_0.deletado_em,
+        c1_0.email,
+        c1_0.genero,
+        c1_0.login_info_id,
+        c1_0.nome,
+        c1_0.senha,
+        c1_0.sobrenome 
+    from
+        cliente c1_0 
+    limit
+        ?, ?
+2024-10-28 19:44:54 - 
+    select
+        count(c1_0.id) 
+    from
+        cliente c1_0
+2024-10-28 19:45:06 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 19:45:06 - 
+    select
+        c1_0.id,
+        c1_0.ativo,
+        c1_0.cpf,
+        c1_0.data_nascimento,
+        c1_0.deletado,
+        c1_0.deletado_em,
+        c1_0.email,
+        c1_0.genero,
+        c1_0.login_info_id,
+        c1_0.nome,
+        c1_0.senha,
+        c1_0.sobrenome 
+    from
+        cliente c1_0 
+    limit
+        ?, ?
+2024-10-28 19:45:06 - 
+    select
+        count(c1_0.id) 
+    from
+        cliente c1_0
+2024-10-28 19:45:06 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 19:45:06 - 
+    select
+        c1_0.id,
+        c1_0.ativo,
+        c1_0.cpf,
+        c1_0.data_nascimento,
+        c1_0.deletado,
+        c1_0.deletado_em,
+        c1_0.email,
+        c1_0.genero,
+        c1_0.login_info_id,
+        c1_0.nome,
+        c1_0.senha,
+        c1_0.sobrenome 
+    from
+        cliente c1_0 
+    limit
+        ?, ?
+2024-10-28 19:45:06 - 
+    select
+        count(c1_0.id) 
+    from
+        cliente c1_0
+2024-10-28 19:45:34 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 19:45:34 - 
+    select
+        c1_0.id,
+        c1_0.ativo,
+        c1_0.cpf,
+        c1_0.data_nascimento,
+        c1_0.deletado,
+        c1_0.deletado_em,
+        c1_0.email,
+        c1_0.genero,
+        c1_0.login_info_id,
+        c1_0.nome,
+        c1_0.senha,
+        c1_0.sobrenome 
+    from
+        cliente c1_0 
+    limit
+        ?, ?
+2024-10-28 19:45:34 - 
+    select
+        count(c1_0.id) 
+    from
+        cliente c1_0
+2024-10-28 19:45:34 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 19:45:34 - 
+    select
+        c1_0.id,
+        c1_0.ativo,
+        c1_0.cpf,
+        c1_0.data_nascimento,
+        c1_0.deletado,
+        c1_0.deletado_em,
+        c1_0.email,
+        c1_0.genero,
+        c1_0.login_info_id,
+        c1_0.nome,
+        c1_0.senha,
+        c1_0.sobrenome 
+    from
+        cliente c1_0 
+    limit
+        ?, ?
+2024-10-28 19:45:34 - 
+    select
+        count(c1_0.id) 
+    from
+        cliente c1_0
+2024-10-28 19:46:00 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 19:46:00 - 
+    select
+        c1_0.id,
+        c1_0.ativo,
+        c1_0.cpf,
+        c1_0.data_nascimento,
+        c1_0.deletado,
+        c1_0.deletado_em,
+        c1_0.email,
+        c1_0.genero,
+        c1_0.login_info_id,
+        c1_0.nome,
+        c1_0.senha,
+        c1_0.sobrenome 
+    from
+        cliente c1_0 
+    limit
+        ?, ?
+2024-10-28 19:46:00 - 
+    select
+        count(c1_0.id) 
+    from
+        cliente c1_0
+2024-10-28 19:46:24 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 19:46:24 - 
+    select
+        c1_0.id,
+        c1_0.ativo,
+        c1_0.cpf,
+        c1_0.data_nascimento,
+        c1_0.deletado,
+        c1_0.deletado_em,
+        c1_0.email,
+        c1_0.genero,
+        c1_0.login_info_id,
+        c1_0.nome,
+        c1_0.senha,
+        c1_0.sobrenome 
+    from
+        cliente c1_0 
+    limit
+        ?, ?
+2024-10-28 19:46:24 - 
+    select
+        count(c1_0.id) 
+    from
+        cliente c1_0
+2024-10-28 19:46:24 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 19:46:24 - 
+    select
+        c1_0.id,
+        c1_0.ativo,
+        c1_0.cpf,
+        c1_0.data_nascimento,
+        c1_0.deletado,
+        c1_0.deletado_em,
+        c1_0.email,
+        c1_0.genero,
+        c1_0.login_info_id,
+        c1_0.nome,
+        c1_0.senha,
+        c1_0.sobrenome 
+    from
+        cliente c1_0 
+    limit
+        ?, ?
+2024-10-28 19:46:24 - 
+    select
+        count(c1_0.id) 
+    from
+        cliente c1_0
