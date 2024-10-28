@@ -30,6 +30,7 @@ public class MedicoController {
         medico.setAtivo(true);
         medico.setDeletado(false);
         medico.setDeletadoEm(null);
+        medico.setHierarquia("MEDICO");
         Medico novoMedico = medicoService.salvarMedico(medico);
         return ResponseEntity.status(HttpStatus.CREATED).body(novoMedico);
     }

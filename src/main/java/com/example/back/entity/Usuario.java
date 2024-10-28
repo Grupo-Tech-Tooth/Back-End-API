@@ -46,12 +46,16 @@ public abstract class Usuario {
     @Column(name = "deletado_em")
     private LocalDate deletadoEm;
 
+    @Column(name = "hierarquia")
+    private String hierarquia;
+
     public Usuario(SalvarClienteRequestDto dto) {
         this.nome = dto.getNome();
         this.sobrenome = dto.getSobrenome();
         this.email = dto.getEmail();
         this.cpf = dto.getCpf();
         this.senha = dto.getSenha();
+        this.hierarquia = dto.getHierarquia();
         this.ativo = true;
     }
 
@@ -125,6 +129,14 @@ public abstract class Usuario {
 
     public void setDeletadoEm(LocalDate deletadoEm) {
         this.deletadoEm = deletadoEm;
+    }
+
+    public String getHierarquia() {
+        return hierarquia;
+    }
+
+    public void setHierarquia(String hierarquia) {
+        this.hierarquia = hierarquia;
     }
 
 }

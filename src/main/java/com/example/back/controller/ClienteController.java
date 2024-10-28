@@ -30,6 +30,7 @@ public class ClienteController {
     @PostMapping
     public ResponseEntity<Cliente> criarCliente(@RequestBody @Valid SalvarClienteRequestDto cliente) {
         Cliente novoCliente = service.salvarCliente(cliente);
+        novoCliente.setHierarquia("CLIENTE");
         return ResponseEntity.status(HttpStatus.CREATED).body(novoCliente);
     }
 
