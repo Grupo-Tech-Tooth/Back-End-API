@@ -578,3 +578,145 @@
     where
         c1_0.id=?
 2024-10-28 10:58:50 - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=3m18s316ms839µs500ns).
+2024-10-28 19:24:46 - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.example.back.entity.Funcional
+2024-10-28 19:24:46 - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.example.back.entity.Medico
+2024-10-28 19:24:47 - 
+    alter table agendamentos 
+       add column status varchar(255) not null
+2024-10-28 19:24:49 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-28 19:24:53 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 19:24:53 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-28 19:24:53 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-28 19:24:53 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-28 19:25:17 - Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Illegal unquoted character ((CTRL-CHAR, code 10)): has to be escaped using backslash to be included in string value]
+2024-10-28 19:25:30 - Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Illegal unquoted character ((CTRL-CHAR, code 10)): has to be escaped using backslash to be included in string value]
+2024-10-28 19:25:31 - Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Illegal unquoted character ((CTRL-CHAR, code 10)): has to be escaped using backslash to be included in string value]
+2024-10-28 19:29:43 - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.example.back.entity.Funcional
+2024-10-28 19:29:43 - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.example.back.entity.Medico
+2024-10-28 19:29:45 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-28 19:29:49 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 19:29:49 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-28 19:29:49 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-28 19:29:49 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-28 19:29:51 - Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Illegal unquoted character ((CTRL-CHAR, code 10)): has to be escaped using backslash to be included in string value]
+2024-10-28 19:30:03 - Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Illegal unquoted character ((CTRL-CHAR, code 10)): has to be escaped using backslash to be included in string value]
+2024-10-28 19:30:20 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 19:30:20 - Resolved [org.springframework.security.authentication.InternalAuthenticationServiceException: UserDetailsService returned null, which is an interface contract violation]
+2024-10-28 19:30:47 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 19:30:47 - Resolved [org.springframework.security.authentication.BadCredentialsException: Usuário inexistente ou senha inválida]
+2024-10-28 19:30:55 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 19:31:15 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?

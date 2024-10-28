@@ -19,7 +19,7 @@ public class AgendamentoResponseDto {
 
     private Cliente cliente;
     private Agenda agenda;
-    private LocalDateTime dataHora
+    private LocalDateTime dataHora;
     @NotBlank
     private String status;
 
