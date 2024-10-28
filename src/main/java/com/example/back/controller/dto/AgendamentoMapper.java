@@ -11,6 +11,7 @@ public class AgendamentoMapper {
                 agendamento.getCliente().getId(),
                 agendamento.getMedico().getId(),
                 agendamento.getServico().getId(),
+                agendamento.getStatus().getID(),
                 agendamento.getDataHora()
         );
     }

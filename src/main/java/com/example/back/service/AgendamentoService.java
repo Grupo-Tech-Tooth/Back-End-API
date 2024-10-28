@@ -11,8 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Formatter;
-import java.util.FormatterClosedException;
+import java.util.*;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -20,9 +19,9 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
+
+import static com.example.back.enums.StatusAgendamento.PENDENTE;
 
 @Service
 @RequiredArgsConstructor
@@ -104,6 +103,10 @@ public class AgendamentoService {
 
         if (dto.medicoId() != null && agendamentoRepository.existsByMedicoIdAndDataHoraBetween(dto.medicoId(), dataHora, fimConsulta)) {
             throw new BusinessException("O médico já possui outra consulta agendada neste horário");
+        }
+
+        if (!Objects.equals(dto.status(), "Pendente")) {
+            throw new BusinessException("O status precisa estar como presente");
         }
     }
 

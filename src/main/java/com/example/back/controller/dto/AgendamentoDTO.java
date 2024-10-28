@@ -7,5 +7,6 @@ public record AgendamentoDTO(
         Long clienteId,
         Long medicoId,
         Long servicoId,
+        String status,
         LocalDateTime dataHora
 ) {}
