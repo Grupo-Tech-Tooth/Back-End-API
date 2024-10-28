@@ -1,3 +1,55 @@
-2024-10-27T21:17:38.900-03:00  INFO 14792 --- [back] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2024-10-27T21:17:38.903-03:00  INFO 14792 --- [back] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
-2024-10-27T21:17:38.909-03:00  INFO 14792 --- [back] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2024-10-27 21:51:52 - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.example.back.entity.Funcional
+2024-10-27 21:51:52 - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.example.back.entity.Medico
+2024-10-27 21:51:54 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-27 21:51:56 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-27 21:51:56 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-27 21:51:56 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-27 21:51:56 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-27 21:52:33 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?

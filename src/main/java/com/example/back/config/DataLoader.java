@@ -28,12 +28,14 @@ public class DataLoader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        LoginInfo loginInfo = new LoginInfo();
-        loginInfo.setEmail("aluno@gmail.com");
-        loginInfo.setSenha(passwordEncoder.encode("12345"));
+        // Verifica se ja existe um usuario admin
 
-        loginInfoRepository.save(loginInfo);
-
+        if (!loginInfoRepository.buscarPorEmail("aluno@gmail.com").isPresent()) {
+            LoginInfo loginInfo = new LoginInfo();
+            loginInfo.setEmail("aluno@gmail.com");
+            loginInfo.setSenha(passwordEncoder.encode("12345"));
+            loginInfoRepository.save(loginInfo);
+        }
 
         Arrays.stream(Servico.Tipo.values())
                 .forEach(tipoCarteira -> servicoRepository.save(tipoCarteira.getServico()));
