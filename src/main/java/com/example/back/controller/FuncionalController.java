@@ -31,6 +31,7 @@ public class FuncionalController {
         funcional.setAtivo(true);
         funcional.setDeletado(false);
         funcional.setDeletadoEm(null);
+        funcional.setHierarquia("FUNCIONAL");
         Funcional novoFuncional = funcionalService.salvarFuncional(funcional);
         return ResponseEntity.status(HttpStatus.CREATED).body(novoFuncional);
     }
