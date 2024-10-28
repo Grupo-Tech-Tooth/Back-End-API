@@ -2,6 +2,7 @@ package com.example.back.controller;
 
 import com.example.back.controller.dto.AgendamentoCreateDTO;
 import com.example.back.controller.dto.AgendamentoDTO;
+import com.example.back.entity.Servico;
 import com.example.back.service.AgendamentoService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -115,4 +116,8 @@ public class AgendamentoController {
                 .body(new InputStreamResource(in));
     }
 
+    @GetMapping("/servicos")
+    public ResponseEntity<List<Servico>> listarServicos() {
+        return ResponseEntity.ok(agendamentoService.listarServicos());
+    }
 }
