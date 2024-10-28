@@ -186,6 +186,8 @@ public class AgendamentoService {
                 .collect(Collectors.toList());
     }
 
+    public List<Servico> listarServicos() { return servicoRepository.findAll(); }
+
     public AgendamentoDTO cancelarConsulta(Long id) {
         Agendamento agendamento = agendamentoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Agendamento não encontrado"));
@@ -248,5 +250,4 @@ public class AgendamentoService {
             }
         }
     }
-
 }
