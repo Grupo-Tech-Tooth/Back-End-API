@@ -4,7 +4,9 @@ import com.example.back.dto.req.AtualizarClienteRequestDto;
 import com.example.back.dto.req.SalvarClienteRequestDto;
 import com.example.back.dto.res.ClienteResponseDto;
 import com.example.back.entity.Cliente;
+import com.example.back.entity.LoginInfo;
 import com.example.back.repository.ClienteRepository;
+import com.example.back.repository.LoginInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +23,8 @@ public class ClienteService {
     private ClienteRepository clienteRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private LoginInfoRepository loginInfoRepository;
 
     public ClienteService(ClienteRepository clienteRepository) {
         this.clienteRepository = clienteRepository;
@@ -40,6 +44,15 @@ public class ClienteService {
         }
 
         Cliente cliente = new Cliente(dto);
+
+        LoginInfo loginInfo = new LoginInfo();
+        loginInfo.setEmail(cliente.getEmail());
+        loginInfo.setSenha(passwordEncoder.encode(cliente.getSenha()));
+        loginInfo.setCliente(cliente);
+
+        loginInfoRepository.save(loginInfo);
+
+        cliente.setLoginInfo(loginInfo);
 
         cliente.setSenha(passwordEncoder.encode(cliente.getSenha()));
 

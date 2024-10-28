@@ -1,6 +1,7 @@
 package com.example.back.controller;
 
 import com.example.back.dto.DadosAutenticacao;
+import com.example.back.entity.LoginInfo;
 import com.example.back.entity.Usuario;
 import com.example.back.infra.security.DadosTokenJWT;
 import com.example.back.infra.security.TokenService;
@@ -23,10 +24,9 @@ public class AutenticacaoController {
 
     @PostMapping
     public ResponseEntity efetuarLogin(@RequestBody DadosAutenticacao dados){
-        System.out.println(dados.email() + " " + dados.senha());
         var authenticationToken = new UsernamePasswordAuthenticationToken(dados.email(), dados.senha());
         var authentication = manager.authenticate(authenticationToken);
-        var tokenJWT = tokenService.gerarToken((Usuario) authentication.getPrincipal());
+        var tokenJWT = tokenService.gerarToken((LoginInfo) authentication.getPrincipal());
 
         return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));
     }

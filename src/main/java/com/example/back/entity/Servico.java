@@ -25,4 +25,35 @@ public class Servico {
 
     @Column(nullable = false)
     private BigDecimal preco;
+
+    public enum Tipo {
+        consulta(1L, 20.0),
+        limpeza(2L, 30.0),
+        removerDente(3L, 50.0),;
+
+        private Long id;
+        private Double preco;
+
+        Tipo(Long id, Double preco) {
+            this.id = id;
+            this.preco = preco;
+        }
+
+        public Servico getServico() {
+            return Servico.builder()
+                    .id(this.id)
+                    .nome(this.name())
+                    .duracaoMinutos(30)
+                    .preco(BigDecimal.valueOf(this.preco))
+                    .build();
+        }
+
+        public Long getId() {
+            return this.id;
+        }
+
+        public Double getPreco() {
+            return this.preco;
+        }
+    }
 }

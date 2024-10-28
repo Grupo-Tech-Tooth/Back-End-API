@@ -1,5 +1,6 @@
 package com.example.back.controller;
 
+import com.example.back.dto.req.FuncionalRequestDto;
 import com.example.back.entity.Funcional;
 import com.example.back.entity.Medico;
 import com.example.back.service.FuncionalService;
@@ -22,7 +23,10 @@ public class FuncionalController {
     private FuncionalService funcionalService;
 
     @PostMapping
-    public ResponseEntity<Funcional> criarFuncional(@RequestBody @Valid Funcional funcional) {
+    public ResponseEntity<Funcional> criarFuncional(@RequestBody @Valid FuncionalRequestDto dto) {
+
+        Funcional funcional = dto.toFuncional();
+
         funcional.setId(null);
         funcional.setAtivo(true);
         funcional.setDeletado(false);

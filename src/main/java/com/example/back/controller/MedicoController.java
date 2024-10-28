@@ -1,5 +1,6 @@
 package com.example.back.controller;
 
+import com.example.back.dto.req.MedicoRequestDto;
 import com.example.back.entity.Medico;
 import com.example.back.service.MedicoService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -21,7 +22,10 @@ public class MedicoController {
     private MedicoService medicoService;
 
     @PostMapping
-    public ResponseEntity<Medico> criarMedico(@RequestBody @Valid Medico medico) {
+    public ResponseEntity<Medico> criarMedico(@RequestBody @Valid MedicoRequestDto dto) {
+
+        Medico medico = dto.toMedico();
+
         medico.setId(null);
         medico.setAtivo(true);
         medico.setDeletado(false);

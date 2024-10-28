@@ -11,6 +11,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Formatter;
+import java.util.FormatterClosedException;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -181,6 +186,8 @@ public class AgendamentoService {
                 .collect(Collectors.toList());
     }
 
+    public List<Servico> listarServicos() { return servicoRepository.findAll(); }
+
     public AgendamentoDTO cancelarConsulta(Long id) {
         Agendamento agendamento = agendamentoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Agendamento não encontrado"));
@@ -191,5 +198,56 @@ public class AgendamentoService {
 
         agendamento.setCancelado(true);
         return agendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
+    }
+
+    public List<AgendamentoDTO> buscarTodosAgendamentos() {
+        return agendamentoRepository.findAll().stream()
+                .map(agendamentoMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public void gravarArquivoCsv(List<AgendamentoDTO> lista, String nomeArq) {
+        FileWriter arq = null;
+        Formatter saida = null;
+        nomeArq += ".csv";
+        try {
+            arq = new FileWriter(nomeArq);
+            saida = new Formatter(arq);
+
+            saida.format("ID; ClienteNome; ClienteEmail; MedicoNome; DataHora; ServicoNome;\n");
+
+            for (AgendamentoDTO agendamento : lista) {
+                Cliente cliente = clienteRepository.findById(agendamento.clienteId())
+                        .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
+                Medico medico = medicoRepository.findById(agendamento.medicoId())
+                        .orElseThrow(() -> new ResourceNotFoundException("Médico não encontrado"));
+                Servico servico = servicoRepository.findById(agendamento.servicoId())
+                        .orElseThrow(() -> new ResourceNotFoundException("Serviço não encontrado"));
+
+                saida.format("%d;%s;%s;%s;%s;%s\n",
+                        agendamento.id(),
+                        cliente.getNome(),
+                        cliente.getEmail(),
+                        medico.getNome(),
+                        agendamento.dataHora().toString(),
+                        servico.getNome());
+            }
+        } catch (IOException | FormatterClosedException | ResourceNotFoundException erro) {
+            System.out.println("Erro ao manipular o arquivo");
+            erro.printStackTrace();
+            throw new RuntimeException("Erro ao manipular o arquivo", erro);
+        } finally {
+            if (saida != null) {
+                saida.close();
+            }
+            try {
+                if (arq != null) {
+                    arq.close();
+                }
+            } catch (IOException erro) {
+                System.out.println("Erro ao fechar o arquivo");
+                throw new RuntimeException("Erro ao fechar o arquivo", erro);
+            }
+        }
     }
 }
