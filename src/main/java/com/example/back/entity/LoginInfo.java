@@ -1,6 +1,7 @@
 package com.example.back.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,12 +26,12 @@ public class LoginInfo implements UserDetails {
 
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "funcionario_id")
-    @JsonBackReference
+    @JsonIgnoreProperties("loginInfo")
     private Funcionario funcionario;
 
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "cliente_id")
-    @JsonBackReference
+    @JsonIgnoreProperties("loginInfo")
     private Cliente cliente;
 
     @Override

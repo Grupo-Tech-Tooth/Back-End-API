@@ -1,7 +1,7 @@
-2024-10-27 21:51:52 - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.example.back.entity.Funcional
-2024-10-27 21:51:52 - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.example.back.entity.Medico
-2024-10-27 21:51:54 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2024-10-27 21:51:56 - 
+2024-10-28 09:52:34 - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.example.back.entity.Funcional
+2024-10-28 09:52:34 - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.example.back.entity.Medico
+2024-10-28 09:52:37 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-28 09:52:40 - 
     select
         li1_0.id,
         li1_0.cliente_id,
@@ -12,37 +12,8 @@
         login_info li1_0 
     where
         li1_0.email=?
-2024-10-27 21:51:56 - 
-    select
-        s1_0.id,
-        s1_0.duracao_minutos,
-        s1_0.nome,
-        s1_0.preco 
-    from
-        servicos s1_0 
-    where
-        s1_0.id=?
-2024-10-27 21:51:56 - 
-    select
-        s1_0.id,
-        s1_0.duracao_minutos,
-        s1_0.nome,
-        s1_0.preco 
-    from
-        servicos s1_0 
-    where
-        s1_0.id=?
-2024-10-27 21:51:56 - 
-    select
-        s1_0.id,
-        s1_0.duracao_minutos,
-        s1_0.nome,
-        s1_0.preco 
-    from
-        servicos s1_0 
-    where
-        s1_0.id=?
-2024-10-27 21:52:33 - 
+2024-10-28 09:52:40 - Resolved [org.springframework.security.authentication.InternalAuthenticationServiceException: UserDetailsService returned null, which is an interface contract violation]
+2024-10-28 09:52:40 - 
     select
         li1_0.id,
         li1_0.cliente_id,
@@ -53,3 +24,557 @@
         login_info li1_0 
     where
         li1_0.email=?
+2024-10-28 09:52:41 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-28 09:52:41 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-28 09:52:41 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-28 09:53:20 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 09:53:20 - Resolved [org.springframework.security.authentication.InternalAuthenticationServiceException: UserDetailsService returned null, which is an interface contract violation]
+2024-10-28 09:53:42 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 09:57:08 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 10:03:31 - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.example.back.entity.Funcional
+2024-10-28 10:03:31 - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.example.back.entity.Medico
+2024-10-28 10:03:33 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-28 10:03:37 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 10:03:37 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-28 10:03:37 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-28 10:03:37 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-28 10:04:00 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 10:04:00 - Resolved [org.springframework.web.HttpMediaTypeNotAcceptableException: No acceptable representation]
+2024-10-28 10:05:50 - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.example.back.entity.Funcional
+2024-10-28 10:05:50 - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.example.back.entity.Medico
+2024-10-28 10:05:52 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-28 10:05:56 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 10:05:56 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-28 10:05:56 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-28 10:05:56 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-28 10:06:14 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 10:06:14 - Resolved [org.springframework.web.HttpMediaTypeNotAcceptableException: No acceptable representation]
+2024-10-28 10:09:40 - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.example.back.entity.Funcional
+2024-10-28 10:09:40 - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.example.back.entity.Medico
+2024-10-28 10:09:42 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-28 10:09:46 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 10:09:46 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 10:09:46 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-28 10:09:46 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-28 10:09:46 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-28 10:15:35 - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=2m25s784ms410µs500ns).
+2024-10-28 10:18:39 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 10:18:39 - 
+    select
+        f1_0.id,
+        f1_0.dtype,
+        f1_0.ativo,
+        f1_0.cpf,
+        f1_0.deletado,
+        f1_0.deletado_em,
+        f1_0.email,
+        li1_0.id,
+        c1_0.id,
+        c1_0.ativo,
+        c1_0.cpf,
+        c1_0.data_nascimento,
+        c1_0.deletado,
+        c1_0.deletado_em,
+        c1_0.email,
+        c1_0.genero,
+        c1_0.login_info_id,
+        c1_0.nome,
+        c1_0.senha,
+        c1_0.sobrenome,
+        li1_0.email,
+        f2_0.id,
+        f2_0.dtype,
+        f2_0.ativo,
+        f2_0.cpf,
+        f2_0.deletado,
+        f2_0.deletado_em,
+        f2_0.email,
+        f2_0.login_info_id,
+        f2_0.matricula,
+        f2_0.nome,
+        f2_0.senha,
+        f2_0.sobrenome,
+        f2_0.departamento,
+        f2_0.crm,
+        f2_0.especializacao,
+        li1_0.senha,
+        f1_0.matricula,
+        f1_0.nome,
+        f1_0.senha,
+        f1_0.sobrenome,
+        f1_0.departamento,
+        f1_0.crm,
+        f1_0.especializacao 
+    from
+        funcionario f1_0 
+    left join
+        login_info li1_0 
+            on li1_0.id=f1_0.login_info_id 
+    left join
+        cliente c1_0 
+            on c1_0.id=li1_0.cliente_id 
+    left join
+        funcionario f2_0 
+            on f2_0.id=li1_0.funcionario_id 
+    where
+        f1_0.id=?
+2024-10-28 10:18:40 - Resolved [org.springframework.security.authentication.BadCredentialsException: Usuário inexistente ou senha inválida]
+2024-10-28 10:18:48 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 10:18:48 - 
+    select
+        f1_0.id,
+        f1_0.dtype,
+        f1_0.ativo,
+        f1_0.cpf,
+        f1_0.deletado,
+        f1_0.deletado_em,
+        f1_0.email,
+        li1_0.id,
+        c1_0.id,
+        c1_0.ativo,
+        c1_0.cpf,
+        c1_0.data_nascimento,
+        c1_0.deletado,
+        c1_0.deletado_em,
+        c1_0.email,
+        c1_0.genero,
+        c1_0.login_info_id,
+        c1_0.nome,
+        c1_0.senha,
+        c1_0.sobrenome,
+        li1_0.email,
+        f2_0.id,
+        f2_0.dtype,
+        f2_0.ativo,
+        f2_0.cpf,
+        f2_0.deletado,
+        f2_0.deletado_em,
+        f2_0.email,
+        f2_0.login_info_id,
+        f2_0.matricula,
+        f2_0.nome,
+        f2_0.senha,
+        f2_0.sobrenome,
+        f2_0.departamento,
+        f2_0.crm,
+        f2_0.especializacao,
+        li1_0.senha,
+        f1_0.matricula,
+        f1_0.nome,
+        f1_0.senha,
+        f1_0.sobrenome,
+        f1_0.departamento,
+        f1_0.crm,
+        f1_0.especializacao 
+    from
+        funcionario f1_0 
+    left join
+        login_info li1_0 
+            on li1_0.id=f1_0.login_info_id 
+    left join
+        cliente c1_0 
+            on c1_0.id=li1_0.cliente_id 
+    left join
+        funcionario f2_0 
+            on f2_0.id=li1_0.funcionario_id 
+    where
+        f1_0.id=?
+2024-10-28 10:18:48 - Resolved [org.springframework.security.authentication.BadCredentialsException: Usuário inexistente ou senha inválida]
+2024-10-28 10:20:57 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 10:20:57 - 
+    select
+        c1_0.id,
+        c1_0.ativo,
+        c1_0.cpf,
+        c1_0.data_nascimento,
+        c1_0.deletado,
+        c1_0.deletado_em,
+        c1_0.email,
+        c1_0.genero,
+        li1_0.id,
+        c2_0.id,
+        c2_0.ativo,
+        c2_0.cpf,
+        c2_0.data_nascimento,
+        c2_0.deletado,
+        c2_0.deletado_em,
+        c2_0.email,
+        c2_0.genero,
+        c2_0.login_info_id,
+        c2_0.nome,
+        c2_0.senha,
+        c2_0.sobrenome,
+        li1_0.email,
+        f1_0.id,
+        f1_0.dtype,
+        f1_0.ativo,
+        f1_0.cpf,
+        f1_0.deletado,
+        f1_0.deletado_em,
+        f1_0.email,
+        f1_0.login_info_id,
+        f1_0.matricula,
+        f1_0.nome,
+        f1_0.senha,
+        f1_0.sobrenome,
+        f1_0.departamento,
+        f1_0.crm,
+        f1_0.especializacao,
+        li1_0.senha,
+        c1_0.nome,
+        c1_0.senha,
+        c1_0.sobrenome 
+    from
+        cliente c1_0 
+    left join
+        login_info li1_0 
+            on li1_0.id=c1_0.login_info_id 
+    left join
+        cliente c2_0 
+            on c2_0.id=li1_0.cliente_id 
+    left join
+        funcionario f1_0 
+            on f1_0.id=li1_0.funcionario_id 
+    where
+        c1_0.id=?
+2024-10-28 10:27:29 - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.example.back.entity.Funcional
+2024-10-28 10:27:29 - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.example.back.entity.Medico
+2024-10-28 10:27:31 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-28 10:27:34 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 10:27:34 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-28 10:27:34 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-28 10:27:34 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-28 10:38:00 - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=8m1s835ms792µs700ns).
+2024-10-28 10:38:08 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 10:38:08 - 
+    select
+        c1_0.id,
+        c1_0.ativo,
+        c1_0.cpf,
+        c1_0.data_nascimento,
+        c1_0.deletado,
+        c1_0.deletado_em,
+        c1_0.email,
+        c1_0.genero,
+        li1_0.id,
+        c2_0.id,
+        c2_0.ativo,
+        c2_0.cpf,
+        c2_0.data_nascimento,
+        c2_0.deletado,
+        c2_0.deletado_em,
+        c2_0.email,
+        c2_0.genero,
+        c2_0.login_info_id,
+        c2_0.nome,
+        c2_0.senha,
+        c2_0.sobrenome,
+        li1_0.email,
+        f1_0.id,
+        f1_0.dtype,
+        f1_0.ativo,
+        f1_0.cpf,
+        f1_0.deletado,
+        f1_0.deletado_em,
+        f1_0.email,
+        f1_0.login_info_id,
+        f1_0.matricula,
+        f1_0.nome,
+        f1_0.senha,
+        f1_0.sobrenome,
+        f1_0.departamento,
+        f1_0.crm,
+        f1_0.especializacao,
+        li1_0.senha,
+        c1_0.nome,
+        c1_0.senha,
+        c1_0.sobrenome 
+    from
+        cliente c1_0 
+    left join
+        login_info li1_0 
+            on li1_0.id=c1_0.login_info_id 
+    left join
+        cliente c2_0 
+            on c2_0.id=li1_0.cliente_id 
+    left join
+        funcionario f1_0 
+            on f1_0.id=li1_0.funcionario_id 
+    where
+        c1_0.id=?
+2024-10-28 10:58:50 - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=3m18s316ms839µs500ns).

@@ -1,9 +1,8 @@
 package com.example.back.controller;
 
-import com.example.back.dto.DadosAutenticacao;
+import com.example.back.dto.req.DadosAutenticacaoReq;
+import com.example.back.dto.res.DadosAutenticacaoRes;
 import com.example.back.entity.LoginInfo;
-import com.example.back.entity.Usuario;
-import com.example.back.infra.security.DadosTokenJWT;
 import com.example.back.infra.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,12 +22,12 @@ public class AutenticacaoController {
     private TokenService tokenService;
 
     @PostMapping
-    public ResponseEntity efetuarLogin(@RequestBody DadosAutenticacao dados){
+    public ResponseEntity<DadosAutenticacaoRes> efetuarLogin(@RequestBody DadosAutenticacaoReq dados){
         var authenticationToken = new UsernamePasswordAuthenticationToken(dados.email(), dados.senha());
         var authentication = manager.authenticate(authenticationToken);
         var tokenJWT = tokenService.gerarToken((LoginInfo) authentication.getPrincipal());
 
-        return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));
+        return ResponseEntity.ok(new DadosAutenticacaoRes(tokenJWT, (LoginInfo) authentication.getPrincipal()));
     }
 
 }
