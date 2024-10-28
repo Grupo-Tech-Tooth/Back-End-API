@@ -21,8 +21,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.stream.Collectors;
 
-import static com.example.back.enums.StatusAgendamento.PENDENTE;
-
 @Service
 @RequiredArgsConstructor
 public class AgendamentoService {
@@ -57,6 +55,7 @@ public class AgendamentoService {
                 .orElseThrow(() -> new ResourceNotFoundException("Agenda não encontrada para o médico"));
 
         Agendamento agendamento = agendamentoMapper.toEntity(dto, cliente, medico, servico, agenda);
+        agendamento.setStatus("Pendente");
         return agendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
     }
 
