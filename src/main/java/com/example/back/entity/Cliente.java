@@ -19,6 +19,10 @@ public class Cliente extends Usuario {
     @Column(name = "genero")
     private String genero;
 
+    @OneToOne
+    @JoinColumn(name = "login_info_id")
+    private LoginInfo loginInfo;
+
     public Cliente(SalvarClienteRequestDto dto) {
         super(dto);
         this.dataNascimento = dto.getDataNascimento();

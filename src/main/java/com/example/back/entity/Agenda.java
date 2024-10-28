@@ -9,6 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "agendas")
+
 @Getter
 @Setter
 public class Agenda {

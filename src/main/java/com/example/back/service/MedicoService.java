@@ -1,8 +1,10 @@
 package com.example.back.service;
 
 import com.example.back.dto.res.MedicoResponseDto;
+import com.example.back.entity.LoginInfo;
 import com.example.back.entity.Medico;
 import com.example.back.infra.execption.UsuarioExistenteException;
+import com.example.back.repository.LoginInfoRepository;
 import com.example.back.repository.MedicoRepository;
 import com.example.back.strategy.Comissao;
 import com.example.back.strategy.ComissaoMedico;
@@ -22,6 +24,8 @@ public class MedicoService {
     private MedicoRepository medicoRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private LoginInfoRepository loginInfoRepository;
 
     public Medico salvarMedico(Medico medico) {
         var medicoCpfDb = medicoRepository.findByCpfAndDeletadoFalse(medico.getCpf());
@@ -36,6 +40,15 @@ public class MedicoService {
 
         medico.setComissao(comissaoStrategy); // define a comissão aqui
         medico.setSenha(passwordEncoder.encode(medico.getSenha()));
+
+        LoginInfo loginInfo = new LoginInfo();
+        loginInfo.setEmail(medico.getEmail());
+        loginInfo.setSenha(passwordEncoder.encode(medico.getSenha()));
+        loginInfo.setFuncionario(medico);
+
+        loginInfoRepository.save(loginInfo);
+
+        medico.setLoginInfo(loginInfo);
 
         return medicoRepository.save(medico);
     }
