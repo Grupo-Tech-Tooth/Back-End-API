@@ -1,5 +1,6 @@
 package com.example.back.dto.req;
 
+import com.example.back.enums.Hierarquia;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -39,5 +40,9 @@ public class SalvarClienteRequestDto {
     @NotBlank
     @NotNull
     private String senha;
+
+    @NotBlank
+    @NotNull
+    private Hierarquia hierarquia;
 
 }

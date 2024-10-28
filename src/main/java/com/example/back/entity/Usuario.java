@@ -1,6 +1,7 @@
 package com.example.back.entity;
 
 import com.example.back.dto.req.SalvarClienteRequestDto;
+import com.example.back.enums.Hierarquia;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -47,7 +48,7 @@ public abstract class Usuario {
     private LocalDate deletadoEm;
 
     @Column(name = "hierarquia")
-    private String hierarquia;
+    private Hierarquia hierarquia;
 
     public Usuario(SalvarClienteRequestDto dto) {
         this.nome = dto.getNome();
@@ -131,11 +132,11 @@ public abstract class Usuario {
         this.deletadoEm = deletadoEm;
     }
 
-    public String getHierarquia() {
+    public Hierarquia getHierarquia() {
         return hierarquia;
     }
 
-    public void setHierarquia(String hierarquia) {
+    public void setHierarquia(Hierarquia hierarquia) {
         this.hierarquia = hierarquia;
     }
 

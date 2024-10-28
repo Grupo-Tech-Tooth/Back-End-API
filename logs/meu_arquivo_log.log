@@ -720,3 +720,191 @@
         login_info li1_0 
     where
         li1_0.email=?
+2024-10-28 19:45:25 - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.example.back.entity.Funcional
+2024-10-28 19:45:25 - HHH000139: Illegal use of @Table in a subclass of a SINGLE_TABLE hierarchy: com.example.back.entity.Medico
+2024-10-28 19:45:26 - 
+    alter table agendamentos 
+       add column status varchar(255) not null
+2024-10-28 19:45:26 - 
+    alter table cliente 
+       modify column hierarquia tinyint
+2024-10-28 19:45:26 - 
+    alter table funcionario 
+       modify column hierarquia tinyint
+2024-10-28 19:45:28 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-28 19:45:29 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 19:45:29 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-28 19:45:29 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-28 19:45:29 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0 
+    where
+        s1_0.id=?
+2024-10-28 19:48:24 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 19:49:35 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 19:49:35 - 
+    select
+        m1_0.id,
+        m1_0.ativo,
+        m1_0.cpf,
+        m1_0.deletado,
+        m1_0.deletado_em,
+        m1_0.email,
+        m1_0.hierarquia,
+        m1_0.login_info_id,
+        m1_0.matricula,
+        m1_0.nome,
+        m1_0.senha,
+        m1_0.sobrenome,
+        m1_0.crm,
+        m1_0.especializacao 
+    from
+        funcionario m1_0 
+    where
+        not(m1_0.deletado) 
+        and m1_0.dtype='Medico'
+2024-10-28 19:49:52 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 19:49:52 - 
+    select
+        f1_0.id,
+        f1_0.ativo,
+        f1_0.cpf,
+        f1_0.deletado,
+        f1_0.deletado_em,
+        f1_0.email,
+        f1_0.hierarquia,
+        f1_0.login_info_id,
+        f1_0.matricula,
+        f1_0.nome,
+        f1_0.senha,
+        f1_0.sobrenome,
+        f1_0.departamento 
+    from
+        funcionario f1_0 
+    where
+        not(f1_0.deletado) 
+        and f1_0.dtype='Funcional'
+2024-10-28 19:49:58 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 19:49:58 - Resolved [org.springframework.data.mapping.PropertyReferenceException: No property 'string' found for type 'Cliente']
+2024-10-28 19:50:02 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 19:50:02 - 
+    select
+        c1_0.id,
+        c1_0.ativo,
+        c1_0.cpf,
+        c1_0.data_nascimento,
+        c1_0.deletado,
+        c1_0.deletado_em,
+        c1_0.email,
+        c1_0.genero,
+        c1_0.hierarquia,
+        c1_0.login_info_id,
+        c1_0.nome,
+        c1_0.senha,
+        c1_0.sobrenome 
+    from
+        cliente c1_0 
+    limit
+        ?, ?
+2024-10-28 19:50:10 - 
+    select
+        li1_0.id,
+        li1_0.cliente_id,
+        li1_0.email,
+        li1_0.funcionario_id,
+        li1_0.senha 
+    from
+        login_info li1_0 
+    where
+        li1_0.email=?
+2024-10-28 19:50:10 - 
+    select
+        s1_0.id,
+        s1_0.duracao_minutos,
+        s1_0.nome,
+        s1_0.preco 
+    from
+        servicos s1_0

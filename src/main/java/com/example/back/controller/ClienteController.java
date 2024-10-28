@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+import static com.example.back.enums.Hierarquia.CLIENTE;
+
 @RestController
 @RequestMapping("/clientes")
 @SecurityRequirement(name = "bearer-key")
@@ -29,7 +31,7 @@ public class ClienteController {
     @PostMapping
     public ResponseEntity<Cliente> criarCliente(@RequestBody @Valid SalvarClienteRequestDto cliente) {
         Cliente novoCliente = service.salvarCliente(cliente);
-        novoCliente.setHierarquia("CLIENTE");
+        novoCliente.setHierarquia(CLIENTE);
         return ResponseEntity.status(HttpStatus.CREATED).body(novoCliente);
     }
 
