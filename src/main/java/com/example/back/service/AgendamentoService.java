@@ -41,7 +41,7 @@ public class AgendamentoService {
     @Autowired
     EmailService emailService;
 
-    public AgendamentoDTO criar(AgendamentoCreateDTO dto) throws MessagingException {
+    public AgendamentoDTO criar(AgendamentoCreateDTO dto){
         validarRegrasDeNegocio(dto);
 
         Cliente cliente = clienteRepository.findById(dto.clienteId())
