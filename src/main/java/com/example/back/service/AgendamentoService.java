@@ -212,6 +212,7 @@ public class AgendamentoService {
 //        }
 
         agendamento.setCancelado(true);
+        agendamento.setStatus("Cancelado");
         return agendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
     }
 
