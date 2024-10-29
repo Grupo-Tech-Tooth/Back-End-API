@@ -59,7 +59,7 @@ public class AgendamentoService {
         return agendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
     }
 
-    private void validarRegrasDeNegocio(AgendamentoCreateDTO dto) {
+    private void    validarRegrasDeNegocio(AgendamentoCreateDTO dto) {
         LocalDateTime dataHora = dto.dataHora();
         LocalTime hora = dataHora.toLocalTime();
         DayOfWeek diaSemana = dataHora.getDayOfWeek();
@@ -91,10 +91,10 @@ public class AgendamentoService {
         }
 
         LocalDateTime inicioDia = dataHora.toLocalDate().atStartOfDay();
-        LocalDateTime fimDia = inicioDia.plusDays(1);
-        if (agendamentoRepository.existsByClienteIdAndDataHoraBetween(dto.clienteId(), inicioDia, fimDia)) {
-            throw new BusinessException("Não é permitido agendar mais de uma consulta no mesmo dia para um mesmo cliente");
-        }
+//        LocalDateTime fimDia = inicioDia.plusDays(1);
+//        if (agendamentoRepository.existsByClienteIdAndDataHoraBetween(dto.clienteId(), inicioDia, fimDia)) {
+//            throw new BusinessException("Não é permitido agendar mais de uma consulta no mesmo dia para um mesmo cliente");
+//        }
 
         Servico servico = servicoRepository.findById(dto.servicoId())
                 .orElseThrow(() -> new ResourceNotFoundException("Serviço não encontrado"));
@@ -194,9 +194,9 @@ public class AgendamentoService {
         Agendamento agendamento = agendamentoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Agendamento não encontrado"));
 
-        if (agendamentoRepository.existsByIdAndDataHoraBefore(id, LocalDateTime.now().plusHours(24))) {
-            throw new BusinessException("Não é permitido cancelar consultas com menos de 24 horas de antecedência");
-        }
+//        if (agendamentoRepository.existsByIdAndDataHoraBefore(id, LocalDateTime.now().plusHours(24))) {
+//            throw new BusinessException("Não é permitido cancelar consultas com menos de 24 horas de antecedência");
+//        }
 
         agendamento.setCancelado(true);
         return agendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
