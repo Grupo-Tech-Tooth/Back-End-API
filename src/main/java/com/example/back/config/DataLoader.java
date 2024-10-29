@@ -46,6 +46,7 @@ public class DataLoader implements CommandLineRunner {
             LoginInfo loginInfo = new LoginInfo();
             loginInfo.setEmail("yeda@gmail.com");
             loginInfo.setSenha(passwordEncoder.encode("123123"));
+            loginInfo.setHierarquia(Hierarquia.GERENTE);
             loginInfoRepository.save(loginInfo);
 
             Funcional gerente = new Funcional();
