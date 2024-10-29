@@ -1,4 +1,4 @@
-package com.example.back.controller.dto;
+package com.example.back.dto.req;
 
 import com.example.back.entity.*;
 import org.springframework.stereotype.Component;

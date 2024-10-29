@@ -1,7 +1,7 @@
 package com.example.back.controller;
 
-import com.example.back.controller.dto.AgendamentoCreateDTO;
-import com.example.back.controller.dto.AgendamentoDTO;
+import com.example.back.dto.req.AgendamentoCreateDTO;
+import com.example.back.dto.req.AgendamentoDTO;
 import com.example.back.entity.Servico;
 import com.example.back.service.AgendamentoService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

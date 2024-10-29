@@ -1,8 +1,8 @@
 package com.example.back.service;
 
-import com.example.back.controller.dto.AgendamentoDTO;
-import com.example.back.controller.dto.AgendamentoCreateDTO;
-import com.example.back.controller.dto.AgendamentoMapper;
+import com.example.back.dto.req.AgendamentoDTO;
+import com.example.back.dto.req.AgendamentoCreateDTO;
+import com.example.back.dto.req.AgendamentoMapper;
 import com.example.back.entity.*;
 import com.example.back.infra.execption.BusinessException;
 import com.example.back.infra.execption.ResourceNotFoundException;
