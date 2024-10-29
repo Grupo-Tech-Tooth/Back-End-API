@@ -111,9 +111,9 @@ public class AgendamentoService {
                 .orElseThrow(() -> new ResourceNotFoundException("Serviço não encontrado"));
         LocalDateTime fimConsulta = dataHora.plusMinutes(servico.getDuracaoMinutos());
 
-        if (dto.medicoId() != null && agendamentoRepository.existsByMedicoIdAndDataHoraBetween(dto.medicoId(), dataHora, fimConsulta)) {
-            throw new BusinessException("O médico já possui outra consulta agendada neste horário");
-        }
+//        if (dto.medicoId() != null && agendamentoRepository.existsByMedicoIdAndDataHoraBetween(dto.medicoId(), dataHora, fimConsulta)) {
+//            throw new BusinessException("O médico já possui outra consulta agendada neste horário");
+//        }
 
         if (!Objects.equals(dto.status(), "Pendente")) {
             throw new BusinessException("O status precisa estar como presente");
