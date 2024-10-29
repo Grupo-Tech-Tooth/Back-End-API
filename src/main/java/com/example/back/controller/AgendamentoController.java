@@ -5,6 +5,7 @@ import com.example.back.dto.req.AgendamentoDTO;
 import com.example.back.entity.Servico;
 import com.example.back.service.AgendamentoService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class AgendamentoController {
     private AgendamentoService agendamentoService;
 
     @PostMapping
-    public ResponseEntity<AgendamentoDTO> criar(@RequestBody @Valid AgendamentoCreateDTO dto) {
+    public ResponseEntity<AgendamentoDTO> criar(@RequestBody @Valid AgendamentoCreateDTO dto) throws MessagingException {
         return ResponseEntity.status(HttpStatus.CREATED).body(agendamentoService.criar(dto));
     }
 

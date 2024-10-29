@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lembrete de Consulta</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f6f9fc;
+            margin: 0;
+            padding: 0;
+        }
+        .email-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            background-color: #FFF;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 4px solid cornflowerblue;
+            border-radius:  0 0 4px 4px;
+        }
+        .header img {
+            width: 50px;
+            height: auto;
+        }
+        .content {
+            padding: 20px;
+        }
+        .content h1 {
+            font-size: 24px;
+            color: #333333;
+        }
+        .content p {
+            font-size: 16px;
+            color: #666666;
+            line-height: 1.6;
+        }
+        .appointment-details {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f0f8f5;
+            border-left: 4px solid #4CAF50;
+        }
+        .appointment-details p {
+            margin: 5px 0;
+            font-weight: bold;
+            color: #333333;
+        }
+        .footer {
+            background-color: #f6f9fc;
+            padding: 10px;
+            text-align: center;
+            font-size: 12px;
+            color: #999999;
+        }
+    </style>
+</head>
+<body>
+<div class="email-container">
+    <!-- Header com logo da empresa -->
+    <div class="header">
+        <img src="Tech-Tooth-Logo.png" alt="Logo da Empresa" width="40px">
+    </div>
+
+    <!-- Conteúdo principal -->
+    <div class="content">
+        <h1>Olá, ${nome}!</h1>
+        <p>Esperamos que esteja bem. Estamos entrando em contato para lembrá-lo(a) sobre sua consulta agendada.</p>
+        <div class="appointment-details">
+            <p><strong>Data:</strong> ${dia}</p>
+            <p><strong>Médico(a):</strong> ${medico}</p>
+            <p><strong>Local:</strong> Clínica de Saúde e Bem-Estar</p>
+        </div>
+        <p>Por favor, chegue com pelo menos 10 minutos de antecedência e traga seus documentos pessoais e de saúde.</p>
+        <p>Em caso de dúvidas ou para reagendar, entre em contato conosco.</p>
+    </div>
+
+    <!-- Rodapé -->
+    <div class="footer">
+        © 2024 Clínica de Saúde e Bem-Estar. Todos os direitos reservados.<br>
+        <a href="mailto:contato@clinica.com.br">contato@clinica.com.br</a> | (11) 1234-5678
+    </div>
+</div>
+</body>
+</html>
