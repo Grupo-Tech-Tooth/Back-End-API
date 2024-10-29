@@ -4,6 +4,7 @@ import com.example.back.dto.req.DadosAutenticacaoReq;
 import com.example.back.dto.res.DadosAutenticacaoRes;
 import com.example.back.entity.LoginInfo;
 import com.example.back.infra.security.TokenService;
+import com.example.back.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,12 +22,17 @@ public class AutenticacaoController {
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+    EmailService emailService = new EmailService();
+
     @PostMapping
     public ResponseEntity<DadosAutenticacaoRes> efetuarLogin(@RequestBody DadosAutenticacaoReq dados){
         System.out.println("Efetuando login...");
         var authenticationToken = new UsernamePasswordAuthenticationToken(dados.email(), dados.senha());
         var authentication = manager.authenticate(authenticationToken);
         var tokenJWT = tokenService.gerarToken((LoginInfo) authentication.getPrincipal());
+
+        emailService.sendEmail(dados.email(), "Login efetuado com sucesso", "Você acabou de efetuar login no sistema.");
 
         return ResponseEntity.ok(new DadosAutenticacaoRes(tokenJWT, (LoginInfo) authentication.getPrincipal()));
     }
