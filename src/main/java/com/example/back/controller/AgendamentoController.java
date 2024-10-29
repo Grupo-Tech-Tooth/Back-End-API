@@ -5,7 +5,6 @@ import com.example.back.dto.req.AgendamentoDTO;
 import com.example.back.entity.Servico;
 import com.example.back.service.AgendamentoService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

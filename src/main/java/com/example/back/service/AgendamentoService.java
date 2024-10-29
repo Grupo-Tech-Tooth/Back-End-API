@@ -7,7 +7,6 @@ import com.example.back.entity.*;
 import com.example.back.infra.execption.BusinessException;
 import com.example.back.infra.execption.ResourceNotFoundException;
 import com.example.back.repository.*;
-import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -68,8 +67,7 @@ public class AgendamentoService {
                 Serviço: %s
                 """.formatted(cliente.getNome(), agendamento.getDataHora(), medico.getNome(), servico.getNome());
 
-//        emailService.sendEmail(cliente.getEmail(), "Agendamento", mensagem);
-//        emailService.sendEmailHtml(cliente.getEmail(), "Agendamento", cliente.getNome(), agendamento.getDataHora().toString(), medico.getNome());
+        emailService.sendEmailAgendamento(cliente.getEmail(), "Agendamento realizado com sucesso", mensagem);
 
         return agendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
     }
