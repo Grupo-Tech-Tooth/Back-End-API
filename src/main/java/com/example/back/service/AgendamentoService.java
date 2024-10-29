@@ -68,7 +68,7 @@ public class AgendamentoService {
                 Serviço: %s
                 """.formatted(cliente.getNome(), agendamento.getDataHora(), medico.getNome(), servico.getNome());
 
-        emailService.sendEmail(cliente.getEmail(), "Agendamento", mensagem);
+//        emailService.sendEmail(cliente.getEmail(), "Agendamento", mensagem);
 //        emailService.sendEmailHtml(cliente.getEmail(), "Agendamento", cliente.getNome(), agendamento.getDataHora().toString(), medico.getNome());
 
         return agendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
@@ -209,7 +209,7 @@ public class AgendamentoService {
         Agendamento agendamento = agendamentoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Agendamento não encontrado"));
 
-//        if (agendamentoRepository.existsByIdAndDataHoraBefore(id, LocalDateTime.now().plusHours(24))) {
+//        if (agendamentoRepository.exists\\ByIdAndDataHoraBefore(id, LocalDateTime.now().plusHours(24))) {
 //            throw new BusinessException("Não é permitido cancelar consultas com menos de 24 horas de antecedência");
 //        }
 
