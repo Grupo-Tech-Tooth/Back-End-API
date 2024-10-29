@@ -67,8 +67,6 @@ public class AgendamentoService {
                 Serviço: %s
                 """.formatted(cliente.getNome(), agendamento.getDataHora(), medico.getNome(), servico.getNome());
 
-        emailService.sendEmailAgendamento(cliente.getEmail(), "Agendamento realizado com sucesso", mensagem);
-
         return agendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
     }
 
