@@ -21,4 +21,7 @@ public class AgendamentoRequestDto {
     @NotBlank
     private LocalDateTime dataHora;
 
+    @NotBlank
+    private String status;
+
 }

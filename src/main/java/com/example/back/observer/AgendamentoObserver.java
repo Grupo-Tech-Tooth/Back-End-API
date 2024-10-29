@@ -1,6 +1,6 @@
 package com.example.back.observer;
 
-import com.example.back.controller.dto.AgendamentoDTO;
+import com.example.back.dto.req.AgendamentoDTO;
 
 public interface AgendamentoObserver {
     void onAgendamentoCreated(AgendamentoDTO agendamento);

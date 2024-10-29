@@ -1,4 +1,4 @@
-package com.example.back.controller.dto;
+package com.example.back.dto.req;
 
 import com.example.back.entity.*;
 import org.springframework.stereotype.Component;
@@ -11,6 +11,7 @@ public class AgendamentoMapper {
                 agendamento.getCliente().getId(),
                 agendamento.getMedico().getId(),
                 agendamento.getServico().getId(),
+                agendamento.getStatus(),
                 agendamento.getDataHora()
         );
     }

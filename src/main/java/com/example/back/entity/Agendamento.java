@@ -37,6 +37,9 @@ public class Agendamento {
     @Column(nullable = false)
     private LocalDateTime dataHora;
 
+    @Column(nullable = false)
+    private String status;
+
     public void setCancelado(boolean b) {
     }
 }

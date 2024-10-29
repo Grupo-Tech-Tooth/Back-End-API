@@ -1,6 +1,6 @@
 package com.example.back.observer;
 
-import com.example.back.controller.dto.AgendamentoDTO;
+import com.example.back.dto.req.AgendamentoDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

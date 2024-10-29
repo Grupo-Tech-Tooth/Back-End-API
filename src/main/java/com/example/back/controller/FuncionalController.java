@@ -14,9 +14,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+import static com.example.back.enums.Hierarquia.FUNCIONAL;
+
 @RestController
 @RequestMapping("/funcionais")
 @SecurityRequirement(name = "bearer-key")
+@CrossOrigin(origins = "http://localhost:3000")
 public class FuncionalController {
 
     @Autowired
@@ -31,6 +34,7 @@ public class FuncionalController {
         funcional.setAtivo(true);
         funcional.setDeletado(false);
         funcional.setDeletadoEm(null);
+        funcional.setHierarquia(FUNCIONAL);
         Funcional novoFuncional = funcionalService.salvarFuncional(funcional);
         return ResponseEntity.status(HttpStatus.CREATED).body(novoFuncional);
     }

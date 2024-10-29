@@ -20,6 +20,8 @@ public class AgendamentoResponseDto {
     private Cliente cliente;
     private Agenda agenda;
     private LocalDateTime dataHora;
+    @NotBlank
+    private String status;
 
     @PrePersist
     public void verificarDisponibilidade() {

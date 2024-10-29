@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,6 +67,14 @@ public class ClienteService {
     public void deletarClientePorId(Long id) {
         Cliente clienteIdDb = clienteRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
         clienteIdDb.setAtivo(false);
+        clienteIdDb.setDeletado(true);
+
+        LoginInfo loginInfo = clienteIdDb.getLoginInfo();
+        loginInfo.setAtivo(false);
+        loginInfo.setDeletado(true);
+        loginInfo.setDeletadoEm(LocalDateTime.now());
+
+        loginInfoRepository.save(loginInfo);
         clienteRepository.save(clienteIdDb);
     }
 
