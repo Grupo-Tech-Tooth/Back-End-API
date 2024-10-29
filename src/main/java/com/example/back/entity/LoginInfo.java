@@ -1,5 +1,6 @@
 package com.example.back.entity;
 
+import com.example.back.enums.Hierarquia;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
@@ -23,6 +24,7 @@ public class LoginInfo implements UserDetails {
     private Long id;
     private String email;
     private String senha;
+    private Hierarquia hierarquia;
 
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "funcionario_id")
@@ -48,6 +50,8 @@ public class LoginInfo implements UserDetails {
     public String getUsername() {
         return this.email;
     }
+
+    public Hierarquia getHierarquia() { return this.hierarquia; }
 
     @Override
     public boolean isAccountNonExpired() {

@@ -27,6 +27,7 @@ import java.util.List;
 @RequestMapping("/agendamentos")
 @SecurityRequirement(name = "bearer-key")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 public class AgendamentoController {
 
     @Autowired

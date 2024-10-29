@@ -19,6 +19,7 @@ import static com.example.back.enums.Hierarquia.FUNCIONAL;
 @RestController
 @RequestMapping("/funcionais")
 @SecurityRequirement(name = "bearer-key")
+@CrossOrigin(origins = "http://localhost:3000")
 public class FuncionalController {
 
     @Autowired

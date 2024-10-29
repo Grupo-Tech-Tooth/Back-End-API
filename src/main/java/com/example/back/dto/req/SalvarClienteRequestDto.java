@@ -41,7 +41,6 @@ public class SalvarClienteRequestDto {
     @NotNull
     private String senha;
 
-    @NotBlank
     @NotNull
     private Hierarquia hierarquia;
 

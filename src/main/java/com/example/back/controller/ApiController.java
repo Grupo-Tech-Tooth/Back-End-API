@@ -4,10 +4,7 @@ import com.example.back.dto.Api;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -18,6 +15,7 @@ import java.time.format.DateTimeFormatter;
 
 @RestController
 @RequestMapping("/API")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ApiController {
     //cria um cliente http
     static HttpClient client = HttpClient.newHttpClient();
