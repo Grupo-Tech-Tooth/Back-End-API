@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,6 +64,13 @@ public class FuncionalService {
         funcional.setDeletado(true);
         funcional.setAtivo(false);
         funcional.setDeletadoEm(LocalDate.now());
+
+        LoginInfo loginInfo = funcional.getLoginInfo();
+        loginInfo.setDeletado(true);
+        loginInfo.setAtivo(false);
+        loginInfo.setDeletadoEm(LocalDateTime.now());
+        loginInfoRepository.save(loginInfo);
+
         funcionalRepository.save(funcional);
     }
 

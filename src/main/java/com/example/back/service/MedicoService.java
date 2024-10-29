@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -84,6 +85,13 @@ public class MedicoService {
         medicoIdDb.setDeletado(true);
         medicoIdDb.setAtivo(false);
         medicoIdDb.setDeletadoEm(LocalDate.now());
+
+        LoginInfo loginInfo = medicoIdDb.getLoginInfo();
+        loginInfo.setDeletado(true);
+        loginInfo.setAtivo(false);
+        loginInfo.setDeletadoEm(LocalDateTime.now());
+
+        loginInfoRepository.save(loginInfo);
         medicoRepository.save(medicoIdDb);
     }
 

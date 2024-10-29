@@ -37,6 +37,8 @@ public class AgendamentoService {
     private AgendaRepository agendaRepository;
     @Autowired
     private AgendamentoMapper agendamentoMapper;
+    @Autowired
+    EmailService emailService;
 
     public AgendamentoDTO criar(AgendamentoCreateDTO dto) {
         validarRegrasDeNegocio(dto);
@@ -56,6 +58,17 @@ public class AgendamentoService {
 
         Agendamento agendamento = agendamentoMapper.toEntity(dto, cliente, medico, servico, agenda);
         agendamento.setStatus("Pendente");
+
+        String mensagem = """
+                Olá %s,
+                Seu agendamento foi realizado com sucesso.
+                Data: %s
+                Médico: %s
+                Serviço: %s
+                """.formatted(cliente.getNome(), agendamento.getDataHora(), medico.getNome(), servico.getNome());
+
+        emailService.sendEmailAgendamento(cliente.getEmail(), "Agendamento", mensagem);
+
         return agendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
     }
 

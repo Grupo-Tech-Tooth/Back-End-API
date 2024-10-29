@@ -2,6 +2,7 @@ package com.example.back.entity;
 
 import com.example.back.dto.req.SalvarClienteRequestDto;
 import com.example.back.enums.Hierarquia;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -35,6 +36,7 @@ public abstract class Usuario {
     @Column(name = "cpf")
     private String cpf;
 
+    @JsonIgnore
     @Column(name = "senha")
     private String senha;
 
