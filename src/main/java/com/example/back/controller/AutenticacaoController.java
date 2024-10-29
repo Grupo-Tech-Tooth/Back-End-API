@@ -22,8 +22,6 @@ public class AutenticacaoController {
     @Autowired
     private TokenService tokenService;
 
-    @Autowired
-    EmailService emailService = new EmailService();
 
     @PostMapping
     public ResponseEntity<DadosAutenticacaoRes> efetuarLogin(@RequestBody DadosAutenticacaoReq dados){
@@ -31,9 +29,7 @@ public class AutenticacaoController {
         var authenticationToken = new UsernamePasswordAuthenticationToken(dados.email(), dados.senha());
         var authentication = manager.authenticate(authenticationToken);
         var tokenJWT = tokenService.gerarToken((LoginInfo) authentication.getPrincipal());
-
-        emailService.sendEmail(dados.email(), "Login efetuado com sucesso", "Você acabou de efetuar login no sistema.");
-
+        
         return ResponseEntity.ok(new DadosAutenticacaoRes(tokenJWT, (LoginInfo) authentication.getPrincipal()));
     }
 

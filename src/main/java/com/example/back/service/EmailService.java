@@ -18,10 +18,6 @@ public class EmailService {
 
     @Autowired
     private JavaMailSender javaMailSender;
-    @Autowired
-    private TemplateEngine templateEngine;
-    @Autowired
-    private JavaMailSenderImpl mailSender;
 
     public void sendEmail(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
@@ -42,25 +38,5 @@ public class EmailService {
 
         javaMailSender.send(message);
     }
-
-//    public void sendEmailHtml(String to, String subject, String nome, String dia, String medico) throws MessagingException {
-//
-//        MimeMessage mimeMessage = mailSender.createMimeMessage();
-//        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
-//
-//        helper.setTo(to);
-//        helper.setSubject(subject);
-//
-//        Context context = new Context();
-//        context.setVariable("nome", nome);
-//        context.setVariable("dia", dia);
-//        context.setVariable("medico", medico);
-//        String htmlContent = templateEngine.process("email", context);
-//
-//        helper.setText(htmlContent, true);
-//
-//        mailSender.send(mimeMessage);
-//
-//    }
 
 }
