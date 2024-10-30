@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -24,25 +25,35 @@ public class LoginInfo implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "email")
     private String email;
 
     @JsonIgnore
+    @Column(name = "senha")
     private String senha;
-    private Hierarquia hierarquia;
-    private Boolean ativo;
-    private Boolean deletado;
 
-    // Buscar o dia atual da criação do usuário
-    @Column(name = "data_criacao", columnDefinition = "TIMESTAMP")
-    private LocalDateTime dataCriacao;
+    @Column(name = "ativo", columnDefinition = "TINYINT(1)")
+    private Boolean ativo = true;
+
+    @Column(name = "deletado")
+    private Boolean deletado = false;
+
+    @Column(name = "deletado_em")
     private LocalDateTime deletadoEm;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @Column(name = "hierarquia")
+    private Hierarquia hierarquia;
+
+    @Column(name = "data_criacao", columnDefinition = "TIMESTAMP")
+    private LocalDateTime dataCriacao = LocalDateTime.now();
+
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "funcionario_id")
     @JsonIgnoreProperties("loginInfo")
     private Funcionario funcionario;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cliente_id")
     @JsonIgnoreProperties("loginInfo")
     private Cliente cliente;
@@ -61,8 +72,6 @@ public class LoginInfo implements UserDetails {
     public String getUsername() {
         return this.email;
     }
-
-    public Hierarquia getHierarquia() { return this.hierarquia; }
 
     @Override
     public boolean isAccountNonExpired() {

@@ -24,8 +24,10 @@ public class Cliente extends Usuario {
     private LoginInfo loginInfo;
 
     public Cliente(SalvarClienteRequestDto dto) {
-        super(dto);
-        this.dataNascimento = dto.getDataNascimento();
-        this.genero = dto.getGenero();
+        this.setNome(dto.getNome());
+        this.setSobrenome(dto.getSobrenome());
+        this.setCpf(dto.getCpf());
+        this.setDataNascimento(dto.getDataNascimento());
+        this.setGenero(dto.getGenero());
     }
 }

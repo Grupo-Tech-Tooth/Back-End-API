@@ -30,10 +30,8 @@ public class FuncionalRequestDto {
         Funcional funcional = new Funcional();
         funcional.setNome(this.nome);
         funcional.setSobrenome(this.sobrenome);
-        funcional.setEmail(this.email);
         funcional.setCpf(this.cpf);
         funcional.setDepartamento(this.departamento);
-        funcional.setSenha(this.senha);
         return funcional;
     }
 

@@ -27,7 +27,7 @@ public class ClienteResponseDto {
 
         this.nome = cliente.getNome();
         this.sobrenome = cliente.getSobrenome();
-        this.email = cliente.getEmail();
+        this.email = cliente.getLoginInfo().getEmail();
         this.cpf = cliente.getCpf();
         this.dataNascimento = cliente.getDataNascimento();
         this.genero = cliente.getGenero();

@@ -30,37 +30,8 @@ public abstract class Usuario {
     @Column(name = "sobrenome")
     private String sobrenome;
 
-    @Column(name = "email")
-    private String email;
-
     @Column(name = "cpf")
     private String cpf;
-
-    @JsonIgnore
-    @Column(name = "senha")
-    private String senha;
-
-    @Column(name = "ativo", columnDefinition = "TINYINT(1)")
-    private Boolean ativo;
-
-    @Column(name = "deletado")
-    private Boolean deletado;
-
-    @Column(name = "deletado_em")
-    private LocalDate deletadoEm;
-
-    @Column(name = "hierarquia")
-    private Hierarquia hierarquia;
-
-    public Usuario(SalvarClienteRequestDto dto) {
-        this.nome = dto.getNome();
-        this.sobrenome = dto.getSobrenome();
-        this.email = dto.getEmail();
-        this.cpf = dto.getCpf();
-        this.senha = dto.getSenha();
-        this.hierarquia = dto.getHierarquia();
-        this.ativo = true;
-    }
 
     public Long getId() {
         return id;
@@ -86,60 +57,12 @@ public abstract class Usuario {
         this.sobrenome = sobrenome;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getCpf() {
         return cpf;
     }
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
-    public Boolean getAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(Boolean ativo) {
-        this.ativo = ativo;
-    }
-
-    public Boolean getDeletado() {
-        return deletado;
-    }
-
-    public void setDeletado(Boolean deletado) {
-        this.deletado = deletado;
-    }
-
-    public LocalDate getDeletadoEm() {
-        return deletadoEm;
-    }
-
-    public void setDeletadoEm(LocalDate deletadoEm) {
-        this.deletadoEm = deletadoEm;
-    }
-
-    public Hierarquia getHierarquia() {
-        return hierarquia;
-    }
-
-    public void setHierarquia(Hierarquia hierarquia) {
-        this.hierarquia = hierarquia;
     }
 
 }
