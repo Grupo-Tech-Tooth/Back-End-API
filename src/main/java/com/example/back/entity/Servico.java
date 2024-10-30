@@ -27,9 +27,15 @@ public class Servico {
     private BigDecimal preco;
 
     public enum Tipo {
-        consulta(1L, 20.0),
-        limpeza(2L, 30.0),
-        removerDente(3L, 50.0),;
+        Consulta(1L, 20.0),
+        Limpeza(2L, 30.0),
+        Cirugia(3L, 50.0),
+        Manutencao(4L, 40.0),
+        Clareamento(5L, 60.0),
+        Implante(6L, 70.0),
+        Aparelho(7L, 80.0),
+        RaioX(8L, 10.0),
+        Canal(9L, 90.0);
 
         private Long id;
         private Double preco;
