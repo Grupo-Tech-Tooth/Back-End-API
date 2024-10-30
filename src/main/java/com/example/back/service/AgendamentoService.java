@@ -89,31 +89,21 @@ public class AgendamentoService {
 
         Cliente cliente = clienteRepository.findById(dto.clienteId())
                 .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
-        if (!cliente.getAtivo()) {
+        if (!cliente.getLoginInfo().getAtivo()) {
             throw new BusinessException("Não é permitido agendar consultas para clientes inativos");
         }
 
         if (dto.medicoId() != null) {
             Medico medico = medicoRepository.findById(dto.medicoId())
                     .orElseThrow(() -> new ResourceNotFoundException("Médico não encontrado"));
-            if (!medico.getAtivo()) {
+            if (!medico.getLoginInfo().getAtivo()) {
                 throw new BusinessException("Não é permitido agendar consultas com médicos inativos");
             }
         }
 
-        LocalDateTime inicioDia = dataHora.toLocalDate().atStartOfDay();
-//        LocalDateTime fimDia = inicioDia.plusDays(1);
-//        if (agendamentoRepository.existsByClienteIdAndDataHoraBetween(dto.clienteId(), inicioDia, fimDia)) {
-//            throw new BusinessException("Não é permitido agendar mais de uma consulta no mesmo dia para um mesmo cliente");
-//        }
-
         Servico servico = servicoRepository.findById(dto.servicoId())
                 .orElseThrow(() -> new ResourceNotFoundException("Serviço não encontrado"));
         LocalDateTime fimConsulta = dataHora.plusMinutes(servico.getDuracaoMinutos());
-
-//        if (dto.medicoId() != null && agendamentoRepository.existsByMedicoIdAndDataHoraBetween(dto.medicoId(), dataHora, fimConsulta)) {
-//            throw new BusinessException("O médico já possui outra consulta agendada neste horário");
-//        }
 
         if (!Objects.equals(dto.status(), "Pendente")) {
             throw new BusinessException("O status precisa estar como presente");
@@ -241,7 +231,7 @@ public class AgendamentoService {
                 saida.format("%d;%s;%s;%s;%s;%s\n",
                         agendamento.id(),
                         cliente.getNome(),
-                        cliente.getEmail(),
+                        cliente.getLoginInfo().getEmail(),
                         medico.getNome(),
                         agendamento.dataHora().toString(),
                         servico.getNome());

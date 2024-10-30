@@ -11,19 +11,22 @@ import java.util.Optional;
 
 @Repository
 public interface MedicoRepository extends JpaRepository<Medico, Long> {
-    Optional<Medico> findByCpf(String cpf);
-    Optional<Medico> findByEmail(String email);
+
+    Optional<Medico> findByLoginInfoEmail(String email);
+    Optional<Medico> findByLoginInfoFuncionarioCpf(String cpf);
+
     List<Medico> findByNomeContainingOrSobrenomeContainingIgnoreCase(String nome, String sobrenome);
-    @Query("SELECT m FROM Medico m WHERE m.ativo = true AND m.id NOT IN " +
+
+    @Query("SELECT m FROM Medico m JOIN m.loginInfo li WHERE li.ativo = true AND m.id NOT IN " +
             "(SELECT a.medico.id FROM Agendamento a WHERE a.dataHora BETWEEN :inicio AND :fim)")
     List<Medico> findAvailableMedicos(LocalDateTime inicio, LocalDateTime fim);
 
-    Optional<Medico> findByCpfAndDeletadoFalse(String cpf);
-    Optional<Medico> findByEmailAndDeletadoFalse(String email);
+    Optional<Medico> findByLoginInfoFuncionarioCpfAndLoginInfo_DeletadoFalse(String cpf);
+    Optional<Medico> findByLoginInfoEmailAndLoginInfo_DeletadoFalse(String email);
 
-    List<Medico> findByDeletadoFalse();
+    List<Medico> findByLoginInfo_DeletadoFalse();
 
-    Optional<Medico> findByIdAndDeletadoFalse(Long id);
+    Optional<Medico> findByIdAndLoginInfo_DeletadoFalse(Long id);
 
-    List<Medico> findByDeletadoFalseAndNomeContainingOrSobrenomeContainingIgnoreCase(String nome, String sobrenome);
+    List<Medico> findByLoginInfo_DeletadoFalseAndNomeContainingOrSobrenomeContainingIgnoreCase(String nome, String sobrenome);
 }

@@ -40,9 +40,7 @@ public class MedicoRequestDto {
         Medico medico = new Medico();
         medico.setNome(this.nome);
         medico.setSobrenome(this.sobrenome);
-        medico.setEmail(this.email);
         medico.setCpf(this.cpf);
-        medico.setSenha(this.senha);
         medico.setCrm(this.crm);
         medico.setEspecializacao(this.especializacao);
         return medico;

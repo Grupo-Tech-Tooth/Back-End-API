@@ -26,15 +26,7 @@ public class MedicoController {
 
     @PostMapping
     public ResponseEntity<Medico> criarMedico(@RequestBody @Valid MedicoRequestDto dto) {
-
-        Medico medico = dto.toMedico();
-
-        medico.setId(null);
-        medico.setAtivo(true);
-        medico.setDeletado(false);
-        medico.setDeletadoEm(null);
-        medico.setHierarquia(MEDICO);
-        Medico novoMedico = medicoService.salvarMedico(medico);
+        Medico novoMedico = medicoService.salvarMedico(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(novoMedico);
     }
 
@@ -51,10 +43,11 @@ public class MedicoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Medico> atualizarMedico(@PathVariable Long id, @RequestBody Medico medicoAtualizado) {
+    public ResponseEntity<Medico> atualizarMedico(@PathVariable Long id, @RequestBody MedicoRequestDto medicoAtualizado) {
         Optional<Medico> medicoExistente = medicoService.buscarMedicoPorId(id);
+
         if (medicoExistente.isPresent()) {
-            Medico atualizado = medicoService.atualizarMedico(medicoAtualizado);
+            Medico atualizado = medicoService.atualizarMedico(id, medicoAtualizado);
             return ResponseEntity.ok(atualizado);
         } else {
             return ResponseEntity.notFound().build();

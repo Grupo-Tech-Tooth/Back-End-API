@@ -20,74 +20,67 @@ import java.util.Optional;
 @Service
 public class ClienteService {
 
-    @Autowired
-    private ClienteRepository clienteRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private LoginInfoRepository loginInfoRepository;
+    private final ClienteRepository clienteRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final LoginInfoRepository loginInfoRepository;
 
-    public ClienteService(ClienteRepository clienteRepository) {
+    @Autowired
+    public ClienteService(ClienteRepository clienteRepository,
+                          PasswordEncoder passwordEncoder,
+                          LoginInfoRepository loginInfoRepository) {
         this.clienteRepository = clienteRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.loginInfoRepository = loginInfoRepository;
     }
 
     public Page<Cliente> listarClientes(Pageable pageable) {
-
-        return clienteRepository.findAll(pageable);
-
+        return clienteRepository.findByLoginInfoDeletadoFalse(pageable); // Exclui clientes deletados
     }
 
     public Cliente salvarCliente(SalvarClienteRequestDto dto) {
-        var clienteDb = clienteRepository.findByCpf(dto.getCpf());
-
-        if (clienteDb.isPresent()) {
+        if (clienteRepository.findByCpf(dto.getCpf()).isPresent()) {
             throw new IllegalArgumentException("Cliente já existe com esse CPF");
         }
 
         Cliente cliente = new Cliente(dto);
 
         LoginInfo loginInfo = new LoginInfo();
-        loginInfo.setEmail(cliente.getEmail());
-        loginInfo.setSenha(passwordEncoder.encode(cliente.getSenha()));
+        loginInfo.setEmail(dto.getEmail());
+        loginInfo.setSenha(passwordEncoder.encode(dto.getSenha()));
         loginInfo.setCliente(cliente);
 
         loginInfoRepository.save(loginInfo);
-
         cliente.setLoginInfo(loginInfo);
-
-        cliente.setSenha(passwordEncoder.encode(cliente.getSenha()));
 
         return clienteRepository.save(cliente);
     }
 
     public Optional<Cliente> buscarClientePorId(Long id) {
-        return clienteRepository.findById(id);
+        return clienteRepository.findByIdAndLoginInfoDeletadoFalse(id);
     }
 
     public void deletarClientePorId(Long id) {
-        Cliente clienteIdDb = clienteRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
-        clienteIdDb.setAtivo(false);
-        clienteIdDb.setDeletado(true);
+        Cliente clienteDb = buscarClientePorId(id).orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
 
-        LoginInfo loginInfo = clienteIdDb.getLoginInfo();
+        LoginInfo loginInfo = clienteDb.getLoginInfo();
         loginInfo.setAtivo(false);
         loginInfo.setDeletado(true);
         loginInfo.setDeletadoEm(LocalDateTime.now());
 
         loginInfoRepository.save(loginInfo);
-        clienteRepository.save(clienteIdDb);
+        clienteRepository.save(clienteDb);
     }
 
-    public ClienteResponseDto atualizarCliente(Long id, AtualizarClienteRequestDto cliente) {
-        Cliente clienteDb = clienteRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
+    public ClienteResponseDto atualizarCliente(Long id, AtualizarClienteRequestDto dto) {
+        Cliente clienteDb = buscarClientePorId(id).orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
 
-        clienteDb.setNome(cliente.getNome());
-        clienteDb.setSobrenome(cliente.getSobrenome());
-        clienteDb.setDataNascimento(cliente.getDataNascimento());
-        clienteDb.setGenero(cliente.getGenero());
+        // Apenas atualiza campos que podem ser alterados
+        clienteDb.setNome(dto.getNome());
+        clienteDb.setSobrenome(dto.getSobrenome());
+        clienteDb.setDataNascimento(dto.getDataNascimento());
+        clienteDb.setGenero(dto.getGenero());
 
         Cliente clienteAtualizado = clienteRepository.save(clienteDb);
-
         return new ClienteResponseDto(clienteAtualizado);
     }
 
@@ -99,13 +92,7 @@ public class ClienteService {
         return clienteRepository.findByNomeContainingOrSobrenomeContaining(nome, sobrenome);
     }
 
-    public Optional<Cliente> buscarClientePorEmail(String email){
-        return clienteRepository.findByEmail(email);
+    public Optional<Cliente> buscarClientePorEmail(String email) {
+        return clienteRepository.findByLoginInfo_Email(email);
     }
-
 }
-
-
-
-
-
