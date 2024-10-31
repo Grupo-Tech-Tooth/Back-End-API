@@ -150,13 +150,6 @@ public class AgendamentoService {
         return agendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
     }
 
-    public void deletar(Long id) {
-        if (!agendamentoRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Agendamento não encontrado");
-        }
-        agendamentoRepository.deleteById(id);
-    }
-
     public AgendamentoDTO buscarPorId(Long id) {
         return agendamentoRepository.findById(id)
                 .map(agendamentoMapper::toDTO)
@@ -194,10 +187,6 @@ public class AgendamentoService {
     public AgendamentoDTO cancelarConsulta(Long id) {
         Agendamento agendamento = agendamentoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Agendamento não encontrado"));
-
-//        if (agendamentoRepository.exists\\ByIdAndDataHoraBefore(id, LocalDateTime.now().plusHours(24))) {
-//            throw new BusinessException("Não é permitido cancelar consultas com menos de 24 horas de antecedência");
-//        }
 
         agendamento.setCancelado(true);
         agendamento.setStatus("Cancelado");
