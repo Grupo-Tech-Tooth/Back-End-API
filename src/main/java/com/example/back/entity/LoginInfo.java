@@ -36,7 +36,7 @@ public class LoginInfo implements UserDetails {
     @Column(name = "ativo", columnDefinition = "TINYINT(1)")
     private Boolean ativo = true;
 
-    @Column(name = "deletado")
+    @Column(name = "deletado", columnDefinition = "TINYINT(1)")
     private Boolean deletado = false;
 
     @Column(name = "deletado_em")
@@ -63,6 +63,7 @@ public class LoginInfo implements UserDetails {
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
+    @JsonIgnore
     @Override
     public String getPassword() {
         return this.senha;
@@ -78,16 +79,19 @@ public class LoginInfo implements UserDetails {
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
+    @JsonIgnore
     @Override
     public boolean isEnabled() {
         return true;

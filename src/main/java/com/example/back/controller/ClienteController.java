@@ -39,7 +39,6 @@ public class ClienteController {
     public ResponseEntity<Page<Cliente>> listarClientes(Pageable pageable) {
 
         Page<Cliente> clientes = service.listarClientes(pageable);
-        System.out.println(clientes);
 
         if (clientes.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -49,9 +48,10 @@ public class ClienteController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Cliente> buscarClientePorId(@PathVariable Long id) {
-        Optional<Cliente> cliente = service.buscarClientePorId(id);
-        return cliente.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<ClienteResponseDto> buscarClientePorId(@PathVariable Long id) {
+        Cliente cliente = service.buscarClientePorId(id);
+        ClienteResponseDto clienteResponseDto = new ClienteResponseDto(cliente);
+        return ResponseEntity.ok(clienteResponseDto);
     }
 
     @PutMapping("/{id}")
@@ -70,10 +70,10 @@ public class ClienteController {
     }
 
     @GetMapping("/nome")
-    public ResponseEntity<List<Cliente>> buscarPorNomeOuSobrenome(
+    public ResponseEntity<List<ClienteResponseDto>> buscarPorNomeOuSobrenome(
             @RequestParam(required = false) String nome,
             @RequestParam(required = false) String sobrenome) {
-            List<Cliente> clientes = service.buscarPorNomeOuSobrenome(nome, sobrenome);
+            List<ClienteResponseDto> clientes = service.buscarPorNomeOuSobrenome(nome, sobrenome);
 
             if (clientes.isEmpty()) {
                 return ResponseEntity.noContent().build();
@@ -83,16 +83,21 @@ public class ClienteController {
     }
 
     @GetMapping("/email")
-    public ResponseEntity<Cliente> buscarClientePorEmail(@RequestParam String email){
+    public ResponseEntity<ClienteResponseDto> buscarClientePorEmail(@RequestParam String email){
         Optional<Cliente> cliente = service.buscarClientePorEmail(email);
 
-        return cliente.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return cliente.map(ClienteResponseDto::new)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/cpf")
-    public ResponseEntity<Cliente> buscarClientePorCpf(@RequestParam String cpf){
+    public ResponseEntity<ClienteResponseDto> buscarClientePorCpf(@RequestParam String cpf){
         Optional<Cliente> cliente = service.buscarClientePorCpf(cpf);
-        return cliente.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+
+        return cliente.map(ClienteResponseDto::new)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 }
