@@ -5,6 +5,7 @@ import com.example.back.dto.req.SalvarClienteRequestDto;
 import com.example.back.dto.res.ClienteResponseDto;
 import com.example.back.entity.Cliente;
 import com.example.back.entity.LoginInfo;
+import com.example.back.infra.execption.ResourceNotFoundException;
 import com.example.back.repository.ClienteRepository;
 import com.example.back.repository.LoginInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +35,11 @@ public class ClienteService {
     }
 
     public Page<Cliente> listarClientes(Pageable pageable) {
-        return clienteRepository.findByLoginInfoDeletadoFalse(pageable); // Exclui clientes deletados
+        return clienteRepository.findByLoginInfoDeletadoFalse(pageable);
     }
 
     public Cliente salvarCliente(SalvarClienteRequestDto dto) {
-        if (clienteRepository.findByCpf(dto.getCpf()).isPresent()) {
+        if (clienteRepository.findByCpfAndLoginInfoDeletadoFalse(dto.getCpf()).isPresent()) {
             throw new IllegalArgumentException("Cliente já existe com esse CPF");
         }
 
@@ -55,12 +56,16 @@ public class ClienteService {
         return clienteRepository.save(cliente);
     }
 
-    public Optional<Cliente> buscarClientePorId(Long id) {
-        return clienteRepository.findByIdAndLoginInfoDeletadoFalse(id);
+    public Cliente buscarClientePorId(Long id) {
+        Optional<Cliente> clienteEncontrado = clienteRepository.findByIdAndLoginInfoDeletadoFalse(id);
+        if (clienteEncontrado.isEmpty()) {
+            throw new ResourceNotFoundException("Cliente não encontrado");
+        }
+        return clienteEncontrado.get();
     }
 
     public void deletarClientePorId(Long id) {
-        Cliente clienteDb = buscarClientePorId(id).orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
+        Cliente clienteDb = buscarClientePorId(id);
 
         LoginInfo loginInfo = clienteDb.getLoginInfo();
         loginInfo.setAtivo(false);
@@ -72,9 +77,8 @@ public class ClienteService {
     }
 
     public ClienteResponseDto atualizarCliente(Long id, AtualizarClienteRequestDto dto) {
-        Cliente clienteDb = buscarClientePorId(id).orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
+        Cliente clienteDb = buscarClientePorId(id);
 
-        // Apenas atualiza campos que podem ser alterados
         clienteDb.setNome(dto.getNome());
         clienteDb.setSobrenome(dto.getSobrenome());
         clienteDb.setDataNascimento(dto.getDataNascimento());
@@ -85,14 +89,29 @@ public class ClienteService {
     }
 
     public Optional<Cliente> buscarClientePorCpf(String cpf) {
-        return clienteRepository.findByCpf(cpf);
+        Optional<Cliente> cliente = clienteRepository.findByCpfAndLoginInfoDeletadoFalse(cpf);
+
+        if (cliente.isEmpty()) {
+            throw new ResourceNotFoundException("Cliente não encontrado");
+        }
+
+        return cliente;
     }
 
-    public List<Cliente> buscarPorNomeOuSobrenome(String nome, String sobrenome) {
-        return clienteRepository.findByNomeContainingOrSobrenomeContaining(nome, sobrenome);
+    public List<ClienteResponseDto> buscarPorNomeOuSobrenome(String nome, String sobrenome) {
+
+        List<Cliente> clientes = clienteRepository.findByLoginInfoDeletadoFalseAndNomeContainingOrSobrenomeContaining(nome, sobrenome);
+
+        return ClienteResponseDto.converter(clientes);
     }
 
     public Optional<Cliente> buscarClientePorEmail(String email) {
-        return clienteRepository.findByLoginInfo_Email(email);
+        Optional<Cliente> cliente = clienteRepository.findByLoginInfoEmailAndLoginInfoDeletadoFalse(email);
+
+        if (cliente.isEmpty()) {
+            throw new ResourceNotFoundException("Cliente não encontrado");
+        }
+
+        return cliente;
     }
 }
