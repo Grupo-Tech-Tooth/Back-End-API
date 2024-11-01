@@ -36,7 +36,7 @@ public class LoginInfo implements UserDetails {
     @Column(name = "ativo", columnDefinition = "TINYINT(1)")
     private Boolean ativo = true;
 
-    @Column(name = "deletado")
+    @Column(name = "deletado", columnDefinition = "TINYINT(1)")
     private Boolean deletado = false;
 
     @Column(name = "deletado_em")

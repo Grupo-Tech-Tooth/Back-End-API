@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -34,4 +35,7 @@ public class ClienteResponseDto {
 
     }
 
+    public static List<ClienteResponseDto> converter(List<Cliente> clientes) {
+        return clientes.stream().map(ClienteResponseDto::new).toList();
+    }
 }
