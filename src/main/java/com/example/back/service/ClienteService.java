@@ -5,6 +5,7 @@ import com.example.back.dto.req.SalvarClienteRequestDto;
 import com.example.back.dto.res.ClienteResponseDto;
 import com.example.back.entity.Cliente;
 import com.example.back.entity.LoginInfo;
+import com.example.back.infra.execption.ResourceNotFoundException;
 import com.example.back.repository.ClienteRepository;
 import com.example.back.repository.LoginInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,92 +21,97 @@ import java.util.Optional;
 @Service
 public class ClienteService {
 
-    @Autowired
-    private ClienteRepository clienteRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private LoginInfoRepository loginInfoRepository;
+    private final ClienteRepository clienteRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final LoginInfoRepository loginInfoRepository;
 
-    public ClienteService(ClienteRepository clienteRepository) {
+    @Autowired
+    public ClienteService(ClienteRepository clienteRepository,
+                          PasswordEncoder passwordEncoder,
+                          LoginInfoRepository loginInfoRepository) {
         this.clienteRepository = clienteRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.loginInfoRepository = loginInfoRepository;
     }
 
     public Page<Cliente> listarClientes(Pageable pageable) {
-
-        return clienteRepository.findAll(pageable);
-
+        return clienteRepository.findByLoginInfoDeletadoFalse(pageable);
     }
 
     public Cliente salvarCliente(SalvarClienteRequestDto dto) {
-        var clienteDb = clienteRepository.findByCpf(dto.getCpf());
-
-        if (clienteDb.isPresent()) {
+        if (clienteRepository.findByCpfAndLoginInfoDeletadoFalse(dto.getCpf()).isPresent()) {
             throw new IllegalArgumentException("Cliente já existe com esse CPF");
         }
 
         Cliente cliente = new Cliente(dto);
 
         LoginInfo loginInfo = new LoginInfo();
-        loginInfo.setEmail(cliente.getEmail());
-        loginInfo.setSenha(passwordEncoder.encode(cliente.getSenha()));
+        loginInfo.setEmail(dto.getEmail());
+        loginInfo.setSenha(passwordEncoder.encode(dto.getSenha()));
         loginInfo.setCliente(cliente);
 
         loginInfoRepository.save(loginInfo);
-
         cliente.setLoginInfo(loginInfo);
-
-        cliente.setSenha(passwordEncoder.encode(cliente.getSenha()));
 
         return clienteRepository.save(cliente);
     }
 
-    public Optional<Cliente> buscarClientePorId(Long id) {
-        return clienteRepository.findById(id);
+    public Cliente buscarClientePorId(Long id) {
+        Optional<Cliente> clienteEncontrado = clienteRepository.findByIdAndLoginInfoDeletadoFalse(id);
+        if (clienteEncontrado.isEmpty()) {
+            throw new ResourceNotFoundException("Cliente não encontrado");
+        }
+        return clienteEncontrado.get();
     }
 
     public void deletarClientePorId(Long id) {
-        Cliente clienteIdDb = clienteRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
-        clienteIdDb.setAtivo(false);
-        clienteIdDb.setDeletado(true);
+        Cliente clienteDb = buscarClientePorId(id);
 
-        LoginInfo loginInfo = clienteIdDb.getLoginInfo();
+        LoginInfo loginInfo = clienteDb.getLoginInfo();
         loginInfo.setAtivo(false);
         loginInfo.setDeletado(true);
         loginInfo.setDeletadoEm(LocalDateTime.now());
 
         loginInfoRepository.save(loginInfo);
-        clienteRepository.save(clienteIdDb);
+        clienteRepository.save(clienteDb);
     }
 
-    public ClienteResponseDto atualizarCliente(Long id, AtualizarClienteRequestDto cliente) {
-        Cliente clienteDb = clienteRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
+    public ClienteResponseDto atualizarCliente(Long id, AtualizarClienteRequestDto dto) {
+        Cliente clienteDb = buscarClientePorId(id);
 
-        clienteDb.setNome(cliente.getNome());
-        clienteDb.setSobrenome(cliente.getSobrenome());
-        clienteDb.setDataNascimento(cliente.getDataNascimento());
-        clienteDb.setGenero(cliente.getGenero());
+        clienteDb.setNome(dto.getNome());
+        clienteDb.setSobrenome(dto.getSobrenome());
+        clienteDb.setDataNascimento(dto.getDataNascimento());
+        clienteDb.setGenero(dto.getGenero());
 
         Cliente clienteAtualizado = clienteRepository.save(clienteDb);
-
         return new ClienteResponseDto(clienteAtualizado);
     }
 
     public Optional<Cliente> buscarClientePorCpf(String cpf) {
-        return clienteRepository.findByCpf(cpf);
+        Optional<Cliente> cliente = clienteRepository.findByCpfAndLoginInfoDeletadoFalse(cpf);
+
+        if (cliente.isEmpty()) {
+            throw new ResourceNotFoundException("Cliente não encontrado");
+        }
+
+        return cliente;
     }
 
-    public List<Cliente> buscarPorNomeOuSobrenome(String nome, String sobrenome) {
-        return clienteRepository.findByNomeContainingOrSobrenomeContaining(nome, sobrenome);
+    public List<ClienteResponseDto> buscarPorNomeOuSobrenome(String nome, String sobrenome) {
+
+        List<Cliente> clientes = clienteRepository.findByLoginInfoDeletadoFalseAndNomeContainingOrSobrenomeContaining(nome, sobrenome);
+
+        return ClienteResponseDto.converter(clientes);
     }
 
-    public Optional<Cliente> buscarClientePorEmail(String email){
-        return clienteRepository.findByEmail(email);
-    }
+    public Optional<Cliente> buscarClientePorEmail(String email) {
+        Optional<Cliente> cliente = clienteRepository.findByLoginInfoEmailAndLoginInfoDeletadoFalse(email);
 
+        if (cliente.isEmpty()) {
+            throw new ResourceNotFoundException("Cliente não encontrado");
+        }
+
+        return cliente;
+    }
 }
-
-
-
-
-

@@ -45,20 +45,16 @@ public class DataLoader implements CommandLineRunner {
         if (!loginInfoRepository.buscarPorEmail("yeda@gmail.com").isPresent()) {
             Funcional gerente = new Funcional();
             gerente.setNome("Yeda");
-            gerente.setEmail("yeda@gmail.com");
             gerente.setCpf("12345678900");
             gerente.setDepartamento("Gerência");
-            gerente.setHierarquia(Hierarquia.GERENTE);
             gerente.setId(null);
-            gerente.setAtivo(true);
-            gerente.setDeletado(false);
-            gerente.setDeletadoEm(null);
 
             LoginInfo loginInfo = new LoginInfo();
             loginInfo.setEmail("yeda@gmail.com");
             loginInfo.setSenha(passwordEncoder.encode("123123"));
             loginInfo.setHierarquia(Hierarquia.GERENTE);
             loginInfo.setFuncionario(gerente);
+            loginInfo.setAtivo(true);
 
             gerente.setLoginInfo(loginInfo);
 

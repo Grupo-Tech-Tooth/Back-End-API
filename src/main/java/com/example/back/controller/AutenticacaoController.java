@@ -23,18 +23,21 @@ public class AutenticacaoController {
     private TokenService tokenService;
 
     @Autowired
-    EmailService emailService = new EmailService();
+    private EmailService emailService;
+
 
     @PostMapping
     public ResponseEntity<DadosAutenticacaoRes> efetuarLogin(@RequestBody DadosAutenticacaoReq dados){
-        System.out.println("Efetuando login...");
         var authenticationToken = new UsernamePasswordAuthenticationToken(dados.email(), dados.senha());
         var authentication = manager.authenticate(authenticationToken);
-        var tokenJWT = tokenService.gerarToken((LoginInfo) authentication.getPrincipal());
+        LoginInfo loginInfo = (LoginInfo) authentication.getPrincipal();
+        var tokenJWT = tokenService.gerarToken(loginInfo);
 
-        emailService.sendEmail(dados.email(), "Login efetuado com sucesso", "Você acabou de efetuar login no sistema.");
+        if (!loginInfo.getAtivo()){
+            throw new IllegalArgumentException("Acesso negado");
+        }
 
-        return ResponseEntity.ok(new DadosAutenticacaoRes(tokenJWT, (LoginInfo) authentication.getPrincipal()));
+        return ResponseEntity.ok(new DadosAutenticacaoRes(tokenJWT, loginInfo));
     }
 
 }

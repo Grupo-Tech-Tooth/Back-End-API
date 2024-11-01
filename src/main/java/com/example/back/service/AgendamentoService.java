@@ -40,7 +40,7 @@ public class AgendamentoService {
     @Autowired
     EmailService emailService;
 
-    public AgendamentoDTO criar(AgendamentoCreateDTO dto) {
+    public AgendamentoDTO criar(AgendamentoCreateDTO dto){
         validarRegrasDeNegocio(dto);
 
         Cliente cliente = clienteRepository.findById(dto.clienteId())
@@ -67,8 +67,6 @@ public class AgendamentoService {
                 Serviço: %s
                 """.formatted(cliente.getNome(), agendamento.getDataHora(), medico.getNome(), servico.getNome());
 
-        emailService.sendEmailAgendamento(cliente.getEmail(), "Agendamento", mensagem);
-
         return agendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
     }
 
@@ -91,31 +89,21 @@ public class AgendamentoService {
 
         Cliente cliente = clienteRepository.findById(dto.clienteId())
                 .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
-        if (!cliente.getAtivo()) {
+        if (!cliente.getLoginInfo().getAtivo()) {
             throw new BusinessException("Não é permitido agendar consultas para clientes inativos");
         }
 
         if (dto.medicoId() != null) {
             Medico medico = medicoRepository.findById(dto.medicoId())
                     .orElseThrow(() -> new ResourceNotFoundException("Médico não encontrado"));
-            if (!medico.getAtivo()) {
+            if (!medico.getLoginInfo().getAtivo()) {
                 throw new BusinessException("Não é permitido agendar consultas com médicos inativos");
             }
         }
 
-        LocalDateTime inicioDia = dataHora.toLocalDate().atStartOfDay();
-//        LocalDateTime fimDia = inicioDia.plusDays(1);
-//        if (agendamentoRepository.existsByClienteIdAndDataHoraBetween(dto.clienteId(), inicioDia, fimDia)) {
-//            throw new BusinessException("Não é permitido agendar mais de uma consulta no mesmo dia para um mesmo cliente");
-//        }
-
         Servico servico = servicoRepository.findById(dto.servicoId())
                 .orElseThrow(() -> new ResourceNotFoundException("Serviço não encontrado"));
         LocalDateTime fimConsulta = dataHora.plusMinutes(servico.getDuracaoMinutos());
-
-        if (dto.medicoId() != null && agendamentoRepository.existsByMedicoIdAndDataHoraBetween(dto.medicoId(), dataHora, fimConsulta)) {
-            throw new BusinessException("O médico já possui outra consulta agendada neste horário");
-        }
 
         if (!Objects.equals(dto.status(), "Pendente")) {
             throw new BusinessException("O status precisa estar como presente");
@@ -162,13 +150,6 @@ public class AgendamentoService {
         return agendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
     }
 
-    public void deletar(Long id) {
-        if (!agendamentoRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Agendamento não encontrado");
-        }
-        agendamentoRepository.deleteById(id);
-    }
-
     public AgendamentoDTO buscarPorId(Long id) {
         return agendamentoRepository.findById(id)
                 .map(agendamentoMapper::toDTO)
@@ -207,10 +188,6 @@ public class AgendamentoService {
         Agendamento agendamento = agendamentoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Agendamento não encontrado"));
 
-//        if (agendamentoRepository.existsByIdAndDataHoraBefore(id, LocalDateTime.now().plusHours(24))) {
-//            throw new BusinessException("Não é permitido cancelar consultas com menos de 24 horas de antecedência");
-//        }
-
         agendamento.setCancelado(true);
         agendamento.setStatus("Cancelado");
         return agendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
@@ -243,7 +220,7 @@ public class AgendamentoService {
                 saida.format("%d;%s;%s;%s;%s;%s\n",
                         agendamento.id(),
                         cliente.getNome(),
-                        cliente.getEmail(),
+                        cliente.getLoginInfo().getEmail(),
                         medico.getNome(),
                         agendamento.dataHora().toString(),
                         servico.getNome());

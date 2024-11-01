@@ -28,14 +28,7 @@ public class FuncionalController {
     @PostMapping
     public ResponseEntity<Funcional> criarFuncional(@RequestBody @Valid FuncionalRequestDto dto) {
 
-        Funcional funcional = dto.toFuncional();
-
-        funcional.setId(null);
-        funcional.setAtivo(true);
-        funcional.setDeletado(false);
-        funcional.setDeletadoEm(null);
-        funcional.setHierarquia(FUNCIONAL);
-        Funcional novoFuncional = funcionalService.salvarFuncional(funcional);
+        Funcional novoFuncional = funcionalService.salvarFuncional(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(novoFuncional);
     }
 

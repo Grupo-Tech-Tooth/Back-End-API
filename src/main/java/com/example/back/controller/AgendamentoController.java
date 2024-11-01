@@ -34,24 +34,24 @@ public class AgendamentoController {
     private AgendamentoService agendamentoService;
 
     @PostMapping
-    public ResponseEntity<AgendamentoDTO> criar(@RequestBody @Valid AgendamentoCreateDTO dto) {
+    public ResponseEntity<AgendamentoDTO> criar(@RequestBody @Valid AgendamentoCreateDTO dto){
         return ResponseEntity.status(HttpStatus.CREATED).body(agendamentoService.criar(dto));
     }
 
     @GetMapping
     public ResponseEntity<List<AgendamentoDTO>> buscarTodos() {
-        return ResponseEntity.ok(agendamentoService.buscarTodosAgendamentos());
+        List<AgendamentoDTO> agendamentos = agendamentoService.buscarTodosAgendamentos();
+
+        if (agendamentos.isEmpty()) {
+            ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(agendamentos);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<AgendamentoDTO> atualizar(@PathVariable Long id, @RequestBody @Valid AgendamentoCreateDTO dto) {
         return ResponseEntity.ok(agendamentoService.atualizar(id, dto));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        agendamentoService.deletar(id);
-        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}")
@@ -96,7 +96,7 @@ public class AgendamentoController {
         return ResponseEntity.ok(agendamentos);
     }
 
-    @PutMapping("/{id}/cancelar")
+    @DeleteMapping("/{id}/cancelar")
     public ResponseEntity<AgendamentoDTO> cancelarConsulta(@PathVariable Long id) {
         return ResponseEntity.ok(agendamentoService.cancelarConsulta(id));
     }

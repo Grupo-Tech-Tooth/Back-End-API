@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -27,11 +28,14 @@ public class ClienteResponseDto {
 
         this.nome = cliente.getNome();
         this.sobrenome = cliente.getSobrenome();
-        this.email = cliente.getEmail();
+        this.email = cliente.getLoginInfo().getEmail();
         this.cpf = cliente.getCpf();
         this.dataNascimento = cliente.getDataNascimento();
         this.genero = cliente.getGenero();
 
     }
 
+    public static List<ClienteResponseDto> converter(List<Cliente> clientes) {
+        return clientes.stream().map(ClienteResponseDto::new).toList();
+    }
 }

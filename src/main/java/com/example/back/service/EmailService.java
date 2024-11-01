@@ -29,7 +29,6 @@ public class EmailService {
         message.setFrom("agendamentos@gmail.com");
 
         javaMailSender.send(message);
-
     }
 
 }
