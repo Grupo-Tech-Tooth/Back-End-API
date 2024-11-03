@@ -102,4 +102,16 @@ public class ClienteController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    //Buscar clientes e seus ultimos agendamentos
+    @GetMapping("/agendamentos")
+    public ResponseEntity<List<ClienteResponseDto>> buscarClientesComUltimosAgendamentos() {
+        List<ClienteResponseDto> clientes = service.buscarClientesComUltimosAgendamentos();
+
+        if (clientes.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(clientes);
+    }
+
 }
