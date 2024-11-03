@@ -243,4 +243,22 @@ public class AgendamentoService {
             }
         }
     }
+
+    public List<LocalDate> buscarDiasLivres(Long medicoId) {
+        Medico medico = medicoRepository.findById(medicoId)
+                .orElseThrow(() -> new ResourceNotFoundException("Médico não encontrado"));
+
+        Optional<Agenda> agendas = agendaRepository.findByMedicoId(medicoId);
+
+        List<LocalDate> diasLivres = new ArrayList<>();
+        LocalDate data = LocalDate.now();
+        for (int i = 0; i < 30; i++) {
+            final LocalDate currentDate = data;
+            if (agendas.stream().noneMatch(agenda -> agenda.getDiaSemana().equals(currentDate.getDayOfWeek()))) {
+                diasLivres.add(currentDate);
+            }
+            data = data.plusDays(1);
+        }
+        return diasLivres;
+    }
 }

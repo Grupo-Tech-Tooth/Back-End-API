@@ -121,4 +121,10 @@ public class AgendamentoController {
     public ResponseEntity<List<Servico>> listarServicos() {
         return ResponseEntity.ok(agendamentoService.listarServicos());
     }
+
+    // EndPoint para buscar os dias livres de um médico
+    @GetMapping("/medico/{medicoId}/dias-livres")
+    public ResponseEntity<List<LocalDate>> buscarDiasLivres(@PathVariable Long medicoId) {
+        return ResponseEntity.ok(agendamentoService.buscarDiasLivres(medicoId));
+    }
 }

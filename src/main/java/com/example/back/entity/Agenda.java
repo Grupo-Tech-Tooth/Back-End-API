@@ -3,6 +3,7 @@ package com.example.back.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,4 +29,9 @@ public class Agenda {
 
     @OneToMany(mappedBy = "agenda", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Agendamento> agendamentos = new ArrayList<>();
+
+    public DayOfWeek getDiaSemana() {
+        // Supondo que a disponibilidade contenha datas e horas, retornamos o dia da semana do primeiro item
+        return disponibilidade.isEmpty() ? null : disponibilidade.get(0).getDayOfWeek();
+    }
 }
