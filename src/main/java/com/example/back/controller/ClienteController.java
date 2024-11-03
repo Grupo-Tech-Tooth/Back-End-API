@@ -36,15 +36,17 @@ public class ClienteController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<Cliente>> listarClientes(Pageable pageable) {
+    public ResponseEntity<List<ClienteResponseDto>> listarClientes() {
 
-        Page<Cliente> clientes = service.listarClientes(pageable);
+        List<Cliente> clientes = service.listarClientes();
+
+        List<ClienteResponseDto> clientesDto = ClienteResponseDto.converter(clientes);
 
         if (clientes.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
 
-        return ResponseEntity.ok(clientes);
+        return ResponseEntity.ok(clientesDto);
     }
 
     @GetMapping("/{id}")

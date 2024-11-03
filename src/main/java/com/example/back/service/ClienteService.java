@@ -34,8 +34,8 @@ public class ClienteService {
         this.loginInfoRepository = loginInfoRepository;
     }
 
-    public Page<Cliente> listarClientes(Pageable pageable) {
-        return clienteRepository.findByLoginInfoDeletadoFalse(pageable);
+    public List<Cliente> listarClientes() {
+        return clienteRepository.findByLoginInfoDeletadoFalse();
     }
 
     public Cliente salvarCliente(SalvarClienteRequestDto dto) {
