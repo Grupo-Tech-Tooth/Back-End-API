@@ -62,8 +62,11 @@ public class DataLoader implements CommandLineRunner {
             funcionalRepository.save(gerente);
         }
 
-        Arrays.stream(Servico.Tipo.values())
-                .forEach(tipoCarteira -> servicoRepository.save(tipoCarteira.getServico()));
+        if (servicoRepository.count() == 0) {
+            Arrays.stream(Servico.Tipo.values())
+                    .forEach(tipoCarteira -> servicoRepository.save(tipoCarteira.getServico()));
+        }
+
     }
 
 }
