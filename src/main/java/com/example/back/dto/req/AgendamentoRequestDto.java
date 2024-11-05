@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class AgendamentoRequestDto {
+public class  AgendamentoRequestDto {
     @NotBlank
     private Cliente cliente;
 

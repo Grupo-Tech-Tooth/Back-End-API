@@ -1,8 +1,11 @@
 package com.example.back.service;
 
+import com.example.back.dto.req.AgendamentoDTO;
+import com.example.back.dto.req.AgendamentoMapper;
 import com.example.back.dto.req.AtualizarClienteRequestDto;
 import com.example.back.dto.req.SalvarClienteRequestDto;
 import com.example.back.dto.res.ClienteResponseDto;
+import com.example.back.entity.Agendamento;
 import com.example.back.entity.Cliente;
 import com.example.back.entity.LoginInfo;
 import com.example.back.infra.execption.ResourceNotFoundException;
@@ -24,14 +27,16 @@ public class ClienteService {
     private final ClienteRepository clienteRepository;
     private final PasswordEncoder passwordEncoder;
     private final LoginInfoRepository loginInfoRepository;
+    private final AgendamentoService agendamentoService;
 
     @Autowired
     public ClienteService(ClienteRepository clienteRepository,
                           PasswordEncoder passwordEncoder,
-                          LoginInfoRepository loginInfoRepository) {
+                          LoginInfoRepository loginInfoRepository, AgendamentoService agendamentoService) {
         this.clienteRepository = clienteRepository;
         this.passwordEncoder = passwordEncoder;
         this.loginInfoRepository = loginInfoRepository;
+        this.agendamentoService = agendamentoService;
     }
 
     public List<Cliente> listarClientes() {
@@ -113,5 +118,24 @@ public class ClienteService {
         }
 
         return cliente;
+    }
+
+    public List<ClienteResponseDto> buscarClientesComUltimosAgendamentos() {
+        List<Cliente> clientesEntidade = clienteRepository.findByLoginInfoDeletadoFalse();
+
+        List<ClienteResponseDto> clientes = ClienteResponseDto.converter(clientesEntidade);
+
+        clientes.forEach(cliente -> {
+            List<Agendamento> agendamentosEntidade = agendamentoService.buscarAgendamentosPorCliente(cliente.getId());
+
+            List<AgendamentoDTO> agendamentos = AgendamentoMapper.converter(agendamentosEntidade);
+
+            if (!agendamentos.isEmpty()) {
+                int lastIndex = agendamentos.size() - 1;
+                cliente.setUltimoAgendamento(agendamentos.get(lastIndex));
+            }
+        });
+
+        return clientes;
     }
 }

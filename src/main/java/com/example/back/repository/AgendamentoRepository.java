@@ -13,6 +13,8 @@ import java.util.List;
 public interface AgendamentoRepository extends JpaRepository<Agendamento, Long> {
     List<Agendamento> findByMedicoId(Long medicoId);
     List<Agendamento> findByClienteId(Long clienteId);
+    // buscar por id do cliente em ordem decrescente, do mais recente para o mais antigo
+    List<Agendamento> findByClienteIdOrderByDataHoraDesc(Long clienteId);
     List<Agendamento> findByDataHoraBetween(LocalDateTime inicio, LocalDateTime fim);
     boolean existsByClienteIdAndDataHoraBetween(Long clienteId, LocalDateTime inicio, LocalDateTime fim);
     boolean existsByMedicoIdAndDataHoraBetween(Long medicoId, LocalDateTime inicio, LocalDateTime fim);

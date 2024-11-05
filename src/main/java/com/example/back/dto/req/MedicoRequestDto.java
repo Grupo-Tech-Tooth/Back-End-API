@@ -11,26 +11,29 @@ import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.br.CPF;
 
 @Getter
 @Setter
 public class MedicoRequestDto {
 
-    @NotBlank
+    @NotBlank(message = "Nome é obrigatório")
     private String nome;
 
-    @NotBlank
+    @NotBlank(message = "Sobrenome é obrigatório")
     private String sobrenome;
 
-    @NotBlank
+    @NotBlank(message = "Email é obrigatório")
     private String email;
 
-    @NotBlank
+    @CPF(message = "CPF inválido")
+    @NotBlank(message = "CPF é obrigatório")
     private String cpf;
 
-    @NotBlank String senha;
+    @NotBlank(message = "Senha é obrigatória")
+    String senha;
 
-    @NotBlank
+    @NotBlank(message = "CRM é obrigatório")
     private String crm;
 
     @Enumerated(EnumType.STRING)
