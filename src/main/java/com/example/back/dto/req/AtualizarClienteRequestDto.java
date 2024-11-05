@@ -10,18 +10,19 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class AtualizarClienteRequestDto {
-    @NotBlank
-    @NotNull
+
+    @NotBlank(message = "O nome não pode ser nulo")
+    @NotNull(message = "O nome não pode ser nulo")
     private String nome;
 
-    @NotBlank
-    @NotNull
+    @NotBlank(message = "O sobrenome não pode ser nulo")
+    @NotNull(message = "O sobrenome não pode ser nulo")
     private String sobrenome;
 
-    @NotNull
+    @NotNull(message = "A data de nascimento não pode ser nula")
     private LocalDate dataNascimento;
 
-    @NotBlank
-    @NotNull
+    @NotBlank(message = "O gênero não pode ser nulo")
+    @NotNull(message = "O gênero não pode ser nulo")
     private String genero;
 }

@@ -36,8 +36,6 @@ public class AgendamentoService {
     @Autowired
     private AgendaRepository agendaRepository;
     @Autowired
-    private AgendamentoMapper agendamentoMapper;
-    @Autowired
     EmailService emailService;
 
     public AgendamentoDTO criar(AgendamentoCreateDTO dto){
@@ -56,7 +54,7 @@ public class AgendamentoService {
         Agenda agenda = agendaRepository.findByMedicoId(medico.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Agenda não encontrada para o médico"));
 
-        Agendamento agendamento = agendamentoMapper.toEntity(dto, cliente, medico, servico, agenda);
+        Agendamento agendamento = AgendamentoMapper.toEntity(dto, cliente, medico, servico, agenda);
         agendamento.setStatus("Pendente");
 
         String mensagem = """
@@ -67,7 +65,7 @@ public class AgendamentoService {
                 Serviço: %s
                 """.formatted(cliente.getNome(), agendamento.getDataHora(), medico.getNome(), servico.getNome());
 
-        return agendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
+        return AgendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
     }
 
     private void    validarRegrasDeNegocio(AgendamentoCreateDTO dto) {
@@ -147,24 +145,24 @@ public class AgendamentoService {
         agendamento.setAgenda(agenda);
         agendamento.setDataHora(dto.dataHora());
 
-        return agendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
+        return AgendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
     }
 
     public AgendamentoDTO buscarPorId(Long id) {
         return agendamentoRepository.findById(id)
-                .map(agendamentoMapper::toDTO)
+                .map(AgendamentoMapper::toDTO)
                 .orElseThrow(() -> new ResourceNotFoundException("Agendamento não encontrado"));
     }
 
     public List<AgendamentoDTO> buscarPorMedico(Long medicoId) {
         return agendamentoRepository.findByMedicoId(medicoId).stream()
-                .map(agendamentoMapper::toDTO)
+                .map(AgendamentoMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
     public List<AgendamentoDTO> buscarPorCliente(Long clienteId) {
         return agendamentoRepository.findByClienteId(clienteId).stream()
-                .map(agendamentoMapper::toDTO)
+                .map(AgendamentoMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
@@ -172,13 +170,13 @@ public class AgendamentoService {
         LocalDateTime inicio = data.atStartOfDay();
         LocalDateTime fim = data.plusDays(1).atStartOfDay();
         return agendamentoRepository.findByDataHoraBetween(inicio, fim).stream()
-                .map(agendamentoMapper::toDTO)
+                .map(AgendamentoMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
     public List<AgendamentoDTO> buscarPorPeriodo(LocalDateTime inicio, LocalDateTime fim) {
         return agendamentoRepository.findByDataHoraBetween(inicio, fim).stream()
-                .map(agendamentoMapper::toDTO)
+                .map(AgendamentoMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
@@ -190,12 +188,12 @@ public class AgendamentoService {
 
         agendamento.setCancelado(true);
         agendamento.setStatus("Cancelado");
-        return agendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
+        return AgendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
     }
 
     public List<AgendamentoDTO> buscarTodosAgendamentos() {
         return agendamentoRepository.findAll().stream()
-                .map(agendamentoMapper::toDTO)
+                .map(AgendamentoMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
@@ -245,6 +243,6 @@ public class AgendamentoService {
     }
 
     public List<Agendamento> buscarAgendamentosPorCliente(Long id) {
-        return agendamentoRepository.findByClienteId(id);
+        return agendamentoRepository.findByClienteIdOrderByDataHoraDesc(id);
     }
 }

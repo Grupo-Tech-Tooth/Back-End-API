@@ -1,5 +1,6 @@
 package com.example.back.dto.res;
 
+import com.example.back.dto.req.AgendamentoDTO;
 import com.example.back.entity.Agendamento;
 import com.example.back.entity.Cliente;
 import lombok.AllArgsConstructor;
@@ -25,7 +26,7 @@ public class ClienteResponseDto {
     private String cpf;
     private LocalDate dataNascimento;
     private String genero;
-    private Agendamento ultimoAgendamento;
+    private AgendamentoDTO ultimoAgendamento;
 
     public ClienteResponseDto(Cliente cliente) {
 

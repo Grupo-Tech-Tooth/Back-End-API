@@ -1,5 +1,7 @@
 package com.example.back.service;
 
+import com.example.back.dto.req.AgendamentoDTO;
+import com.example.back.dto.req.AgendamentoMapper;
 import com.example.back.dto.req.AtualizarClienteRequestDto;
 import com.example.back.dto.req.SalvarClienteRequestDto;
 import com.example.back.dto.res.ClienteResponseDto;
@@ -124,10 +126,13 @@ public class ClienteService {
         List<ClienteResponseDto> clientes = ClienteResponseDto.converter(clientesEntidade);
 
         clientes.forEach(cliente -> {
-            List<Agendamento> agendamentos = agendamentoService.buscarAgendamentosPorCliente(cliente.getId());
+            List<Agendamento> agendamentosEntidade = agendamentoService.buscarAgendamentosPorCliente(cliente.getId());
+
+            List<AgendamentoDTO> agendamentos = AgendamentoMapper.converter(agendamentosEntidade);
+
             if (!agendamentos.isEmpty()) {
-                agendamentos.sort((a1, a2) -> a2.getDataHora().compareTo(a1.getDataHora()));
-                cliente.setUltimoAgendamento(agendamentos.get(0));
+                int lastIndex = agendamentos.size() - 1;
+                cliente.setUltimoAgendamento(agendamentos.get(lastIndex));
             }
         });
 
