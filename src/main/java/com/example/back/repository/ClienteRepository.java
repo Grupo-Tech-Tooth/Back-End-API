@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
     Optional<Cliente> findByCpfAndLoginInfoDeletadoFalse(String cpf);
-    Page<Cliente> findByLoginInfoDeletadoFalse(Pageable pageable);
+    List<Cliente> findByLoginInfoDeletadoFalse();
     Optional<Cliente> findByIdAndLoginInfoDeletadoFalse(Long id);
     List<Cliente> findByLoginInfoDeletadoFalseAndNomeContainingOrSobrenomeContaining(String nome, String sobrenome);
     Optional<Cliente> findByLoginInfoEmailAndLoginInfoDeletadoFalse(String email);
