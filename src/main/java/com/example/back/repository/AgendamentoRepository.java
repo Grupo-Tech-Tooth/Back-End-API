@@ -19,5 +19,5 @@ public interface AgendamentoRepository extends JpaRepository<Agendamento, Long> 
     boolean existsByClienteIdAndDataHoraBetween(Long clienteId, LocalDateTime inicio, LocalDateTime fim);
     boolean existsByMedicoIdAndDataHoraBetween(Long medicoId, LocalDateTime inicio, LocalDateTime fim);
     boolean existsByIdAndDataHoraBefore(Long id, LocalDateTime dateTime);
-
+    List<Agendamento> findByDataHora(LocalDateTime dateTime);
 }
