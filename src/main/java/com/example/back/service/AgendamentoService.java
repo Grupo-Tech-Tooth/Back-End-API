@@ -35,8 +35,6 @@ public class AgendamentoService {
     private ServicoRepository servicoRepository;
     @Autowired
     private AgendaRepository agendaRepository;
-    @Autowired
-    EmailService emailService;
 
     public AgendamentoDTO criar(AgendamentoCreateDTO dto){
         validarRegrasDeNegocio(dto);
@@ -244,5 +242,9 @@ public class AgendamentoService {
 
     public List<Agendamento> buscarAgendamentosPorCliente(Long id) {
         return agendamentoRepository.findByClienteIdOrderByDataHoraDesc(id);
+    }
+
+    List<Agendamento> obterConsultasPorData(LocalDateTime data) {
+        return agendamentoRepository.findByDataHora(data);
     }
 }
