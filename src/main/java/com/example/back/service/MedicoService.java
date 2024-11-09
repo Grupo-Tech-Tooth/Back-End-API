@@ -4,6 +4,7 @@ import com.example.back.dto.req.MedicoRequestDto;
 import com.example.back.entity.LoginInfo;
 import com.example.back.entity.Medico;
 import com.example.back.infra.execption.UsuarioExistenteException;
+import com.example.back.repository.AgendaRepository;
 import com.example.back.repository.LoginInfoRepository;
 import com.example.back.repository.MedicoRepository;
 import com.example.back.strategy.Comissao;

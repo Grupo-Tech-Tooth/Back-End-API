@@ -1,7 +1,9 @@
 package com.example.back.controller;
 
 import com.example.back.dto.req.MedicoRequestDto;
+import com.example.back.entity.Agenda;
 import com.example.back.entity.Medico;
+import com.example.back.repository.AgendaRepository;
 import com.example.back.service.MedicoService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -24,9 +26,17 @@ public class MedicoController {
     @Autowired
     private MedicoService medicoService;
 
+    @Autowired
+    private AgendaRepository agendaRepository;
+
     @PostMapping
     public ResponseEntity<Medico> criarMedico(@RequestBody @Valid MedicoRequestDto dto) {
         Medico novoMedico = medicoService.salvarMedico(dto);
+        Agenda agenda = new Agenda();
+        agenda.setMedico(novoMedico);
+
+        agendaRepository.save(agenda);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(novoMedico);
     }
 
