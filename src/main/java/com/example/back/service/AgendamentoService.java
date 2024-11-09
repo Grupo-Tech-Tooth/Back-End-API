@@ -164,12 +164,10 @@ public class AgendamentoService {
                 .collect(Collectors.toList());
     }
 
-    public List<AgendamentoDTO> buscarPorData(LocalDate data) {
+    public List<Agendamento> buscarPorData(LocalDate data) {
         LocalDateTime inicio = data.atStartOfDay();
         LocalDateTime fim = data.plusDays(1).atStartOfDay();
-        return agendamentoRepository.findByDataHoraBetween(inicio, fim).stream()
-                .map(AgendamentoMapper::toDTO)
-                .collect(Collectors.toList());
+        return agendamentoRepository.findByDataHoraBetween(inicio, fim);
     }
 
     public List<AgendamentoDTO> buscarPorPeriodo(LocalDateTime inicio, LocalDateTime fim) {
@@ -242,9 +240,5 @@ public class AgendamentoService {
 
     public List<Agendamento> buscarAgendamentosPorCliente(Long id) {
         return agendamentoRepository.findByClienteIdOrderByDataHoraDesc(id);
-    }
-
-    List<Agendamento> obterConsultasPorData(LocalDateTime data) {
-        return agendamentoRepository.findByDataHora(data);
     }
 }
