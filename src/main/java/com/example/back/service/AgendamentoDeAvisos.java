@@ -8,8 +8,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Component
 public class AgendamentoDeAvisos {
+
+    private static final Logger log = LoggerFactory.getLogger(AgendamentoDeAvisos.class);
 
     @Autowired
     private AgendamentoService agendamentoService;
@@ -18,12 +23,15 @@ public class AgendamentoDeAvisos {
     private EmailService emailService;
 
     // Executa diariamente às 8h para avisar sobre consultas de amanhã
-    @Scheduled(cron = "0 0 8 * * *")
+    @Scheduled(cron = "0 0 8 * * *", zone = "America/Sao_Paulo")
     public void enviarAvisosUmDiaAntes() {
-        LocalDateTime dataDeAmanha = LocalDateTime.now().plusDays(1);
+
+        log.info("Enviando avisos de consultas do dia seguinte");
+
+        LocalDate dataDeAmanha = LocalDate.now().plusDays(1);
 
         // Obter consultas do dia seguinte
-        List<Agendamento> consultasDeAmanha = agendamentoService.obterConsultasPorData(dataDeAmanha);
+        List<Agendamento> consultasDeAmanha = agendamentoService.buscarPorData(dataDeAmanha);
 
         // Enviar e-mail para cada cliente
         for (Agendamento consulta : consultasDeAmanha) {
@@ -39,12 +47,15 @@ public class AgendamentoDeAvisos {
     }
 
     // Executa diariamente às 7h para avisar sobre consultas do dia
-    @Scheduled(cron = "0 0 7 * * *")
+    @Scheduled(cron = "0 0 7 * * *", zone = "America/Sao_Paulo")
     public void enviarAvisosNoDia() {
-        LocalDateTime dataDeHoje = LocalDateTime.now();
+
+        log.info("Enviando avisos de consultas do dia");
+
+        LocalDate dataDeHoje = LocalDate.now();
 
         // Obter consultas do dia
-        List<Agendamento> consultasDeHoje = agendamentoService.obterConsultasPorData(dataDeHoje);
+        List<Agendamento> consultasDeHoje = agendamentoService.buscarPorData(dataDeHoje);
 
         // Enviar e-mail para cada cliente
         for (Agendamento consulta : consultasDeHoje) {

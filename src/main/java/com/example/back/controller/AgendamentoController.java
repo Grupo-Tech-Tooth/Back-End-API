@@ -2,6 +2,7 @@ package com.example.back.controller;
 
 import com.example.back.dto.req.AgendamentoCreateDTO;
 import com.example.back.dto.req.AgendamentoDTO;
+import com.example.back.dto.req.AgendamentoMapper;
 import com.example.back.entity.Servico;
 import com.example.back.service.AgendamentoService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -22,6 +23,7 @@ import org.springframework.core.io.InputStreamResource;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/agendamentos")
@@ -71,7 +73,9 @@ public class AgendamentoController {
 
     @GetMapping("/data")
     public ResponseEntity<List<AgendamentoDTO>> buscarPorData(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data) {
-        return ResponseEntity.ok(agendamentoService.buscarPorData(data));
+        return ResponseEntity.ok(agendamentoService.buscarPorData(data).stream()
+                .map(AgendamentoMapper::toDTO)
+                .collect(Collectors.toList()));
     }
 
     @GetMapping("/periodo")
