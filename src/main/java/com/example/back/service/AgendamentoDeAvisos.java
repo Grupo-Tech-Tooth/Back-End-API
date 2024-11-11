@@ -42,7 +42,7 @@ public class AgendamentoDeAvisos {
                     nomeCliente, consulta.getDataHora().toLocalTime()
             );
 
-            emailService.sendEmail("toretomarcos50@gmail.com", "Lembrete: Consulta Amanhã", mensagem);
+            emailService.sendEmail(email, "Lembrete: Consulta Amanhã", mensagem);
         }
     }
 
@@ -66,7 +66,7 @@ public class AgendamentoDeAvisos {
                     nomeCliente, consulta.getDataHora().toLocalTime()
             );
 
-            emailService.sendEmail("toretomarcos50@gmail.com", "Lembrete: Consulta Hoje", mensagem);
+            emailService.sendEmail(email, "Lembrete: Consulta Hoje", mensagem);
         }
     }
 }
