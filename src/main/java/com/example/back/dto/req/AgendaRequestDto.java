@@ -16,12 +16,12 @@ import java.util.List;
 @Setter
 public class AgendaRequestDto {
 
-    @NotBlank
+    @NotBlank(message = "O medico não pode ser nulo")
     private Medico medico;
 
     private List<LocalDateTime> disponibilidade;
 
-    @NotBlank
+    @NotBlank(message = "O status não pode estar em branco")
     private List<Agendamento> agendamentos;
 
 }

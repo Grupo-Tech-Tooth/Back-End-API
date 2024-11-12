@@ -20,7 +20,7 @@ public class FuncionalRequestDto {
     private String email;
 
     @CPF(message = "CPF inválido")
-    @NotBlank
+    @NotBlank(message = "CPF não pode ser vazio")
     private String cpf;
 
     @NotBlank(message = "Departamento não pode ser vazio")
