@@ -43,7 +43,6 @@ public class AgendamentoDeAvisos {
                     "Olá %s, lembramos que você tem uma consulta agendada para amanhã às %s.",
                     nomeCliente, consulta.getDataHora().toLocalTime()
             );
-
             try {
                 Context context = new Context();
                 context.setVariable("nome", consulta.getCliente().getNome());
