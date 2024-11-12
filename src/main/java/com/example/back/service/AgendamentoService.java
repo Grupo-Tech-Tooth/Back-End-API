@@ -8,6 +8,8 @@ import com.example.back.infra.execption.BusinessException;
 import com.example.back.infra.execption.ResourceNotFoundException;
 import com.example.back.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,21 +38,36 @@ public class AgendamentoService {
     @Autowired
     private AgendaRepository agendaRepository;
 
+    private static final Logger log = LoggerFactory.getLogger(AgendamentoService.class);
+
     public AgendamentoDTO criar(AgendamentoCreateDTO dto){
         validarRegrasDeNegocio(dto);
 
         Cliente cliente = clienteRepository.findById(dto.clienteId())
-                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
+                .orElseThrow(() -> {
+                    new ResourceNotFoundException("Cliente não encontrado");
+                    log.error("Cliente não encontrado");
+                    return null;
+                });
 
         Medico medico = dto.medicoId() != null
-                ? medicoRepository.findById(dto.medicoId()).orElseThrow(() -> new ResourceNotFoundException("Médico não encontrado"))
+                ? medicoRepository.findById(dto.medicoId()).orElseThrow(() -> {
+                    log.error("Médico não encontrado");
+                    throw  new ResourceNotFoundException("Médico não encontrado");
+        })
                 : escolherMedicoAleatorio(dto.dataHora(), dto);
 
         Servico servico = servicoRepository.findById(dto.servicoId())
-                .orElseThrow(() -> new ResourceNotFoundException("Serviço não encontrado"));
+                .orElseThrow(() -> {
+                    log.error("Serviço não encontrado");
+                    throw new ResourceNotFoundException("Serviço não encontrado");
+                });
 
         Agenda agenda = agendaRepository.findByMedicoId(medico.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Agenda não encontrada para o médico"));
+                .orElseThrow(() -> {
+                    log.error("Agenda não encontrada para o médico");
+                    throw new ResourceNotFoundException("Agenda não encontrada para o médico");
+                });
 
         Agendamento agendamento = AgendamentoMapper.toEntity(dto, cliente, medico, servico, agenda);
         agendamento.setStatus("Pendente");
@@ -72,34 +89,42 @@ public class AgendamentoService {
         DayOfWeek diaSemana = dataHora.getDayOfWeek();
 
         if (diaSemana == DayOfWeek.SUNDAY || hora.isBefore(LocalTime.of(7, 0)) || hora.isAfter(LocalTime.of(19, 0))) {
+            log.error("Horário de funcionamento da clínica é de segunda a sábado, das 07:00 às 19:00");
             throw new BusinessException("Horário de funcionamento da clínica é de segunda a sábado, das 07:00 às 19:00");
         }
 
         if (hora.isAfter(LocalTime.of(12, 0)) && hora.isBefore(LocalTime.of(13, 0))) {
+            log.error("Horário de almoço indisponível para agendamento");
             throw new BusinessException("Horário de almoço indisponível para agendamento");
         }
 
         if (dataHora.isBefore(LocalDateTime.now().plusMinutes(30))) {
+            log.error("As consultas devem ser agendadas com antecedência mínima de 30 minutos");
             throw new BusinessException("As consultas devem ser agendadas com antecedência mínima de 30 minutos");
         }
 
         Cliente cliente = clienteRepository.findById(dto.clienteId())
                 .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
         if (!cliente.getLoginInfo().getAtivo()) {
+            log.error("Não é permitido agendar consultas para clientes inativos");
             throw new BusinessException("Não é permitido agendar consultas para clientes inativos");
         }
 
         if (dto.medicoId() != null) {
             Medico medico = medicoRepository.findById(dto.medicoId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Médico não encontrado"));
+                    .orElseThrow(() -> {
+                        log.error("Médico não encontrado");
+                        throw new ResourceNotFoundException("Médico não encontrado");
+                    });
+
             if (!medico.getLoginInfo().getAtivo()) {
+                log.error("Não é permitido agendar consultas com médicos inativos");
                 throw new BusinessException("Não é permitido agendar consultas com médicos inativos");
             }
         }
 
         Servico servico = servicoRepository.findById(dto.servicoId())
                 .orElseThrow(() -> new ResourceNotFoundException("Serviço não encontrado"));
-        LocalDateTime fimConsulta = dataHora.plusMinutes(servico.getDuracaoMinutos());
 
         if (!Objects.equals(dto.status(), "Pendente")) {
             throw new BusinessException("O status precisa estar como presente");
