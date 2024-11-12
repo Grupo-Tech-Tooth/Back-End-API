@@ -5,6 +5,7 @@ import com.example.back.dto.req.AgendamentoMapper;
 import com.example.back.dto.req.AtualizarClienteRequestDto;
 import com.example.back.dto.req.SalvarClienteRequestDto;
 import com.example.back.dto.res.ClienteResponseDto;
+import com.example.back.dto.res.FluxoSemanal;
 import com.example.back.entity.Agendamento;
 import com.example.back.entity.Cliente;
 import com.example.back.entity.LoginInfo;
@@ -17,9 +18,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ClienteService {
@@ -137,5 +143,41 @@ public class ClienteService {
         });
 
         return clientes;
+    }
+
+    public FluxoSemanal buscarFluxoMensal() {
+        // Define o intervalo para o mês atual
+        LocalDateTime inicioDoMesDateTime = LocalDateTime.now().withDayOfMonth(1);
+        LocalDateTime fimDoMesDateTime = inicioDoMesDateTime.plusMonths(1).minusDays(1);
+        // Busca todas as consultas do mês atual
+        List<AgendamentoDTO> consultas = agendamentoService.buscarPorPeriodo(inicioDoMesDateTime, fimDoMesDateTime);
+
+        // Cria uma lista com as datas das consultas
+        List<LocalDateTime> datas = consultas.stream()
+                .map(AgendamentoDTO::dataHora)
+                .collect(Collectors.toList());
+
+        // Cria um mapa com a quantidade de consultas por dia da semana
+        Map<DayOfWeek, Long> consultasPorDiaDaSemana = datas.stream()
+                .collect(Collectors.groupingBy(
+                        LocalDateTime::getDayOfWeek,
+                        Collectors.counting()
+                ));
+
+        // Cria uma lista com a quantidade de consultas por dia da semana (ordenada)
+        List<Integer> consultasPorDiaDaSemanaList = Arrays.stream(DayOfWeek.values())
+                .map(diaDaSemana -> consultasPorDiaDaSemana.getOrDefault(diaDaSemana, 0L).intValue())
+                .collect(Collectors.toList());
+
+        // Cria um objeto FluxoSemanal com a quantidade de consultas por dia da semana
+        return new FluxoSemanal(
+                consultasPorDiaDaSemanaList.get(0),
+                consultasPorDiaDaSemanaList.get(1),
+                consultasPorDiaDaSemanaList.get(2),
+                consultasPorDiaDaSemanaList.get(3),
+                consultasPorDiaDaSemanaList.get(4),
+                consultasPorDiaDaSemanaList.get(5),
+                consultasPorDiaDaSemanaList.get(6)
+        );
     }
 }
