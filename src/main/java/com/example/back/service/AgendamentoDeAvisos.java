@@ -8,6 +8,7 @@ import org.thymeleaf.context.Context;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -24,7 +25,6 @@ public class AgendamentoDeAvisos {
     @Autowired
     private EmailService emailService;
 
-    // Executa diariamente às 8h para avisar sobre consultas de amanhã
     @Scheduled(cron = "0 0 8 * * *", zone = "America/Sao_Paulo")
     public void enviarAvisosUmDiaAntes() {
 
@@ -32,34 +32,27 @@ public class AgendamentoDeAvisos {
 
         LocalDate dataDeAmanha = LocalDate.now().plusDays(1);
 
-        // Obter consultas do dia seguinte
         List<Agendamento> consultasDeAmanha = agendamentoService.buscarPorData(dataDeAmanha);
 
-        // Enviar e-mail para cada cliente
         for (Agendamento consulta : consultasDeAmanha) {
             String email = consulta.getCliente().getLoginInfo().getEmail();
-            String nomeCliente = consulta.getCliente().getNome();
-            String mensagem = String.format(
-                    "Olá %s, lembramos que você tem uma consulta agendada para amanhã às %s.",
-                    nomeCliente, consulta.getDataHora().toLocalTime()
-            );
             try {
                 Context context = new Context();
                 context.setVariable("nome", consulta.getCliente().getNome());
-                context.setVariable("dia", consulta.getDataHora().toLocalDate());
-                context.setVariable("medico", consulta.getMedico());
+                context.setVariable("dia", consulta.getDataHora().toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                context.setVariable("medico", consulta.getMedico().getNome());
 
 
                 emailService.sendHtmlEmail(
-                        "toretomarcos50@gmail.com",
+                        email,
                         "Lembrete: Consulta Hoje",
-                        "email",
+                        "email-template",
                         context
                 );
 
                 System.out.println("E-mail enviado para: " + consulta.getCliente().getLoginInfo().getEmail());
             } catch (MessagingException e) {
-                System.err.println("Erro ao enviar e-mail: " + e.getMessage());
+                log.error("Erro ao enviar e-mail: " + e.getMessage());
             }
         }
     }
@@ -75,19 +68,18 @@ public class AgendamentoDeAvisos {
             try {
                 Context context = new Context();
                 context.setVariable("nome", consulta.getCliente().getNome());
-                context.setVariable("dia", consulta.getDataHora().toLocalDate());
-                context.setVariable("medico", consulta.getMedico());
+                context.setVariable("dia", consulta.getDataHora().toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                context.setVariable("medico", consulta.getMedico().getNome());
 
                 emailService.sendHtmlEmail(
-                        "toretomarcos50@gmail.com",
+                        consulta.getCliente().getLoginInfo().getEmail(),
                         "Lembrete: Consulta Hoje",
-                        "email",
+                        "email-template",
                         context
                 );
 
-                System.out.println("E-mail enviado para: " + consulta.getCliente().getLoginInfo().getEmail());
             } catch (MessagingException e) {
-                System.err.println("Erro ao enviar e-mail: " + e.getMessage());
+                log.error("Erro ao enviar e-mail: " + e.getMessage());
             }
         }
     }
