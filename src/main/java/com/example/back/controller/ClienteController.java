@@ -4,6 +4,7 @@ package com.example.back.controller;
 import com.example.back.dto.req.AtualizarClienteRequestDto;
 import com.example.back.dto.req.SalvarClienteRequestDto;
 import com.example.back.dto.res.ClienteResponseDto;
+import com.example.back.dto.res.FluxoSemanal;
 import com.example.back.entity.Cliente;
 import com.example.back.service.ClienteService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -112,6 +113,17 @@ public class ClienteController {
         }
 
         return ResponseEntity.ok(clientes);
+    }
+
+    @GetMapping("/fluxo-mensal")
+    public ResponseEntity<FluxoSemanal> buscarFluxoMensal() {
+        FluxoSemanal fluxoMensal = service.buscarFluxoMensal();
+
+        if (fluxoMensal == null) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(fluxoMensal);
     }
 
 }

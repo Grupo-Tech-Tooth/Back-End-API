@@ -5,6 +5,7 @@ import com.example.back.dto.req.AgendamentoMapper;
 import com.example.back.dto.req.AtualizarClienteRequestDto;
 import com.example.back.dto.req.SalvarClienteRequestDto;
 import com.example.back.dto.res.ClienteResponseDto;
+import com.example.back.dto.res.FluxoSemanal;
 import com.example.back.entity.Agendamento;
 import com.example.back.entity.Cliente;
 import com.example.back.entity.LoginInfo;
@@ -17,9 +18,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ClienteService {
@@ -138,4 +144,36 @@ public class ClienteService {
 
         return clientes;
     }
+
+    public FluxoSemanal buscarFluxoMensal() {
+        // Define o intervalo para o mês atual
+        LocalDateTime inicioDoMesDateTime = LocalDateTime.now().withDayOfMonth(1);
+        LocalDateTime fimDoMesDateTime = inicioDoMesDateTime.plusMonths(1).minusDays(1);
+        List<AgendamentoDTO> consultas = agendamentoService.buscarPorPeriodo(inicioDoMesDateTime, fimDoMesDateTime);
+
+        // Mapeia os horários das consultas
+        List<LocalDateTime> datas = consultas.stream()
+                .map(AgendamentoDTO::dataHora)
+                .collect(Collectors.toList());
+
+        // Conta as consultas por dia da semana
+        Map<DayOfWeek, Long> consultasPorDiaDaSemana = datas.stream()
+                .collect(Collectors.groupingBy(
+                        LocalDateTime::getDayOfWeek,
+                        Collectors.counting()
+                ));
+
+        // Preenche a DTO diretamente, organizando por ordem de domingo a sábado
+        return new FluxoSemanal(
+                consultasPorDiaDaSemana.getOrDefault(DayOfWeek.SUNDAY, 0L).intValue(),
+                consultasPorDiaDaSemana.getOrDefault(DayOfWeek.MONDAY, 0L).intValue(),
+                consultasPorDiaDaSemana.getOrDefault(DayOfWeek.TUESDAY, 0L).intValue(),
+                consultasPorDiaDaSemana.getOrDefault(DayOfWeek.WEDNESDAY, 0L).intValue(),
+                consultasPorDiaDaSemana.getOrDefault(DayOfWeek.THURSDAY, 0L).intValue(),
+                consultasPorDiaDaSemana.getOrDefault(DayOfWeek.FRIDAY, 0L).intValue(),
+                consultasPorDiaDaSemana.getOrDefault(DayOfWeek.SATURDAY, 0L).intValue()
+        );
+    }
+
+
 }
