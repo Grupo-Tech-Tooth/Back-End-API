@@ -1,5 +1,7 @@
 package com.example.back.dto.req;
 
+import lombok.Getter;
+
 import java.time.LocalDateTime;
 
 public record AgendamentoDTO(
