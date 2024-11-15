@@ -4,6 +4,7 @@ import com.example.back.dto.req.AgendamentoCreateDTO;
 import com.example.back.dto.req.AgendamentoDTO;
 import com.example.back.dto.req.AgendamentoMapper;
 import com.example.back.entity.Servico;
+import com.example.back.observer.LoggerObserver;
 import com.example.back.service.AgendamentoService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -34,6 +35,8 @@ public class AgendamentoController {
 
     @Autowired
     private AgendamentoService agendamentoService;
+    @Autowired
+    private LoggerObserver loggerObserver;
 
     @PostMapping
     public ResponseEntity<AgendamentoDTO> criar(@RequestBody @Valid AgendamentoCreateDTO dto){
@@ -45,7 +48,8 @@ public class AgendamentoController {
         List<AgendamentoDTO> agendamentos = agendamentoService.buscarTodosAgendamentos();
 
         if (agendamentos.isEmpty()) {
-            ResponseEntity.notFound().build();
+            loggerObserver.logBusinessException("Nenhum agendamento encontrado");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
         return ResponseEntity.ok(agendamentos);
@@ -94,7 +98,8 @@ public class AgendamentoController {
         List<AgendamentoDTO> agendamentos = agendamentoService.buscarPorPeriodo(inicio, fim);
 
         if (agendamentos.isEmpty()) {
-            ResponseEntity.notFound().build();
+            loggerObserver.logBusinessException("Nenhum agendamento encontrado para o período: " + inicio + " a " + fim);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
         return ResponseEntity.ok(agendamentos);
