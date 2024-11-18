@@ -81,4 +81,47 @@ public class FuncionalController {
         }
 
     }
+
+    @GetMapping("/email")
+    public ResponseEntity<List<Funcional>> buscarPorEmail(
+            @RequestParam String email
+    ){
+
+        List<Funcional> funcionals = funcionalService.buscarPorEmail(email);
+
+        if (funcionals.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }else {
+            return ResponseEntity.ok(funcionals);
+        }
+    }
+
+    @GetMapping("/cpf")
+    public ResponseEntity<List<Funcional>> buscarPorCpf(
+            @RequestParam String cpf
+    ){
+
+        List<Funcional> funcionals = funcionalService.buscarPorCpf(cpf);
+
+        if (funcionals.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }else {
+            return ResponseEntity.ok(funcionals);
+        }
+    }
+
+    @GetMapping("/departamento")
+    public ResponseEntity<List<Funcional>> buscarPorDepartamento(
+            @RequestParam String departamento
+    ){
+
+        List<Funcional> funcionals = funcionalService.buscarPorDepartamento(departamento);
+
+        if (funcionals.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }else {
+            return ResponseEntity.ok(funcionals);
+        }
+    }
+
 }

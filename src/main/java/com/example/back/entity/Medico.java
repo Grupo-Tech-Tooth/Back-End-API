@@ -24,7 +24,7 @@ public class Medico extends Funcionario {
     private Comissao comissao;
 
     public double calcularComissao(double valorServico) {
-        double comissaoBase = comissao.calcularComissao(valorServico);
+        double comissaoBase = valorServico;
         double percentualEspecializacao = especializacao.getPercentualComissao();
         return valorServico * (percentualEspecializacao / 100) + comissaoBase;
     }

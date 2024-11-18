@@ -33,6 +33,21 @@ public abstract class Usuario {
     @Column(name = "cpf")
     private String cpf;
 
+    @Column(name = "data_nascimento")
+    private LocalDate dataNascimento;
+
+    @Column(name = "telefone")
+    private String telefone;
+
+    @Column(name = "genero")
+    private String genero;
+
+    @Column(name = "cep")
+    private String cep;
+
+    @Column(name = "numero_residencia")
+    private Integer numeroResidencia;
+
     public Long getId() {
         return id;
     }
@@ -65,4 +80,43 @@ public abstract class Usuario {
         this.cpf = cpf;
     }
 
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDatNascimento(LocalDate dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public String getGenero() {
+        return genero;
+    }
+
+    public void setGenero(String genero) {
+        this.genero = genero;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
+
+    public Integer getNumeroResidencia() {
+        return numeroResidencia;
+    }
+
+    public void setNumeroResidencia(Integer numeroResidencia) {
+        this.numeroResidencia = numeroResidencia;
+    }
 }
