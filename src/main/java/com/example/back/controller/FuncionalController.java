@@ -45,14 +45,11 @@ public class FuncionalController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Funcional> atualizarFuncional(@PathVariable Long id, @RequestBody Funcional funcionalAtualizado) {
-        Optional<Funcional> funcionalExistente = funcionalService.buscarFuncionalPorId(id);
-        if (funcionalExistente.isPresent()) {
-            Funcional atualizado = funcionalService.atualizarFuncional(funcionalAtualizado);
-            return ResponseEntity.ok(atualizado);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<Funcional> atualizarFuncional(@PathVariable Long id, @RequestBody FuncionalRequestDto funcionalAtualizado) {
+
+        Funcional funcional = funcionalService.atualizarFuncional(id, funcionalAtualizado);
+        return ResponseEntity.ok(funcional);
+
     }
 
     @DeleteMapping("/{id}")
