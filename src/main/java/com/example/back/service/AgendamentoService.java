@@ -264,6 +264,10 @@ public class AgendamentoService {
     }
 
     public List<Agendamento> buscarAgendamentosPorCliente(Long id) {
+        return agendamentoRepository.findAllByClienteIdOrderByDataHoraDesc(id);
+    }
+
+    public AgendamentoDTO buscarUltimoAgendamentoDeCliente(Long id) {
         return agendamentoRepository.findByClienteIdOrderByDataHoraDesc(id);
     }
 }

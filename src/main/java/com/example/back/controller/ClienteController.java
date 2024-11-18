@@ -103,6 +103,15 @@ public class ClienteController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/telefone")
+    public ResponseEntity<ClienteResponseDto> buscarClientePorTelefone(@RequestParam String telefone){
+        Optional<Cliente> cliente = service.buscarClientePorTelefone(telefone);
+
+        return cliente.map(ClienteResponseDto::new)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     //Buscar clientes e seus ultimos agendamentos
     @GetMapping("/agendamentos")
     public ResponseEntity<List<ClienteResponseDto>> buscarClientesComUltimosAgendamentos() {

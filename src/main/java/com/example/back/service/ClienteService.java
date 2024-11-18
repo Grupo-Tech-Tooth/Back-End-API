@@ -93,6 +93,17 @@ public class ClienteService {
         clienteDb.setNome(dto.getNome());
         clienteDb.setSobrenome(dto.getSobrenome());
         clienteDb.setGenero(dto.getGenero());
+        clienteDb.setCep(dto.getCep());
+        clienteDb.setCpf(dto.getCpf());
+        clienteDb.setDataNascimento(dto.getDataNascimento());
+        clienteDb.setNumeroResidencia(dto.getNumeroResidencia());
+        clienteDb.setTelefone(dto.getTelefone());
+        clienteDb.setAlergias(dto.getAlergias());
+        clienteDb.setMedicamentos(dto.getMedicamentos());
+        clienteDb.setMedicoResponsavel(dto.getMedicoResponsavel());
+
+        LoginInfo loginInfo = clienteDb.getLoginInfo();
+        loginInfo.setEmail(dto.getEmail());
 
         Cliente clienteAtualizado = clienteRepository.save(clienteDb);
         return new ClienteResponseDto(clienteAtualizado);
@@ -117,6 +128,16 @@ public class ClienteService {
 
     public Optional<Cliente> buscarClientePorEmail(String email) {
         Optional<Cliente> cliente = clienteRepository.findByLoginInfoEmailAndLoginInfoDeletadoFalse(email);
+
+        if (cliente.isEmpty()) {
+            throw new ResourceNotFoundException("Cliente não encontrado");
+        }
+
+        return cliente;
+    }
+
+    public Optional<Cliente> buscarClientePorTelefone(String telefone) {
+        Optional<Cliente> cliente = clienteRepository.findByTelefoneAndLoginInfoDeletadoFalse(telefone);
 
         if (cliente.isEmpty()) {
             throw new ResourceNotFoundException("Cliente não encontrado");
