@@ -1,6 +1,7 @@
 package com.example.back.controller;
 
 import com.example.back.dto.req.FuncionalRequestDto;
+import com.example.back.dto.res.FuncionalResponseDto;
 import com.example.back.entity.Funcional;
 import com.example.back.entity.Medico;
 import com.example.back.service.FuncionalService;
@@ -33,9 +34,12 @@ public class FuncionalController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Funcional>> listarFuncionais() {
+    public ResponseEntity<List<FuncionalResponseDto>> listarFuncionais() {
         List<Funcional> funcionais = funcionalService.listarFuncionais();
-        return funcionais.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(funcionais);
+
+        List<FuncionalResponseDto> funcionaisResponseDto = FuncionalResponseDto.converter(funcionais);
+
+        return funcionais.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(funcionaisResponseDto);
     }
 
     @GetMapping("/{id}")
@@ -45,10 +49,13 @@ public class FuncionalController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Funcional> atualizarFuncional(@PathVariable Long id, @RequestBody FuncionalRequestDto funcionalAtualizado) {
+    public ResponseEntity<FuncionalResponseDto> atualizarFuncional(@PathVariable Long id, @RequestBody FuncionalRequestDto funcionalAtualizado) {
 
         Funcional funcional = funcionalService.atualizarFuncional(id, funcionalAtualizado);
-        return ResponseEntity.ok(funcional);
+
+        FuncionalResponseDto funcionalResponseDto = new FuncionalResponseDto(funcional);
+
+        return ResponseEntity.ok(funcionalResponseDto);
 
     }
 
