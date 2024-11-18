@@ -75,6 +75,11 @@ public class AgendamentoController {
         return ResponseEntity.ok(agendamentoService.buscarPorCliente(clienteId));
     }
 
+    @GetMapping("/cliente/agendamento/{clienteId}")
+    public ResponseEntity<AgendamentoDTO> buscarUltimoAgendamentoDeCliente(@PathVariable Long clienteId) {
+        return ResponseEntity.ok(agendamentoService.buscarUltimoAgendamentoDeCliente(clienteId));
+    }
+
     @GetMapping("/data")
     public ResponseEntity<List<AgendamentoDTO>> buscarPorData(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data) {
         return ResponseEntity.ok(agendamentoService.buscarPorData(data).stream()
