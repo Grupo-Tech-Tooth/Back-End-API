@@ -56,8 +56,28 @@ public class FuncionalService {
         return funcionalRepository.findByIdAndLoginInfo_AtivoTrue(id);
     }
 
-    public Funcional atualizarFuncional(Funcional funcional) {
-        return funcionalRepository.save(funcional);
+    public Funcional atualizarFuncional(Long id, FuncionalRequestDto funcional) {
+
+        Funcional funcionalDb = funcionalRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Funcional não encontrado"));
+
+        funcionalDb.setNome(funcional.getNome());
+        funcionalDb.setSobrenome(funcional.getSobrenome());
+        funcionalDb.setCpf(funcional.getCpf());
+        funcionalDb.setDepartamento(funcional.getDepartamento());
+        funcionalDb.setDataNascimento(funcional.getDataNascimento());
+        funcionalDb.setTelefone(funcional.getTelefone());
+        funcionalDb.setGenero(funcional.getGenero());
+        funcionalDb.setCep(funcional.getCep());
+        funcionalDb.setNumeroResidencia(funcional.getNumeroResidencia());
+
+        LoginInfo loginInfo = funcionalDb.getLoginInfo();
+        loginInfo.setEmail(funcional.getEmail());
+        loginInfo.setSenha(passwordEncoder.encode(funcional.getSenha()));
+        loginInfoRepository.save(loginInfo);
+
+        return funcionalRepository.save(funcionalDb);
+
     }
 
     public void deletarFuncional(Long id) {
