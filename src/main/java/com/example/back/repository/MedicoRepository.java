@@ -29,4 +29,8 @@ public interface MedicoRepository extends JpaRepository<Medico, Long> {
     Optional<Medico> findByIdAndLoginInfo_DeletadoFalse(Long id);
 
     List<Medico> findByLoginInfo_DeletadoFalseAndNomeContainingOrSobrenomeContainingIgnoreCase(String nome, String sobrenome);
+
+    List<Medico> findByLoginInfo_DeletadoFalseAndLoginInfo_EmailContainingIgnoreCase(String email);
+
+    List<Medico> findByLoginInfo_DeletadoFalseAndCpfContainingIgnoreCase(String cpf);
 }

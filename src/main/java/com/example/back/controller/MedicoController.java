@@ -78,7 +78,34 @@ public class MedicoController {
         } else {
             return ResponseEntity.ok(medicos);
         }
+    }
 
+    @GetMapping("/email")
+    public ResponseEntity<List<Medico>> buscarPorEmail(
+            @RequestParam String email
+    ){
+
+        List<Medico> medicos = medicoService.buscarPorEmail(email);
+
+        if (medicos.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }else {
+            return ResponseEntity.ok(medicos);
+        }
+    }
+
+    @GetMapping("/cpf")
+    public ResponseEntity<List<Medico>> buscarPorCpf(
+            @RequestParam String cpf
+    ){
+
+        List<Medico> medicos = medicoService.buscarPorCf(cpf);
+
+        if (medicos.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }else {
+            return ResponseEntity.ok(medicos);
+        }
     }
 
     @GetMapping("/{id}/comissao")

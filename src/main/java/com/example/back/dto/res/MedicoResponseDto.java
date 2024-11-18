@@ -23,6 +23,11 @@ public class MedicoResponseDto {
     private String sobrenome;
     private String email;
     private String cpf;
+    private LocalDate dataNascimento;
+    private String telefone;
+    private String genero;
+    private String cep;
+    private String numeroResidencia;
     private String crm;
     private EspecializacaoOdontologica especializacao;
     private Boolean ativo;

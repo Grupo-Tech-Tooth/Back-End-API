@@ -77,4 +77,16 @@ public class FuncionalService {
     public List<Funcional> buscarPorNomeOuSobrenome(String nome, String sobrenome) {
         return funcionalRepository.findByLoginInfo_AtivoTrueAndNomeContainingOrSobrenomeContainingIgnoreCase(nome, sobrenome);
     }
+
+    public List<Funcional> buscarPorEmail(String email) {
+        return funcionalRepository.findByLoginInfo_AtivoTrueAndLoginInfo_EmailContainingIgnoreCase(email);
+    }
+
+    public List<Funcional> buscarPorCpf(String cpf) {
+        return funcionalRepository.findByLoginInfo_AtivoTrueAndCpfContainingIgnoreCase(cpf);
+    }
+
+    public List<Funcional> buscarPorDepartamento(String departamento) {
+        return funcionalRepository.findByLoginInfo_AtivoTrueAndDepartamentoContainingIgnoreCase(departamento);
+    }
 }

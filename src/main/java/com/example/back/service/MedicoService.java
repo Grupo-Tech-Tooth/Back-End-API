@@ -106,6 +106,14 @@ public class MedicoService {
         return medicoRepository.findByLoginInfo_DeletadoFalseAndNomeContainingOrSobrenomeContainingIgnoreCase(nome, sobrenome);
     }
 
+    public List<Medico> buscarPorEmail(String email){
+        return medicoRepository.findByLoginInfo_DeletadoFalseAndLoginInfo_EmailContainingIgnoreCase(email);
+    }
+
+    public List<Medico> buscarPorCf(String cpf){
+        return medicoRepository.findByLoginInfo_DeletadoFalseAndCpfContainingIgnoreCase(cpf);
+    }
+
     public double calcularComissao(Long id, double valorServico) {
         Medico medico = medicoRepository.findByIdAndLoginInfo_DeletadoFalse(id)
                 .orElseThrow(() -> new EntityNotFoundException("Médico não encontrado"));

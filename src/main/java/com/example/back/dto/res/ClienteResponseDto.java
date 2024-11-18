@@ -35,7 +35,6 @@ public class ClienteResponseDto {
         this.sobrenome = cliente.getSobrenome();
         this.email = cliente.getLoginInfo().getEmail();
         this.cpf = cliente.getCpf();
-        this.dataNascimento = cliente.getDataNascimento();
         this.genero = cliente.getGenero();
     }
 

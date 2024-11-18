@@ -13,8 +13,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class Cliente extends Usuario {
 
-    @Column(name = "data_nascimento")
-    private LocalDate dataNascimento;
 
     @Column(name = "genero")
     private String genero;
@@ -27,7 +25,6 @@ public class Cliente extends Usuario {
         this.setNome(dto.getNome());
         this.setSobrenome(dto.getSobrenome());
         this.setCpf(dto.getCpf());
-        this.setDataNascimento(dto.getDataNascimento());
-        this.setGenero(dto.getGenero());
+         this.setGenero(dto.getGenero());
     }
 }

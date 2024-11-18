@@ -92,7 +92,6 @@ public class ClienteService {
 
         clienteDb.setNome(dto.getNome());
         clienteDb.setSobrenome(dto.getSobrenome());
-        clienteDb.setDataNascimento(dto.getDataNascimento());
         clienteDb.setGenero(dto.getGenero());
 
         Cliente clienteAtualizado = clienteRepository.save(clienteDb);
