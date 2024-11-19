@@ -69,8 +69,9 @@ public class ServicosController {
     public ResponseEntity<List<ServicoDtoRequest>> filtrarServicos(
             @RequestParam(required = false) String nome,
             @RequestParam(required = false) Integer duracao,
-            @RequestParam(required = false) BigDecimal preco) {
-        List<ServicoDtoRequest> servicos = servicoService.filtrarServicos(nome, duracao, preco);
+            @RequestParam(required = false) BigDecimal preco,
+            @RequestParam(required = false) String descricao) {
+        List<ServicoDtoRequest> servicos = servicoService.filtrarServicos(nome, duracao, preco, descricao);
         return ResponseEntity.ok(servicos);
     }
 

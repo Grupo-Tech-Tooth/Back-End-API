@@ -84,16 +84,17 @@ public class ServicoService {
     }
 
 
-    public List<ServicoDtoRequest> filtrarServicos(String nome, Integer duracao, BigDecimal preco) {
+    public List<ServicoDtoRequest> filtrarServicos(String nome, Integer duracao, BigDecimal preco, String descricao) {
         return servicoRepository.findAll().stream()
-                .filter(servico -> nome == null || servico.getNome().contains(nome))
+                .filter(servico -> nome == null || servico.getNome().toUpperCase().contains(nome.toUpperCase()))
                 .filter(servico -> duracao == null || servico.getDuracaoMinutos().equals(duracao))
                 .filter(servico -> preco == null || servico.getPreco().compareTo(preco) == 0)
+                .filter(servico -> descricao == null || servico.getDescricao().toUpperCase().contains(descricao.toUpperCase()))
                 .map(servico -> new ServicoDtoRequest(
                         servico.getNome(),
                         servico.getDuracaoMinutos(),
-                        servico.getPreco().doubleValue()))
-                .toList();
+                        servico.getPreco().doubleValue(),
+                        servico.getDescricao())).toList();
     }
 
 
@@ -102,6 +103,7 @@ public class ServicoService {
                 .nome(servicoDtoRequest.nome())
                 .duracaoMinutos(servicoDtoRequest.duracaoMinutos())
                 .preco(BigDecimal.valueOf(servicoDtoRequest.preco()))
+                .descricao(servicoDtoRequest.descricao())
                 .build();
 
         return servicoRepository.save(servico);
@@ -113,6 +115,7 @@ public class ServicoService {
         servico.setNome(servicoDtoRequest.nome());
         servico.setDuracaoMinutos(servicoDtoRequest.duracaoMinutos());
         servico.setPreco(BigDecimal.valueOf(servicoDtoRequest.preco()));
+        servico.setDescricao(servicoDtoRequest.descricao());
 
         return servicoRepository.save(servico);
     }
