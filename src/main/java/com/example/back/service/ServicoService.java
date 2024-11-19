@@ -86,7 +86,7 @@ public class ServicoService {
 
     public List<ServicoDtoRequest> filtrarServicos(String nome, Integer duracao, BigDecimal preco) {
         return servicoRepository.findAll().stream()
-                .filter(servico -> nome == null || servico.getNome().contains(nome))
+                .filter(servico -> nome == null || servico.getNome().toUpperCase().contains(nome.toUpperCase()))
                 .filter(servico -> duracao == null || servico.getDuracaoMinutos().equals(duracao))
                 .filter(servico -> preco == null || servico.getPreco().compareTo(preco) == 0)
                 .map(servico -> new ServicoDtoRequest(
