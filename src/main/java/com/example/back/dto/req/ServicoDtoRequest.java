@@ -9,6 +9,8 @@ public record ServicoDtoRequest(
         @Positive
         Integer duracaoMinutos,
         @Positive
-        Double preco
+        Double preco,
+        @NotBlank
+        String descricao
 ) {
 }
