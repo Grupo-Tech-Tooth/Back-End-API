@@ -1,7 +1,5 @@
 package com.example.back.dto.req;
 
-import lombok.Getter;
-
 import java.time.LocalDateTime;
 
 public record AgendamentoDTO(
@@ -11,4 +9,8 @@ public record AgendamentoDTO(
         Long servicoId,
         String status,
         LocalDateTime dataHora
-) {}
+) {
+    public LocalDateTime getDataHora() {
+        return dataHora;
+    }
+}

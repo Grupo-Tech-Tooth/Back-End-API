@@ -1,11 +1,8 @@
 package com.example.back.dto.res;
 
+import com.example.back.entity.Medico;
 import com.example.back.enums.EspecializacaoOdontologica;
 import com.example.back.strategy.Comissao;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,7 +24,7 @@ public class MedicoResponseDto {
     private String telefone;
     private String genero;
     private String cep;
-    private String numeroResidencia;
+    private Integer numeroResidencia;
     private String crm;
     private EspecializacaoOdontologica especializacao;
     private Boolean ativo;
@@ -37,5 +34,23 @@ public class MedicoResponseDto {
         double comissaoBase = comissao.calcularComissao(valorServico);
         double percentualEspecializacao = especializacao.getPercentualComissao();
         return valorServico * (percentualEspecializacao / 100) + comissaoBase;
+    }
+
+    public static MedicoResponseDto converter(Medico medico) {
+        return new MedicoResponseDto(
+                medico.getNome(),
+                medico.getSobrenome(),
+                medico.getLoginInfo().getEmail(),
+                medico.getCpf(),
+                medico.getDataNascimento(),
+                medico.getTelefone(),
+                medico.getGenero(),
+                medico.getCep(),
+                medico.getNumeroResidencia(),
+                medico.getCrm(),
+                medico.getEspecializacao(), // Enum EspecializacaoOdontologica já está no Medico
+                medico.getLoginInfo().getAtivo(),
+                medico.getComissao() // Assumindo que é do mesmo tipo da classe no DTO
+        );
     }
 }
