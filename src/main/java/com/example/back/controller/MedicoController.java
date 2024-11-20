@@ -18,7 +18,7 @@ import static com.example.back.enums.Hierarquia.MEDICO;
 @RestController
 @RequestMapping("/medicos")
 @SecurityRequirement(name = "bearer-key")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class MedicoController {
 
     @Autowired

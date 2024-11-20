@@ -24,7 +24,7 @@ import static com.example.back.enums.Hierarquia.CLIENTE;
 @RestController
 @RequestMapping("/clientes")
 @SecurityRequirement(name = "bearer-key")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class ClienteController {
 
     @Autowired

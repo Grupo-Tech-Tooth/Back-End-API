@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/agendamentos")
 @SecurityRequirement(name = "bearer-key")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class AgendamentoController {
 
     @Autowired
