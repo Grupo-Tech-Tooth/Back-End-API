@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AgendamentoRepository extends JpaRepository<Agendamento, Long> {
@@ -16,7 +17,7 @@ public interface AgendamentoRepository extends JpaRepository<Agendamento, Long> 
     List<Agendamento> findByClienteId(Long clienteId);
     // buscar por id do cliente em ordem decrescente, do mais recente para o mais antigo
     List<Agendamento> findAllByClienteIdOrderByDataHoraDesc(Long clienteId);
-    AgendamentoDTO findByClienteIdOrderByDataHoraDesc(Long clienteId);
+    Optional<AgendamentoDTO> findByClienteIdOrderByDataHoraDesc(Long clienteId);
     List<Agendamento> findByDataHoraBetween(LocalDateTime inicio, LocalDateTime fim);
     boolean existsByClienteIdAndDataHoraBetween(Long clienteId, LocalDateTime inicio, LocalDateTime fim);
     boolean existsByMedicoIdAndDataHoraBetween(Long medicoId, LocalDateTime inicio, LocalDateTime fim);

@@ -24,6 +24,7 @@ import org.springframework.core.io.InputStreamResource;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -76,7 +77,7 @@ public class AgendamentoController {
     }
 
     @GetMapping("/cliente/agendamento/{clienteId}")
-    public ResponseEntity<AgendamentoDTO> buscarUltimoAgendamentoDeCliente(@PathVariable Long clienteId) {
+    public ResponseEntity<Optional<AgendamentoDTO>> buscarUltimoAgendamentoDeCliente(@PathVariable Long clienteId) {
         return ResponseEntity.ok(agendamentoService.buscarUltimoAgendamentoDeCliente(clienteId));
     }
 

@@ -267,7 +267,7 @@ public class AgendamentoService {
         return agendamentoRepository.findAllByClienteIdOrderByDataHoraDesc(id);
     }
 
-    public AgendamentoDTO buscarUltimoAgendamentoDeCliente(Long id) {
+    public Optional<AgendamentoDTO> buscarUltimoAgendamentoDeCliente(Long id) {
         return agendamentoRepository.findByClienteIdOrderByDataHoraDesc(id);
     }
 }
