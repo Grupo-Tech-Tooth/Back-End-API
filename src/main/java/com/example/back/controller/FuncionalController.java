@@ -1,6 +1,7 @@
 package com.example.back.controller;
 
 import com.example.back.dto.req.FuncionalRequestDto;
+import com.example.back.dto.res.FuncionalResponseDto;
 import com.example.back.entity.Funcional;
 import com.example.back.entity.Medico;
 import com.example.back.service.FuncionalService;
@@ -19,7 +20,7 @@ import static com.example.back.enums.Hierarquia.FUNCIONAL;
 @RestController
 @RequestMapping("/funcionais")
 @SecurityRequirement(name = "bearer-key")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class FuncionalController {
 
     @Autowired
@@ -33,9 +34,12 @@ public class FuncionalController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Funcional>> listarFuncionais() {
+    public ResponseEntity<List<FuncionalResponseDto>> listarFuncionais() {
         List<Funcional> funcionais = funcionalService.listarFuncionais();
-        return funcionais.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(funcionais);
+
+        List<FuncionalResponseDto> funcionaisResponseDto = FuncionalResponseDto.converter(funcionais);
+
+        return funcionais.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(funcionaisResponseDto);
     }
 
     @GetMapping("/{id}")
@@ -45,14 +49,14 @@ public class FuncionalController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Funcional> atualizarFuncional(@PathVariable Long id, @RequestBody Funcional funcionalAtualizado) {
-        Optional<Funcional> funcionalExistente = funcionalService.buscarFuncionalPorId(id);
-        if (funcionalExistente.isPresent()) {
-            Funcional atualizado = funcionalService.atualizarFuncional(funcionalAtualizado);
-            return ResponseEntity.ok(atualizado);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<FuncionalResponseDto> atualizarFuncional(@PathVariable Long id, @RequestBody FuncionalRequestDto funcionalAtualizado) {
+
+        Funcional funcional = funcionalService.atualizarFuncional(id, funcionalAtualizado);
+
+        FuncionalResponseDto funcionalResponseDto = new FuncionalResponseDto(funcional);
+
+        return ResponseEntity.ok(funcionalResponseDto);
+
     }
 
     @DeleteMapping("/{id}")
@@ -81,4 +85,58 @@ public class FuncionalController {
         }
 
     }
+
+    @GetMapping("/email")
+    public ResponseEntity<List<Funcional>> buscarPorEmail(
+            @RequestParam String email
+    ){
+
+        List<Funcional> funcionals = funcionalService.buscarPorEmail(email);
+
+        if (funcionals.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }else {
+            return ResponseEntity.ok(funcionals);
+        }
+    }
+
+    @GetMapping("/cpf")
+    public ResponseEntity<List<Funcional>> buscarPorCpf(
+            @RequestParam String cpf
+    ){
+
+        List<Funcional> funcionals = funcionalService.buscarPorCpf(cpf);
+
+        if (funcionals.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }else {
+            return ResponseEntity.ok(funcionals);
+        }
+    }
+
+    @GetMapping("/departamento")
+    public ResponseEntity<List<Funcional>> buscarPorDepartamento(
+            @RequestParam String departamento
+    ){
+
+        List<Funcional> funcionals = funcionalService.buscarPorDepartamento(departamento);
+
+        if (funcionals.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }else {
+            return ResponseEntity.ok(funcionals);
+        }
+    }
+
+    @GetMapping("/funcionais/filtrar")
+    public ResponseEntity<List<FuncionalResponseDto>> filtrarFuncionais(
+            @RequestParam(required = false) String nome,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String cpf,
+            @RequestParam(required = false) String departamento) {
+
+        List<FuncionalResponseDto> funcionais = funcionalService.filtrarFuncionais(nome, email, cpf, departamento);
+        return ResponseEntity.ok(funcionais);
+    }
+
 }

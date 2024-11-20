@@ -9,4 +9,8 @@ public record AgendamentoDTO(
         Long servicoId,
         String status,
         LocalDateTime dataHora
-) {}
+) {
+    public LocalDateTime getDataHora() {
+        return dataHora;
+    }
+}

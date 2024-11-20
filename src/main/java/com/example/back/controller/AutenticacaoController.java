@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/login")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class AutenticacaoController {
 
     @Autowired
@@ -37,7 +37,7 @@ public class AutenticacaoController {
             throw new IllegalArgumentException("Acesso negado");
         }
 
-        emailService.sendEmail("toretomarcos50@gmail.com", "Login efetuado", "Seu login foi efetuado com sucesso");
+        emailService.sendEmail(dados.email(), "Login efetuado", "Seu login foi efetuado com sucesso");
 
         return ResponseEntity.ok(new DadosAutenticacaoRes(tokenJWT, loginInfo));
     }

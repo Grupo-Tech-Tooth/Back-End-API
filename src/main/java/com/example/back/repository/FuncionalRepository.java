@@ -31,4 +31,10 @@ public interface FuncionalRepository extends JpaRepository<Funcional, Long> {
 
     // Adicionando método para encontrar Funcional ativo pelo CPF
     Optional<Funcional> findByCpfAndLoginInfo_AtivoTrue(String cpf);
-}
+
+    List<Funcional> findByLoginInfo_AtivoTrueAndLoginInfo_EmailContainingIgnoreCase(String email);
+
+    List<Funcional> findByLoginInfo_AtivoTrueAndCpfContainingIgnoreCase(String cpf);
+
+    List<Funcional> findByLoginInfo_AtivoTrueAndDepartamentoContainingIgnoreCase(String departamento);
+ }

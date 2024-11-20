@@ -1,6 +1,7 @@
 package com.example.back.controller;
 
 import com.example.back.dto.req.MedicoRequestDto;
+import com.example.back.dto.res.MedicoResponseDto;
 import com.example.back.entity.Medico;
 import com.example.back.service.MedicoService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -18,7 +19,7 @@ import static com.example.back.enums.Hierarquia.MEDICO;
 @RestController
 @RequestMapping("/medicos")
 @SecurityRequirement(name = "bearer-key")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class MedicoController {
 
     @Autowired
@@ -78,7 +79,34 @@ public class MedicoController {
         } else {
             return ResponseEntity.ok(medicos);
         }
+    }
 
+    @GetMapping("/email")
+    public ResponseEntity<List<Medico>> buscarPorEmail(
+            @RequestParam String email
+    ){
+
+        List<Medico> medicos = medicoService.buscarPorEmail(email);
+
+        if (medicos.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }else {
+            return ResponseEntity.ok(medicos);
+        }
+    }
+
+    @GetMapping("/cpf")
+    public ResponseEntity<List<Medico>> buscarPorCpf(
+            @RequestParam String cpf
+    ){
+
+        List<Medico> medicos = medicoService.buscarPorCf(cpf);
+
+        if (medicos.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }else {
+            return ResponseEntity.ok(medicos);
+        }
     }
 
     @GetMapping("/{id}/comissao")
@@ -89,4 +117,16 @@ public class MedicoController {
         double comissao = medicoService.calcularComissao(id, valorServico);
         return ResponseEntity.ok(comissao);
     }
+
+    @GetMapping("/medicos/filtrar")
+    public ResponseEntity<List<MedicoResponseDto>> filtrarMedicos(
+            @RequestParam(required = false) String nome,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String cpf,
+            @RequestParam(required = false) String especializacao) {
+
+        List<MedicoResponseDto> medicos = medicoService.filtrarMedicos(nome, email, cpf, especializacao);
+        return ResponseEntity.ok(medicos);
+    }
+
 }
