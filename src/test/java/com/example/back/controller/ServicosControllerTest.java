@@ -3,7 +3,7 @@ package com.example.back.controller;
 import com.example.back.dto.req.ServicoDtoRequest;
 import com.example.back.dto.res.ServicoDTO;
 import com.example.back.entity.Servico;
-import com.example.back.repository.ServicoRepository;
+import com.example.back.service.ServicoService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -22,7 +23,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 class ServicosControllerTest {
 
     @Mock
-    private ServicoRepository servicoRepository;
+    private ServicoService servicoService;
 
     @InjectMocks
     private ServicosController servicosController;
@@ -31,14 +32,14 @@ class ServicosControllerTest {
     @DisplayName("Listar serviços deve retornar 204 se não houver serviços")
     void listarServicosSemResultados() {
         // ARRANGE
-        when(servicoRepository.findAll()).thenReturn(List.of());
+        when(servicoService.listarServicos()).thenReturn(List.of());
 
         // ACT
         ResponseEntity<List<Servico>> resposta = servicosController.listarServicos();
 
         // ASSERT
         assertEquals(204, resposta.getStatusCodeValue());
-        assertTrue(resposta.getBody().isEmpty());
+        assertNull(resposta.getBody());
     }
 
     @Test
@@ -49,7 +50,7 @@ class ServicosControllerTest {
         servico.setNome("Teste");
         servico.setDuracaoMinutos(60);
 
-        when(servicoRepository.findAll()).thenReturn(List.of(servico));
+        when(servicoService.listarServicos()).thenReturn(List.of(servico));
 
         // ACT
         ResponseEntity<List<Servico>> resposta = servicosController.listarServicos();
@@ -71,7 +72,7 @@ class ServicosControllerTest {
         servico.setDuracaoMinutos(60);
         servico.setPreco(new BigDecimal("100.0"));
 
-        when(servicoRepository.save(any(Servico.class))).thenReturn(servico);
+        when(servicoService.cadastrarServico(request)).thenReturn(servico);
 
         // ACT
         ResponseEntity<Servico> resposta = servicosController.cadastrarServico(request);
@@ -87,16 +88,12 @@ class ServicosControllerTest {
     void atualizarServicoComSucesso() {
         // ARRANGE
         Long id = 1L;
-        Servico servicoAtual = new Servico();
-        servicoAtual.setNome("Teste");
-        servicoAtual.setDuracaoMinutos(60);
-        servicoAtual.setPreco(new BigDecimal("100.0"));
-        servicoAtual.setDescricao("Descrição");
-
         ServicoDtoRequest requestAtualizado = new ServicoDtoRequest("Teste Atualizado", 90, 150.0, "Nova Descrição");
+        Servico servicoAtualizado = new Servico();
+        servicoAtualizado.setNome("Teste Atualizado");
+        servicoAtualizado.setDuracaoMinutos(90);
 
-        when(servicoRepository.findById(id)).thenReturn(java.util.Optional.of(servicoAtual));
-        when(servicoRepository.save(any(Servico.class))).thenReturn(servicoAtual);
+        when(servicoService.atualizarServico(id, requestAtualizado)).thenReturn(servicoAtualizado);
 
         // ACT
         ResponseEntity<Servico> resposta = servicosController.atualizarServico(id, requestAtualizado);
@@ -112,14 +109,14 @@ class ServicosControllerTest {
     void deletarServicoComSucesso() {
         // ARRANGE
         Long id = 1L;
-        doNothing().when(servicoRepository).deleteById(id);
+        doNothing().when(servicoService).deletarServico(id);
 
         // ACT
         ResponseEntity<Void> resposta = servicosController.deletarServico(id);
 
         // ASSERT
-        assertEquals(200, resposta.getStatusCodeValue());
-        verify(servicoRepository, times(1)).deleteById(id);
+        assertEquals(204, resposta.getStatusCodeValue());
+        verify(servicoService, times(1)).deletarServico(id);
     }
 
     @Test
@@ -127,13 +124,15 @@ class ServicosControllerTest {
     void buscarServicosMaisUsados() {
         // ARRANGE
         ServicoDTO servicoDTO = new ServicoDTO("Teste", 5);
+        when(servicoService.buscarMaisUsadosMensal()).thenReturn(List.of(servicoDTO));
+
         // ACT
-        List<ServicoDTO> resposta = servicosController.buscarServicosMaisUsados("mensal");
+        ResponseEntity<List<ServicoDTO>> resposta = servicosController.buscarServicosMaisUsados("mensal");
 
         // ASSERT
         assertNotNull(resposta);
-        assertEquals(1, resposta.size());
-        assertEquals("Teste", resposta.get(0).getNome());
+        assertEquals(1, resposta.getBody().size());
+        assertEquals("Teste", resposta.getBody().get(0).getNome());
     }
 
     @Test
@@ -141,6 +140,7 @@ class ServicosControllerTest {
     void filtrarServicos() {
         // ARRANGE
         ServicoDtoRequest filtro1 = new ServicoDtoRequest("Teste", 60, 100.0, "Descrição");
+        when(servicoService.filtrarServicos(null, null, null, null)).thenReturn(List.of(filtro1));
 
         // ACT
         ResponseEntity<List<ServicoDtoRequest>> resposta = servicosController.filtrarServicos(null, null, null, null);
