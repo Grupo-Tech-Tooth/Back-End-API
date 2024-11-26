@@ -8,9 +8,6 @@ public record AgendamentoDTO(
         Long medicoId,
         Long servicoId,
         String status,
-        LocalDateTime dataHora
-) {
-    public LocalDateTime getDataHora() {
-        return dataHora;
-    }
-}
+        LocalDateTime dataHora,
+        String cpf
+){}
