@@ -46,7 +46,7 @@ public abstract class Usuario {
     private String cep;
 
     @Column(name = "numero_residencia")
-    private Integer numeroResidencia;
+    private String numeroResidencia;
 
     public Long getId() {
         return id;
@@ -112,11 +112,11 @@ public abstract class Usuario {
         this.cep = cep;
     }
 
-    public Integer getNumeroResidencia() {
+    public String getNumeroResidencia() {
         return numeroResidencia;
     }
 
-    public void setNumeroResidencia(Integer numeroResidencia) {
+    public void setNumeroResidencia(String numeroResidencia) {
         this.numeroResidencia = numeroResidencia;
     }
 }

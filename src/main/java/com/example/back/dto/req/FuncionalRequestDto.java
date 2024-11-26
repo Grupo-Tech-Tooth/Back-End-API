@@ -48,7 +48,9 @@ public class FuncionalRequestDto {
     @NotBlank(message = "Cep é obrigatório")
     private String cep;
 
-    private Integer numeroResidencia;
+    @NotBlank(message = "Número de residência é obrigatório")
+    @NotNull(message = "Número de residência é obrigatório")
+    private String numeroResidencia;
 
     public Funcional toFuncional() {
         Funcional funcional = new Funcional();
