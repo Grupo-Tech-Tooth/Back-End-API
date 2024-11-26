@@ -24,7 +24,7 @@ public class MedicoResponseDto {
     private String telefone;
     private String genero;
     private String cep;
-    private Integer numeroResidencia;
+    private String numeroResidencia;
     private String crm;
     private EspecializacaoOdontologica especializacao;
     private Boolean ativo;
