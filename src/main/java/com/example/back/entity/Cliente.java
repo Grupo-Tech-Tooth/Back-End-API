@@ -14,19 +14,19 @@ import java.util.List;
 @AllArgsConstructor
 public class Cliente extends Usuario {
 
-
     @Column(name = "genero")
     private String genero;
 
-    @Column(name = "alergias")
-    private List<String> alergias;
+    @Lob
+    @Column(name = "alergias", columnDefinition = "TEXT")
+    private String alergias;
 
-    @Column(name = "medicamentos")
-    private List<String> medicamentos;
+    @Lob
+    @Column(name = "medicamentos", columnDefinition = "TEXT")
+    private String medicamentos;
 
-    @OneToOne
-    @JoinColumn(name = "medico_id", nullable = false)
-    private Medico medicoResponsavel;
+    @Column(name = "medico_responsavel_id", nullable = false)
+    private Long medicoResponsavelId;
 
     @OneToOne
     @JoinColumn(name = "login_info_id")
@@ -36,9 +36,9 @@ public class Cliente extends Usuario {
         this.setNome(dto.getNome());
         this.setSobrenome(dto.getSobrenome());
         this.setCpf(dto.getCpf());
-         this.setGenero(dto.getGenero());
-         this.setAlergias(dto.getAlergias());
-         this.setMedicamentos(dto.getMedicamentos());
-         this.setMedicoResponsavel(dto.getMedicoResponsavel());
+        this.setGenero(dto.getGenero());
+        this.setAlergias(dto.getAlergias());
+        this.setMedicamentos(dto.getMedicamentos());
+        this.setMedicoResponsavelId(dto.getMedicoResponsavelId());
     }
 }

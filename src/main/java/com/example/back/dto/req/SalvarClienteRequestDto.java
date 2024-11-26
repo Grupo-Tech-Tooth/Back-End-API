@@ -18,8 +18,6 @@ import java.util.List;
 @Setter
 public class SalvarClienteRequestDto {
 
-    // Getters e Setters
-
     @NotBlank(message = "Nome não pode ser vazio")
     @NotNull(message = "Nome não pode ser nulo")
     private String nome;
@@ -64,13 +62,12 @@ public class SalvarClienteRequestDto {
     @NotNull(message = "Número de Residência não pode ser nulo")
     private Integer numeroResidencia;
 
-    private List<String> alergias;
+    private String alergias;
 
-    private List<String> medicamentos;
+    private String medicamentos;
 
-    @NotBlank(message = "Dentista Responsável não pode ser vazio")
-    @NotNull(message = "Dentista Responsável não pode ser nulo")
-    private Medico medicoResponsavel;
+    @NotNull(message = "ID do médico responsável não pode ser nulo")
+    private Long medicoResponsavelId;
 
     public Cliente toCliente() {
         Cliente cliente = new Cliente();
@@ -84,8 +81,7 @@ public class SalvarClienteRequestDto {
         cliente.setNumeroResidencia(this.numeroResidencia);
         cliente.setAlergias(this.alergias);
         cliente.setMedicamentos(this.medicamentos);
-        cliente.setMedicoResponsavel(this.medicoResponsavel);
+        cliente.setMedicoResponsavelId(this.medicoResponsavelId);
         return cliente;
     }
-
 }

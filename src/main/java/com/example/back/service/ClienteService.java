@@ -100,7 +100,7 @@ public class ClienteService {
         clienteDb.setTelefone(dto.getTelefone());
         clienteDb.setAlergias(dto.getAlergias());
         clienteDb.setMedicamentos(dto.getMedicamentos());
-        clienteDb.setMedicoResponsavel(dto.getMedicoResponsavel());
+        clienteDb.setMedicoResponsavelId(dto.getMedicoResponsavel().getId());
 
         LoginInfo loginInfo = clienteDb.getLoginInfo();
         loginInfo.setEmail(dto.getEmail());
