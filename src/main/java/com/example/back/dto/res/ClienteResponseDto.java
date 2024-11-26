@@ -28,7 +28,7 @@ public class ClienteResponseDto {
     private String genero;
     private String telefone;
     private String cep;
-    private Integer numeroResidencia;
+    private String numeroResidencia;
     private String alergias;
     private String medicamentos;
     private Long medicoResponsavelId;

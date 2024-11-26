@@ -58,7 +58,7 @@ public class AtualizarClienteRequestDto {
 
     @NotBlank(message = "Número de Residência não pode ser vazio")
     @NotNull(message = "Número de Residência não pode ser nulo")
-    private Integer numeroResidencia;
+    private String numeroResidencia;
 
     private String alergias;
 
