@@ -1,6 +1,7 @@
 package com.example.back.controller;
 
 import com.example.back.dto.req.MedicoRequestDto;
+import com.example.back.dto.res.MedicoResponseDto;
 import com.example.back.entity.Medico;
 import com.example.back.service.MedicoService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -18,7 +19,7 @@ import static com.example.back.enums.Hierarquia.MEDICO;
 @RestController
 @RequestMapping("/medicos")
 @SecurityRequirement(name = "bearer-key")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class MedicoController {
 
     @Autowired
@@ -116,4 +117,16 @@ public class MedicoController {
         double comissao = medicoService.calcularComissao(id, valorServico);
         return ResponseEntity.ok(comissao);
     }
+
+    @GetMapping("/medicos/filtrar")
+    public ResponseEntity<List<MedicoResponseDto>> filtrarMedicos(
+            @RequestParam(required = false) String nome,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String cpf,
+            @RequestParam(required = false) String especializacao) {
+
+        List<MedicoResponseDto> medicos = medicoService.filtrarMedicos(nome, email, cpf, especializacao);
+        return ResponseEntity.ok(medicos);
+    }
+
 }

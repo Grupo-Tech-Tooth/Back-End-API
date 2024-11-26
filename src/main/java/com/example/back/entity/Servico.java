@@ -26,6 +26,9 @@ public class Servico {
     @Column(nullable = false)
     private BigDecimal preco;
 
+    @Column(nullable = false)
+    private String descricao;
+
     public enum Tipo {
         Consulta(1L, 20.0),
         Limpeza(2L, 30.0),

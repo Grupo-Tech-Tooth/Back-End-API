@@ -1,6 +1,7 @@
 package com.example.back.service;
 
 import com.example.back.dto.req.FuncionalRequestDto;
+import com.example.back.dto.res.FuncionalResponseDto;
 import com.example.back.entity.Funcional;
 import com.example.back.entity.LoginInfo;
 import com.example.back.infra.execption.UsuarioExistenteException;
@@ -56,8 +57,28 @@ public class FuncionalService {
         return funcionalRepository.findByIdAndLoginInfo_AtivoTrue(id);
     }
 
-    public Funcional atualizarFuncional(Funcional funcional) {
-        return funcionalRepository.save(funcional);
+    public Funcional atualizarFuncional(Long id, FuncionalRequestDto funcional) {
+
+        Funcional funcionalDb = funcionalRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Funcional não encontrado"));
+
+        funcionalDb.setNome(funcional.getNome());
+        funcionalDb.setSobrenome(funcional.getSobrenome());
+        funcionalDb.setCpf(funcional.getCpf());
+        funcionalDb.setDepartamento(funcional.getDepartamento());
+        funcionalDb.setDataNascimento(funcional.getDataNascimento());
+        funcionalDb.setTelefone(funcional.getTelefone());
+        funcionalDb.setGenero(funcional.getGenero());
+        funcionalDb.setCep(funcional.getCep());
+        funcionalDb.setNumeroResidencia(funcional.getNumeroResidencia());
+
+        LoginInfo loginInfo = funcionalDb.getLoginInfo();
+        loginInfo.setEmail(funcional.getEmail());
+        loginInfo.setSenha(passwordEncoder.encode(funcional.getSenha()));
+        loginInfoRepository.save(loginInfo);
+
+        return funcionalRepository.save(funcionalDb);
+
     }
 
     public void deletarFuncional(Long id) {
@@ -89,4 +110,19 @@ public class FuncionalService {
     public List<Funcional> buscarPorDepartamento(String departamento) {
         return funcionalRepository.findByLoginInfo_AtivoTrueAndDepartamentoContainingIgnoreCase(departamento);
     }
+
+    public List<FuncionalResponseDto> filtrarFuncionais(String nome, String email, String cpf, String departamento) {
+        List<Funcional> funcionaisFiltrados = funcionalRepository.findAll().stream()
+                .filter(funcional -> nome == null || funcional.getNome().toUpperCase().contains(nome.toUpperCase()) ||
+                        (funcional.getSobrenome() != null && funcional.getSobrenome().toUpperCase().contains(nome.toUpperCase())))
+                .filter(funcional -> email == null || funcional.getLoginInfo().getEmail().toUpperCase().contains(email.toUpperCase()))
+                .filter(funcional -> cpf == null || funcional.getCpf().toUpperCase().contains(cpf.toUpperCase()))
+                .filter(funcional -> departamento == null || (funcional.getDepartamento() != null &&
+                        funcional.getDepartamento().toUpperCase().contains(departamento.toUpperCase())))
+                .toList();
+
+        return FuncionalResponseDto.converter(funcionaisFiltrados); // Usa o metodo estático para listas
+    }
+
+
 }

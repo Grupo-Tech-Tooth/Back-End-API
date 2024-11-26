@@ -1,6 +1,7 @@
 package com.example.back.service;
 
 import com.example.back.dto.req.MedicoRequestDto;
+import com.example.back.dto.res.MedicoResponseDto;
 import com.example.back.entity.LoginInfo;
 import com.example.back.entity.Medico;
 import com.example.back.infra.execption.UsuarioExistenteException;
@@ -120,4 +121,18 @@ public class MedicoService {
 
         return medico.calcularComissao(valorServico); // Usa o método de calcular comissões da classe Medico
     }
+
+    public List<MedicoResponseDto> filtrarMedicos(String nome, String email, String cpf, String especializacao) {
+        return medicoRepository.findAll().stream()
+                .filter(medico -> nome == null || medico.getNome().toUpperCase().contains(nome.toUpperCase()) ||
+                        (medico.getSobrenome() != null && medico.getSobrenome().toUpperCase().contains(nome.toUpperCase())))
+                .filter(medico -> email == null || medico.getLoginInfo().getEmail().toUpperCase().contains(email.toUpperCase()))
+                .filter(medico -> cpf == null || medico.getCpf().toUpperCase().contains(cpf.toUpperCase()))
+                .filter(medico -> especializacao == null || (medico.getEspecializacao() != null &&
+                        medico.getEspecializacao().name().equalsIgnoreCase(especializacao)))
+                .map(MedicoResponseDto::converter)
+                .toList();
+    }
+
+
 }

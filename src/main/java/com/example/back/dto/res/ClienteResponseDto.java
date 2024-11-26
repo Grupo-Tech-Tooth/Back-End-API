@@ -3,6 +3,7 @@ package com.example.back.dto.res;
 import com.example.back.dto.req.AgendamentoDTO;
 import com.example.back.entity.Agendamento;
 import com.example.back.entity.Cliente;
+import com.example.back.entity.Medico;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,6 @@ import java.util.List;
 @AllArgsConstructor
 public class ClienteResponseDto {
 
-    // Getters e Setters
     private Long id;
     private String nome;
     private String sobrenome;
@@ -26,15 +26,27 @@ public class ClienteResponseDto {
     private String cpf;
     private LocalDate dataNascimento;
     private String genero;
+    private String telefone;
+    private String cep;
+    private String numeroResidencia;
+    private String alergias;
+    private String medicamentos;
+    private Long medicoResponsavelId;
     private AgendamentoDTO ultimoAgendamento;
 
     public ClienteResponseDto(Cliente cliente) {
-
         this.id = cliente.getId();
         this.nome = cliente.getNome();
         this.sobrenome = cliente.getSobrenome();
         this.email = cliente.getLoginInfo().getEmail();
         this.cpf = cliente.getCpf();
+        this.telefone = cliente.getTelefone();
+        this.cep = cliente.getCep();
+        this.numeroResidencia = cliente.getNumeroResidencia();
+        this.alergias = cliente.getAlergias();
+        this.medicamentos = cliente.getMedicamentos();
+        this.medicoResponsavelId = cliente.getMedicoResponsavelId();
+        this.dataNascimento = cliente.getDataNascimento();
         this.genero = cliente.getGenero();
     }
 

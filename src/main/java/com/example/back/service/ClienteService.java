@@ -93,6 +93,17 @@ public class ClienteService {
         clienteDb.setNome(dto.getNome());
         clienteDb.setSobrenome(dto.getSobrenome());
         clienteDb.setGenero(dto.getGenero());
+        clienteDb.setCep(dto.getCep());
+        clienteDb.setCpf(dto.getCpf());
+        clienteDb.setDataNascimento(dto.getDataNascimento());
+        clienteDb.setNumeroResidencia(dto.getNumeroResidencia());
+        clienteDb.setTelefone(dto.getTelefone());
+        clienteDb.setAlergias(dto.getAlergias());
+        clienteDb.setMedicamentos(dto.getMedicamentos());
+        clienteDb.setMedicoResponsavelId(dto.getMedicoResponsavel().getId());
+
+        LoginInfo loginInfo = clienteDb.getLoginInfo();
+        loginInfo.setEmail(dto.getEmail());
 
         Cliente clienteAtualizado = clienteRepository.save(clienteDb);
         return new ClienteResponseDto(clienteAtualizado);
@@ -117,6 +128,16 @@ public class ClienteService {
 
     public Optional<Cliente> buscarClientePorEmail(String email) {
         Optional<Cliente> cliente = clienteRepository.findByLoginInfoEmailAndLoginInfoDeletadoFalse(email);
+
+        if (cliente.isEmpty()) {
+            throw new ResourceNotFoundException("Cliente não encontrado");
+        }
+
+        return cliente;
+    }
+
+    public Optional<Cliente> buscarClientePorTelefone(String telefone) {
+        Optional<Cliente> cliente = clienteRepository.findByTelefoneAndLoginInfoDeletadoFalse(telefone);
 
         if (cliente.isEmpty()) {
             throw new ResourceNotFoundException("Cliente não encontrado");
@@ -174,5 +195,19 @@ public class ClienteService {
         );
     }
 
+    public List<ClienteResponseDto> filtrarClientes(String nome, String email, String telefone, LocalDate ultimaConsulta) {
+        List<Cliente> clientes = clienteRepository.findAll().stream()
+                .filter(cliente -> nome == null || cliente.getNome().toUpperCase().contains(nome.toUpperCase()) ||
+                        (cliente.getSobrenome() != null && cliente.getSobrenome().toUpperCase().contains(nome.toUpperCase())))
+                .filter(cliente -> email == null || cliente.getLoginInfo().getEmail().equalsIgnoreCase(email))
+                .filter(cliente -> telefone == null || cliente.getTelefone().equalsIgnoreCase(telefone))
+                .filter(cliente -> ultimaConsulta == null ||
+                        agendamentoService.buscarUltimoAgendamentoDeCliente(cliente.getId())
+                                .map(agendamento -> agendamento.getDataHora().toLocalDate().isEqual(ultimaConsulta))
+                                .orElse(false))
+                .toList();
+
+        return ClienteResponseDto.converter(clientes);
+    }
 
 }

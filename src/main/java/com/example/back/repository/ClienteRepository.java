@@ -18,5 +18,6 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
     Optional<Cliente> findByIdAndLoginInfoDeletadoFalse(Long id);
     List<Cliente> findByLoginInfoDeletadoFalseAndNomeContainingOrSobrenomeContaining(String nome, String sobrenome);
     Optional<Cliente> findByLoginInfoEmailAndLoginInfoDeletadoFalse(String email);
+    Optional<Cliente> findByTelefoneAndLoginInfoDeletadoFalse(String telefone);
 
 }

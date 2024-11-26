@@ -12,10 +12,12 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +26,7 @@ import static com.example.back.enums.Hierarquia.CLIENTE;
 @RestController
 @RequestMapping("/clientes")
 @SecurityRequirement(name = "bearer-key")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class ClienteController {
 
     @Autowired
@@ -103,6 +105,15 @@ public class ClienteController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/telefone")
+    public ResponseEntity<ClienteResponseDto> buscarClientePorTelefone(@RequestParam String telefone){
+        Optional<Cliente> cliente = service.buscarClientePorTelefone(telefone);
+
+        return cliente.map(ClienteResponseDto::new)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     //Buscar clientes e seus ultimos agendamentos
     @GetMapping("/agendamentos")
     public ResponseEntity<List<ClienteResponseDto>> buscarClientesComUltimosAgendamentos() {
@@ -124,6 +135,16 @@ public class ClienteController {
         }
 
         return ResponseEntity.ok(fluxoMensal);
+    }
+
+    @GetMapping("/clientes/filtrar")
+    public ResponseEntity<List<ClienteResponseDto>> filtrarClientes(
+            @RequestParam(required = false) String nome,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String telefone,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate ultimaConsulta) {
+        List<ClienteResponseDto> clientes = service.filtrarClientes(nome, email, telefone, ultimaConsulta);
+        return ResponseEntity.ok(clientes);
     }
 
 }

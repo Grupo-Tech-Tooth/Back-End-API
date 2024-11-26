@@ -24,13 +24,14 @@ import org.springframework.core.io.InputStreamResource;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/agendamentos")
 @SecurityRequirement(name = "bearer-key")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class AgendamentoController {
 
     @Autowired
@@ -73,6 +74,11 @@ public class AgendamentoController {
     @GetMapping("/cliente/{clienteId}")
     public ResponseEntity<List<AgendamentoDTO>> buscarPorCliente(@PathVariable Long clienteId) {
         return ResponseEntity.ok(agendamentoService.buscarPorCliente(clienteId));
+    }
+
+    @GetMapping("/cliente/agendamento/{clienteId}")
+    public ResponseEntity<Optional<AgendamentoDTO>> buscarUltimoAgendamentoDeCliente(@PathVariable Long clienteId) {
+        return ResponseEntity.ok(agendamentoService.buscarUltimoAgendamentoDeCliente(clienteId));
     }
 
     @GetMapping("/data")
