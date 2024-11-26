@@ -1,16 +1,21 @@
 package com.example.back.controller;
 
 import com.example.back.dto.req.MedicoRequestDto;
+import com.example.back.dto.res.DiasDisponiveisResponse;
+import com.example.back.dto.res.HorariosDisponiveisResponse;
 import com.example.back.dto.res.MedicoResponseDto;
 import com.example.back.entity.Medico;
 import com.example.back.service.MedicoService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -129,4 +134,17 @@ public class MedicoController {
         return ResponseEntity.ok(medicos);
     }
 
+    @GetMapping("/{medicoId}/agenda/dias-disponiveis")
+    public ResponseEntity<DiasDisponiveisResponse> getDiasDisponiveis(@PathVariable Long medicoId) {
+        List<LocalDate> diasDisponiveis = medicoService.getDiasDisponiveis(medicoId);
+        return ResponseEntity.ok(new DiasDisponiveisResponse(diasDisponiveis));
+    }
+
+    @GetMapping("/{medicoId}/agenda/horarios-disponiveis")
+    public ResponseEntity<HorariosDisponiveisResponse> getHorariosDisponiveis(
+            @PathVariable Long medicoId,
+            @RequestParam("dia") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dia) {
+        List<LocalTime> horariosDisponiveis = medicoService.getHorariosDisponiveis(medicoId, dia);
+        return ResponseEntity.ok(new HorariosDisponiveisResponse(horariosDisponiveis));
+    }
 }
