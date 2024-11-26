@@ -129,4 +129,8 @@ public class ServicoService {
         servicoRepository.deleteById(id);
 
     }
+
+    public List<Servico> listarServicos() {
+        return servicoRepository.findAll();
+    }
 }
