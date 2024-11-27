@@ -23,7 +23,7 @@ public class FuncionalResponseDto {
     private String telefone;
     private String genero;
     private String cep;
-    private Integer numeroResidencia;
+    private String numeroResidencia;
 
     public FuncionalResponseDto(Funcional funcional) {
         this.nome = funcional.getNome();
