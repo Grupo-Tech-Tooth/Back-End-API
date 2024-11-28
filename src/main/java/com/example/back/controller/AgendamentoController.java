@@ -154,6 +154,7 @@ public class AgendamentoController {
     @PatchMapping("/{id}/concluir")
     public ResponseEntity<AgendamentoDTO> concluirConsulta(@PathVariable Long id) {
         return ResponseEntity.ok(agendamentoService.concluirConsulta(id));
+    }
 
     @GetMapping("/filtrar")
     public ResponseEntity<List<AgendamentoResponseDto>> filtrarAgendamentos(

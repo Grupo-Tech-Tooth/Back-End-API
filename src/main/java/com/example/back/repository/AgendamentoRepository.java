@@ -24,9 +24,9 @@ public interface AgendamentoRepository extends JpaRepository<Agendamento, Long> 
     boolean existsByMedicoIdAndDataHoraBetween(Long medicoId, LocalDateTime inicio, LocalDateTime fim);
     boolean existsByIdAndDataHoraBefore(Long id, LocalDateTime dateTime);
     //Buscas pro uso de Fila
-    List<Agendamento> findAllByDataHoraBetweenAndStatus(LocalDateTime inicio, LocalDateTime fim, List<String> status);
-    List<Agendamento> findAllByDataHoraBeforeAndStatus(LocalDateTime fim, List<String> status);
-  
-    @Query("SELECT a FROM Agendamento a WHERE DATE(a.dataAgendamento) = CURRENT_DATE")
-    List<Agendamento> findAgendamentosDoDia();
+    List<Agendamento> findAllByDataHoraBetweenAndStatusIn(LocalDateTime inicio, LocalDateTime fim, List<String> status);
+    List<Agendamento> findAllByDataHoraBeforeAndStatusIn(LocalDateTime dataHora, List<String> status);
+
+    @Query("SELECT a FROM Agendamento a WHERE a.dataHora BETWEEN :inicio AND :fim")
+    List<Agendamento> findAgendamentosDoDia(LocalDateTime inicio, LocalDateTime fim);
 }

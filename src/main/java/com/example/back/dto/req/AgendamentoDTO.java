@@ -10,4 +10,8 @@ public record AgendamentoDTO(
         String status,
         LocalDateTime dataHora,
         String cpf
-){}
+) {
+    public LocalDateTime getDataHora() {
+        return dataHora;
+    }
+}

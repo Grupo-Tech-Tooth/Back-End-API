@@ -286,7 +286,7 @@ public class AgendamentoService {
     // Adicionar agendamentos à fila
     public void verificarEAdicionarAgendamentos() {
         LocalDateTime agora = LocalDateTime.now();
-        List<Agendamento> agendamentos = agendamentoRepository.findAllByDataHoraBetweenAndStatus(
+        List<Agendamento> agendamentos = agendamentoRepository.findAllByDataHoraBetweenAndStatusIn(
                 LocalDateTime.of(agora.toLocalDate(), LocalTime.of(6, 0)),
                 LocalDateTime.of(agora.toLocalDate(), LocalTime.of(23, 59)),
                 List.of("Pendente", null)
@@ -300,7 +300,8 @@ public class AgendamentoService {
                         agendamento.getMedico().getId(),
                         agendamento.getServico().getId(),
                         agendamento.getStatus(),
-                        agendamento.getDataHora()
+                        agendamento.getDataHora(),
+                        agendamento.getCpf()
                 ));
             }
         }
@@ -308,10 +309,11 @@ public class AgendamentoService {
 
     // Limpar a fila e concluir agendamentos
     public void limparFilaEConcluirAgendamentos() {
-        List<Agendamento> agendamentos = agendamentoRepository.findAllByDataHoraBeforeAndStatus(
-                LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59)),
-                List.of("Pendente", null)
+        List<Agendamento> agendamentos = agendamentoRepository.findAllByDataHoraBeforeAndStatusIn(
+                LocalDateTime.now(),
+                Arrays.asList("Pendente", null)
         );
+
 
         for (Agendamento agendamento : agendamentos) {
             agendamento.setStatus("Concluído");
@@ -382,8 +384,13 @@ public class AgendamentoService {
     }
 
     public List<AgendamentoDTO> buscarAgendamentosDoDia() {
-        return agendamentoRepository.findAgendamentosDoDia().stream()
-                .map(AgendamentoMapper::toDTO)
-                .collect(Collectors.toList());
+        LocalDateTime inicioDoDia = LocalDateTime.now().with(LocalTime.MIN); // Início do dia
+        LocalDateTime fimDoDia = LocalDateTime.now().with(LocalTime.MAX);   // Fim do dia
+
+        // Buscar agendamentos do dia
+        List<Agendamento> agendamentos = agendamentoRepository.findAgendamentosDoDia(inicioDoDia, fimDoDia);
+
+        // Usar o mapper para converter em DTOs
+        return AgendamentoMapper.converter(agendamentos);
     }
 }
