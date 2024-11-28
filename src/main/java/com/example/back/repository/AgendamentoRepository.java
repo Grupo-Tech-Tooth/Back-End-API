@@ -4,6 +4,7 @@ import com.example.back.dto.req.AgendamentoDTO;
 import com.example.back.entity.Agendamento;
 import org.hibernate.dialect.function.TruncFunction;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -22,8 +23,10 @@ public interface AgendamentoRepository extends JpaRepository<Agendamento, Long> 
     boolean existsByClienteIdAndDataHoraBetween(Long clienteId, LocalDateTime inicio, LocalDateTime fim);
     boolean existsByMedicoIdAndDataHoraBetween(Long medicoId, LocalDateTime inicio, LocalDateTime fim);
     boolean existsByIdAndDataHoraBefore(Long id, LocalDateTime dateTime);
-
     //Buscas pro uso de Fila
     List<Agendamento> findAllByDataHoraBetweenAndStatus(LocalDateTime inicio, LocalDateTime fim, List<String> status);
     List<Agendamento> findAllByDataHoraBeforeAndStatus(LocalDateTime fim, List<String> status);
+  
+    @Query("SELECT a FROM Agendamento a WHERE DATE(a.dataAgendamento) = CURRENT_DATE")
+    List<Agendamento> findAgendamentosDoDia();
 }

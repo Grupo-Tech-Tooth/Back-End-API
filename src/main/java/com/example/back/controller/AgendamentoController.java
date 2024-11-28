@@ -3,6 +3,7 @@ package com.example.back.controller;
 import com.example.back.dto.req.AgendamentoCreateDTO;
 import com.example.back.dto.req.AgendamentoDTO;
 import com.example.back.dto.req.AgendamentoMapper;
+import com.example.back.dto.res.AgendamentoResponseDto;
 import com.example.back.entity.Servico;
 import com.example.back.observer.LoggerObserver;
 import com.example.back.service.AgendamentoService;
@@ -149,5 +150,28 @@ public class AgendamentoController {
     @PatchMapping("/{id}/concluir")
     public ResponseEntity<AgendamentoDTO> concluirConsulta(@PathVariable Long id) {
         return ResponseEntity.ok(agendamentoService.concluirConsulta(id));
+
+    @GetMapping("/filtrar")
+    public ResponseEntity<List<AgendamentoResponseDto>> filtrarAgendamentos(
+            @RequestParam(required = false) String nomeCliente,
+            @RequestParam(required = false) String nomeServico,
+            @RequestParam(required = false) String nomeMedico,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim) {
+        List<AgendamentoResponseDto> agendamentos = agendamentoService.filtrarAgendamentos(
+                nomeCliente, nomeServico, nomeMedico, dataInicio, dataFim);
+        return ResponseEntity.ok(agendamentos);
+    }
+
+    @GetMapping("/hoje")
+    public ResponseEntity<List<AgendamentoDTO>> buscarAgendamentosDoDia() {
+        List<AgendamentoDTO> agendamentos = agendamentoService.buscarAgendamentosDoDia();
+
+        if (agendamentos.isEmpty()) {
+            loggerObserver.logBusinessException("Nenhum agendamento encontrado para o dia de hoje");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        return ResponseEntity.ok(agendamentos);
     }
 }

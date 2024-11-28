@@ -41,6 +41,9 @@ public class Agendamento {
     @Column(nullable = false)
     private String status;
 
+    @JoinColumn(name = "cliente_cpf" ,nullable = false)
+    private String cpf;
+
     public void setCancelado(boolean b) {
     }
 }
