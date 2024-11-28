@@ -38,6 +38,8 @@ public class AgendamentoService {
     private ServicoRepository servicoRepository;
     @Autowired
     private AgendaRepository agendaRepository;
+    @Autowired
+    private FilaAgendamentoService filaService;
 
     private static final Logger log = LoggerFactory.getLogger(AgendamentoService.class);
 
@@ -272,6 +274,59 @@ public class AgendamentoService {
 
     public Optional<AgendamentoDTO> buscarUltimoAgendamentoDeCliente(Long id) {
         return agendamentoRepository.findByClienteIdOrderByDataHoraDesc(id);
+    }
+
+    // Adicionar agendamentos à fila
+    public void verificarEAdicionarAgendamentos() {
+        LocalDateTime agora = LocalDateTime.now();
+        List<Agendamento> agendamentos = agendamentoRepository.findAllByDataHoraBetweenAndStatus(
+                LocalDateTime.of(agora.toLocalDate(), LocalTime.of(6, 0)),
+                LocalDateTime.of(agora.toLocalDate(), LocalTime.of(23, 59)),
+                List.of("Pendente", null)
+        );
+
+        for (Agendamento agendamento : agendamentos) {
+            if (agendamento.getDataHora().isBefore(agora) || agendamento.getDataHora().isEqual(agora)) {
+                filaService.adicionarNaFila(new AgendamentoDTO(
+                        agendamento.getId(),
+                        agendamento.getCliente().getId(),
+                        agendamento.getMedico().getId(),
+                        agendamento.getServico().getId(),
+                        agendamento.getStatus(),
+                        agendamento.getDataHora()
+                ));
+            }
+        }
+    }
+
+    // Limpar a fila e concluir agendamentos
+    public void limparFilaEConcluirAgendamentos() {
+        List<Agendamento> agendamentos = agendamentoRepository.findAllByDataHoraBeforeAndStatus(
+                LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59)),
+                List.of("Pendente", null)
+        );
+
+        for (Agendamento agendamento : agendamentos) {
+            agendamento.setStatus("Concluído");
+        }
+
+        agendamentoRepository.saveAll(agendamentos);
+        filaService.limparFila();
+    }
+
+    public AgendamentoDTO concluirConsulta(Long id) {
+        // Recupera o agendamento pelo ID
+        Agendamento agendamento = agendamentoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Agendamento não encontrado"));
+
+        // Verifica se o agendamento está na fila e remove
+        filaService.getFila().removeIf(a -> a.id().equals(id));
+
+        // Atualiza o status do agendamento para "Concluído"
+        agendamento.setStatus("Concluído");
+
+        // Salva e retorna o DTO atualizado
+        return AgendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
     }
 
     public List<AgendamentoResponseDto> filtrarAgendamentos(String nomeCliente, String nomeServico, String nomeMedico,

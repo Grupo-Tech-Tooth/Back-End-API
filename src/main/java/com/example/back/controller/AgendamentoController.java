@@ -7,6 +7,7 @@ import com.example.back.dto.res.AgendamentoResponseDto;
 import com.example.back.entity.Servico;
 import com.example.back.observer.LoggerObserver;
 import com.example.back.service.AgendamentoService;
+import com.example.back.service.FilaAgendamentoService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Queue;
 import java.util.stream.Collectors;
 
 @RestController
@@ -37,6 +39,8 @@ public class AgendamentoController {
 
     @Autowired
     private AgendamentoService agendamentoService;
+    @Autowired
+    private FilaAgendamentoService filaService;
     @Autowired
     private LoggerObserver loggerObserver;
 
@@ -137,6 +141,15 @@ public class AgendamentoController {
     public ResponseEntity<List<Servico>> listarServicos() {
         return ResponseEntity.ok(agendamentoService.listarServicos());
     }
+
+    @GetMapping("/fila")
+    public Queue<AgendamentoDTO> obterFila() {
+        return filaService.getFila();
+    }
+
+    @PatchMapping("/{id}/concluir")
+    public ResponseEntity<AgendamentoDTO> concluirConsulta(@PathVariable Long id) {
+        return ResponseEntity.ok(agendamentoService.concluirConsulta(id));
 
     @GetMapping("/filtrar")
     public ResponseEntity<List<AgendamentoResponseDto>> filtrarAgendamentos(
