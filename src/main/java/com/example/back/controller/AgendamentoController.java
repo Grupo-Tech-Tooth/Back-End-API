@@ -7,6 +7,7 @@ import com.example.back.entity.Servico;
 import com.example.back.observer.LoggerObserver;
 import com.example.back.service.AgendamentoService;
 import com.example.back.service.FilaAgendamentoService;
+import com.example.back.service.PilhaAgendamentoService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Queue;
+import java.util.Stack;
 import java.util.stream.Collectors;
 
 @RestController
@@ -40,6 +42,8 @@ public class AgendamentoController {
     private AgendamentoService agendamentoService;
     @Autowired
     private FilaAgendamentoService filaService;
+    @Autowired
+    private PilhaAgendamentoService pilhaAgendamentoService;
     @Autowired
     private LoggerObserver loggerObserver;
 
@@ -149,5 +153,15 @@ public class AgendamentoController {
     @PatchMapping("/{id}/concluir")
     public ResponseEntity<AgendamentoDTO> concluirConsulta(@PathVariable Long id) {
         return ResponseEntity.ok(agendamentoService.concluirConsulta(id));
+    }
+
+    @DeleteMapping("/desfazer/{id}")
+    public ResponseEntity<AgendamentoDTO> desfazerPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(agendamentoService.desfazerPorId(id));
+    }
+
+    @GetMapping("/pilha")
+    public ResponseEntity<Stack<AgendamentoDTO>> visualizarPilha() {
+        return ResponseEntity.ok(pilhaAgendamentoService.getPilha());
     }
 }

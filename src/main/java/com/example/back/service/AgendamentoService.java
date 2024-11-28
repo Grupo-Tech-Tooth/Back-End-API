@@ -7,10 +7,12 @@ import com.example.back.entity.*;
 import com.example.back.infra.execption.BusinessException;
 import com.example.back.infra.execption.ResourceNotFoundException;
 import com.example.back.repository.*;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -39,6 +41,8 @@ public class AgendamentoService {
     private AgendaRepository agendaRepository;
     @Autowired
     private FilaAgendamentoService filaService;
+    @Autowired
+    private  PilhaAgendamentoService pilhaAgendamentoService;
 
     private static final Logger log = LoggerFactory.getLogger(AgendamentoService.class);
 
@@ -81,6 +85,9 @@ public class AgendamentoService {
                 Médico: %s
                 Serviço: %s
                 """.formatted(cliente.getNome(), agendamento.getDataHora(), medico.getNome(), servico.getNome());
+
+        // Adiciona o agendamento recém-criado à pilha
+        pilhaAgendamentoService.adicionarNaPilha(AgendamentoMapper.toDTO(agendamento));
 
         return AgendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
     }
@@ -324,6 +331,26 @@ public class AgendamentoService {
 
         // Salva e retorna o DTO atualizado
         return AgendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
+    }
+
+    // Desfazer um agendamento pelo ID (alterar status para "Cancelado")
+    @Transactional
+    public AgendamentoDTO desfazerPorId(Long id) {
+        // Remove o agendamento da pilha
+        AgendamentoDTO agendamentoDTO = pilhaAgendamentoService.desfazerPorId(id);
+
+        // Atualiza o status e define cancelado
+        Agendamento agendamento = agendamentoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Agendamento não encontrado"));
+        agendamento.setStatus("Cancelado");
+        agendamento.setCancelado(true);
+        return AgendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
+    }
+
+    // Metodo para limpar a pilha à meia-noite
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void limparPilha() {
+        pilhaAgendamentoService.limparPilha();
     }
 
 }
