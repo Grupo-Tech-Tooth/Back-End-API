@@ -3,6 +3,7 @@ package com.example.back.service;
 import com.example.back.dto.req.AgendamentoDTO;
 import com.example.back.dto.req.AgendamentoCreateDTO;
 import com.example.back.dto.req.AgendamentoMapper;
+import com.example.back.dto.res.AgendamentoResponseDto;
 import com.example.back.entity.*;
 import com.example.back.infra.execption.BusinessException;
 import com.example.back.infra.execption.ResourceNotFoundException;
@@ -176,6 +177,8 @@ public class AgendamentoService {
         agendamento.setServico(servico);
         agendamento.setAgenda(agenda);
         agendamento.setDataHora(dto.dataHora());
+        agendamento.setCpf(dto.cpf());
+        agendamento.setStatus(dto.status());
 
         return AgendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
     }
@@ -353,4 +356,34 @@ public class AgendamentoService {
         pilhaAgendamentoService.limparPilha();
     }
 
+    public List<AgendamentoResponseDto> filtrarAgendamentos(String nomeCliente, String nomeServico, String nomeMedico,
+                                                            LocalDate dataInicio, LocalDate dataFim) {
+        List<Agendamento> agendamentos = agendamentoRepository.findAll().stream()
+                .filter(agendamento -> nomeCliente == null ||
+                        agendamento.getCliente().getNome().toUpperCase().contains(nomeCliente.toUpperCase()))
+                .filter(agendamento -> nomeServico == null ||
+                        agendamento.getServico().getNome().toUpperCase().contains(nomeServico.toUpperCase()))
+                .filter(agendamento -> nomeMedico == null ||
+                        agendamento.getMedico().getNome().toUpperCase().contains(nomeMedico.toUpperCase()))
+                .filter(agendamento -> dataInicio == null ||
+                        !agendamento.getDataHora().toLocalDate().isBefore(dataInicio))
+                .filter(agendamento -> dataFim == null ||
+                        !agendamento.getDataHora().toLocalDate().isAfter(dataFim))
+                .toList();
+
+        return agendamentos.stream()
+                .map(agendamento -> new AgendamentoResponseDto(
+                        agendamento.getCliente(),
+                        agendamento.getAgenda(),
+                        agendamento.getDataHora(),
+                        agendamento.getStatus(),
+                        agendamento.getCliente().getCpf()
+                )).toList();
+    }
+
+    public List<AgendamentoDTO> buscarAgendamentosDoDia() {
+        return agendamentoRepository.findAgendamentosDoDia().stream()
+                .map(AgendamentoMapper::toDTO)
+                .collect(Collectors.toList());
+    }
 }
