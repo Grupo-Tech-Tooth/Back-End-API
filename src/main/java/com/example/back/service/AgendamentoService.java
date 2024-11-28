@@ -289,7 +289,7 @@ public class AgendamentoService {
         List<Agendamento> agendamentos = agendamentoRepository.findAllByDataHoraBetweenAndStatusIn(
                 LocalDateTime.of(agora.toLocalDate(), LocalTime.of(6, 0)),
                 LocalDateTime.of(agora.toLocalDate(), LocalTime.of(23, 59)),
-                List.of("Pendente", null)
+                List.of("Pendente")
         );
 
         for (Agendamento agendamento : agendamentos) {
