@@ -2,9 +2,11 @@ package com.example.back.service;
 
 import com.example.back.dto.req.MedicoRequestDto;
 import com.example.back.dto.res.MedicoResponseDto;
+import com.example.back.entity.Agenda;
 import com.example.back.entity.LoginInfo;
 import com.example.back.entity.Medico;
 import com.example.back.infra.execption.UsuarioExistenteException;
+import com.example.back.repository.AgendaRepository;
 import com.example.back.repository.LoginInfoRepository;
 import com.example.back.repository.MedicoRepository;
 import com.example.back.strategy.Comissao;
@@ -14,10 +16,14 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.example.back.entity.Agendamento;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MedicoService {
@@ -28,6 +34,8 @@ public class MedicoService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private LoginInfoRepository loginInfoRepository;
+    @Autowired
+    private AgendaRepository agendaRepository;
 
     @Transactional
     public Medico salvarMedico(MedicoRequestDto medicoDto) {
@@ -134,5 +142,34 @@ public class MedicoService {
                 .toList();
     }
 
+    // Método para obter os dias disponíveis na agenda do médico
+    public List<LocalDate> getDiasDisponiveis(Long medicoId) {
+        Agenda agenda = agendaRepository.findByMedicoId(medicoId)
+                .orElseThrow(() -> new EntityNotFoundException("Agenda não encontrada para o médico com ID " + medicoId));
 
+        return agenda.getDisponibilidade().stream()
+                .map(LocalDateTime::toLocalDate) // Converte para LocalDate
+                .distinct() // Remove duplicados
+                .sorted()   // Ordena os dias
+                .collect(Collectors.toList());
+    }
+
+    // Método para obter os horários disponíveis de um dia específico
+    public List<LocalTime> getHorariosDisponiveis(Long medicoId, LocalDate dia) {
+        Agenda agenda = agendaRepository.findByMedicoId(medicoId)
+                .orElseThrow(() -> new EntityNotFoundException("Agenda não encontrada para o médico com ID " + medicoId));
+
+        List<LocalDateTime> agendamentos = agenda.getAgendamentos().stream()
+                .map(Agendamento::getDataHora)
+                .filter(dataHora -> dataHora.toLocalDate().equals(dia)) // Filtra pelos agendamentos do dia
+                .collect(Collectors.toList());
+
+        return agenda.getDisponibilidade().stream()
+                .filter(dataHora -> dataHora.toLocalDate().equals(dia)) // Filtra pela data
+                .filter(dataHora -> !agendamentos.contains(dataHora))   // Remove horários já agendados
+                .map(LocalDateTime::toLocalTime) // Converte para LocalTime
+                .distinct()
+                .sorted()
+                .collect(Collectors.toList());
+    }
 }
