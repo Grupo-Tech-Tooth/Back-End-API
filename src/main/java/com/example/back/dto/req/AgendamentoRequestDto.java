@@ -27,4 +27,7 @@ public class  AgendamentoRequestDto {
     @NotBlank(message = "O status não pode estar em branco")
     private String status;
 
+    @NotBlank
+    private String cpf;
+
 }

@@ -14,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FuncionalResponseDto {
+    private Long id;
     private String nome;
     private String sobrenome;
     private String email;
@@ -23,9 +24,10 @@ public class FuncionalResponseDto {
     private String telefone;
     private String genero;
     private String cep;
-    private Integer numeroResidencia;
+    private String numeroResidencia;
 
     public FuncionalResponseDto(Funcional funcional) {
+        this.id = funcional.getId();
         this.nome = funcional.getNome();
         this.sobrenome = funcional.getSobrenome();
         this.email = funcional.getLoginInfo().getEmail();
@@ -40,5 +42,9 @@ public class FuncionalResponseDto {
 
     public static List<FuncionalResponseDto> converter(List<Funcional> funcionais) {
         return funcionais.stream().map(FuncionalResponseDto::new).toList();
+    }
+
+    public static FuncionalResponseDto converter(Funcional novoFuncional) {
+        return new FuncionalResponseDto(novoFuncional);
     }
 }

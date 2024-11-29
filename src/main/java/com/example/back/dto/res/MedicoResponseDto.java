@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,6 +17,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class MedicoResponseDto {
 
+
+    private Long id;
     private String nome;
     private String sobrenome;
     private String email;
@@ -24,20 +27,15 @@ public class MedicoResponseDto {
     private String telefone;
     private String genero;
     private String cep;
-    private Integer numeroResidencia;
+    private String numeroResidencia;
     private String crm;
     private EspecializacaoOdontologica especializacao;
     private Boolean ativo;
     private Comissao comissao;
 
-    public double calcularComissao(double valorServico) {
-        double comissaoBase = comissao.calcularComissao(valorServico);
-        double percentualEspecializacao = especializacao.getPercentualComissao();
-        return valorServico * (percentualEspecializacao / 100) + comissaoBase;
-    }
-
     public static MedicoResponseDto converter(Medico medico) {
         return new MedicoResponseDto(
+                medico.getId(),
                 medico.getNome(),
                 medico.getSobrenome(),
                 medico.getLoginInfo().getEmail(),
@@ -52,5 +50,9 @@ public class MedicoResponseDto {
                 medico.getLoginInfo().getAtivo(),
                 medico.getComissao() // Assumindo que é do mesmo tipo da classe no DTO
         );
+    }
+
+    public static List<MedicoResponseDto> converter(List<Medico> medicos) {
+        return medicos.stream().map(MedicoResponseDto::converter).toList();
     }
 }

@@ -3,9 +3,12 @@ package com.example.back.controller;
 import com.example.back.dto.req.AgendamentoCreateDTO;
 import com.example.back.dto.req.AgendamentoDTO;
 import com.example.back.dto.req.AgendamentoMapper;
+import com.example.back.dto.res.AgendamentoResponseDto;
 import com.example.back.entity.Servico;
 import com.example.back.observer.LoggerObserver;
 import com.example.back.service.AgendamentoService;
+import com.example.back.service.FilaAgendamentoService;
+import com.example.back.service.PilhaAgendamentoService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +28,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Queue;
+import java.util.Stack;
 import java.util.stream.Collectors;
 
 @RestController
@@ -36,6 +41,10 @@ public class AgendamentoController {
 
     @Autowired
     private AgendamentoService agendamentoService;
+    @Autowired
+    private FilaAgendamentoService filaService;
+    @Autowired
+    private PilhaAgendamentoService pilhaAgendamentoService;
     @Autowired
     private LoggerObserver loggerObserver;
 
@@ -135,5 +144,49 @@ public class AgendamentoController {
     @GetMapping("/servicos")
     public ResponseEntity<List<Servico>> listarServicos() {
         return ResponseEntity.ok(agendamentoService.listarServicos());
+    }
+
+    @GetMapping("/fila")
+    public Queue<AgendamentoDTO> obterFila() {
+        return filaService.getFila();
+    }
+
+    @PatchMapping("/{id}/concluir")
+    public ResponseEntity<AgendamentoDTO> concluirConsulta(@PathVariable Long id) {
+        return ResponseEntity.ok(agendamentoService.concluirConsulta(id));
+    }
+
+    @GetMapping("/filtrar")
+    public ResponseEntity<List<AgendamentoResponseDto>> filtrarAgendamentos(
+            @RequestParam(required = false) String nomeCliente,
+            @RequestParam(required = false) String nomeServico,
+            @RequestParam(required = false) String nomeMedico,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim) {
+        List<AgendamentoResponseDto> agendamentos = agendamentoService.filtrarAgendamentos(
+                nomeCliente, nomeServico, nomeMedico, dataInicio, dataFim);
+        return ResponseEntity.ok(agendamentos);
+    }
+
+    @GetMapping("/hoje")
+    public ResponseEntity<List<AgendamentoDTO>> buscarAgendamentosDoDia() {
+        List<AgendamentoDTO> agendamentos = agendamentoService.buscarAgendamentosDoDia();
+
+        if (agendamentos.isEmpty()) {
+            loggerObserver.logBusinessException("Nenhum agendamento encontrado para o dia de hoje");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        return ResponseEntity.ok(agendamentos);
+    }
+
+    @DeleteMapping("/desfazer/{id}")
+    public ResponseEntity<AgendamentoDTO> desfazerPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(agendamentoService.desfazerPorId(id));
+    }
+
+    @GetMapping("/pilha")
+    public ResponseEntity<Stack<AgendamentoDTO>> visualizarPilha() {
+        return ResponseEntity.ok(pilhaAgendamentoService.getPilha());
     }
 }

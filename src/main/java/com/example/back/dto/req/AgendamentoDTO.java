@@ -8,7 +8,8 @@ public record AgendamentoDTO(
         Long medicoId,
         Long servicoId,
         String status,
-        LocalDateTime dataHora
+        LocalDateTime dataHora,
+        String cpf
 ) {
     public LocalDateTime getDataHora() {
         return dataHora;

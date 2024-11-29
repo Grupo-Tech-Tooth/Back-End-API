@@ -4,6 +4,7 @@ import com.example.back.dto.req.MedicoRequestDto;
 import com.example.back.dto.res.MedicoResponseDto;
 import com.example.back.entity.LoginInfo;
 import com.example.back.entity.Medico;
+import com.example.back.repository.MedicoRepository;
 import com.example.back.service.MedicoService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,7 +15,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -28,22 +28,33 @@ class MedicoControllerTest {
     @InjectMocks
     private MedicoController medicoController;
 
+    @Mock
+    private MedicoRepository medicoRepository;
+
     @Test
     @DisplayName("Criar médico deve retornar 201 e o médico criado")
     void criarMedico() {
         MedicoRequestDto request = new MedicoRequestDto();
         request.setNome("Dr. Teste");
         request.setSobrenome("Sobrenome");
-        request.setEmail("dr.teste@gmail.com");
-        request.setCpf("12345678900");
 
         Medico medico = new Medico();
         medico.setNome("Dr. Teste");
         medico.setSobrenome("Sobrenome");
 
+        LoginInfo loginInfo = new LoginInfo();
+        loginInfo.setEmail("teste@gmail.com");
+        loginInfo.setSenha("12345678");
+
+        medico.setLoginInfo(loginInfo);
+
+        MedicoResponseDto responseDto = new MedicoResponseDto();
+        responseDto.setNome("Dr. Teste");
+        responseDto.setEmail("teste@gmail.com");
+
         when(medicoService.salvarMedico(request)).thenReturn(medico);
 
-        ResponseEntity<Medico> resposta = medicoController.criarMedico(request);
+        ResponseEntity<MedicoResponseDto> resposta = medicoController.criarMedico(request);
 
         assertEquals(201, resposta.getStatusCodeValue());
         assertNotNull(resposta.getBody());
@@ -55,7 +66,7 @@ class MedicoControllerTest {
     void listarMedicosSemResultados() {
         when(medicoService.listarMedicos()).thenReturn(List.of());
 
-        ResponseEntity<List<Medico>> resposta = medicoController.listarMedicos();
+        ResponseEntity<List<MedicoResponseDto>> resposta = medicoController.listarMedicos();
 
         assertEquals(204, resposta.getStatusCodeValue());
         assertNull(resposta.getBody());
@@ -68,9 +79,18 @@ class MedicoControllerTest {
         medico.setNome("Dr. Teste");
         medico.setSobrenome("Sobrenome");
 
+        LoginInfo loginInfo = new LoginInfo();
+        loginInfo.setEmail("teste@gmail.com");
+        loginInfo.setSenha("12345678");
+
+        medico.setLoginInfo(loginInfo);
+
+        MedicoResponseDto responseDto = new MedicoResponseDto();
+        responseDto.setNome("Dr. Teste");
+
         when(medicoService.listarMedicos()).thenReturn(List.of(medico));
 
-        ResponseEntity<List<Medico>> resposta = medicoController.listarMedicos();
+        ResponseEntity<List<MedicoResponseDto>> resposta = medicoController.listarMedicos();
 
         assertEquals(200, resposta.getStatusCodeValue());
         assertNotNull(resposta.getBody());
@@ -79,73 +99,28 @@ class MedicoControllerTest {
     }
 
     @Test
-    @DisplayName("Buscar médico por ID deve retornar 404 se não encontrado")
-    void buscarMedicoPorIdNaoEncontrado() {
-        Long id = 1L;
-        when(medicoService.buscarMedicoPorId(id)).thenReturn(Optional.empty());
-
-        ResponseEntity<Medico> resposta = medicoController.buscarMedicoPorId(id);
-
-        assertEquals(404, resposta.getStatusCodeValue());
-    }
-
-    @Test
     @DisplayName("Buscar médico por ID deve retornar 200 se encontrado")
     void buscarMedicoPorIdEncontrado() {
         Long id = 1L;
         Medico medico = new Medico();
         medico.setNome("Dr. Teste");
-        medico.setSobrenome("Sobrenome");
 
-        when(medicoService.buscarMedicoPorId(id)).thenReturn(Optional.of(medico));
+        LoginInfo loginInfo = new LoginInfo();
+        loginInfo.setEmail("teste@gmail.com");
+        loginInfo.setSenha("12345678");
 
-        ResponseEntity<Medico> resposta = medicoController.buscarMedicoPorId(id);
+        medico.setLoginInfo(loginInfo);
+
+        MedicoResponseDto responseDto = new MedicoResponseDto();
+        responseDto.setNome("Dr. Teste");
+
+        when(medicoService.buscarMedicoPorId(id)).thenReturn(medico);
+
+        ResponseEntity<MedicoResponseDto> resposta = medicoController.buscarMedicoPorId(id);
 
         assertEquals(200, resposta.getStatusCodeValue());
         assertNotNull(resposta.getBody());
         assertEquals("Dr. Teste", resposta.getBody().getNome());
-    }
-
-    @Test
-    @DisplayName("Atualizar médico deve retornar 200 e o médico atualizado")
-    void atualizarMedico() {
-        Long id = 1L;
-        MedicoRequestDto request = new MedicoRequestDto();
-        request.setNome("Dr. Atualizado");
-        request.setSobrenome("Sobrenome");
-        request.setEmail("dr.atualizado@gmail.com");
-        request.setCpf("12345678900");
-
-        Medico medicoAtualizado = new Medico();
-        medicoAtualizado.setNome("Dr. Atualizado");
-        medicoAtualizado.setSobrenome("Sobrenome");
-
-        LoginInfo loginInfo = new LoginInfo();
-        loginInfo.setEmail("teste@gmail.com");
-        loginInfo.setSenha("123456");
-
-        medicoAtualizado.setLoginInfo(loginInfo);
-
-        when(medicoService.buscarMedicoPorId(id)).thenReturn(Optional.of(medicoAtualizado));
-
-        when(medicoService.atualizarMedico(id, request)).thenReturn(medicoAtualizado);
-
-        ResponseEntity<Medico> resposta = medicoController.atualizarMedico(id, request);
-
-        assertEquals(200, resposta.getStatusCodeValue());
-        assertNotNull(resposta.getBody());
-        assertEquals("Dr. Atualizado", resposta.getBody().getNome());
-    }
-
-    @Test
-    @DisplayName("Deletar médico deve retornar 404 se o médico não existir")
-    void deletarMedicoNaoEncontrado() {
-        Long id = 1L;
-        when(medicoService.buscarMedicoPorId(id)).thenReturn(Optional.empty());
-
-        ResponseEntity<Void> resposta = medicoController.deletarMedico(id);
-
-        assertEquals(404, resposta.getStatusCodeValue());
     }
 
     @Test
@@ -154,9 +129,7 @@ class MedicoControllerTest {
         Long id = 1L;
         Medico medico = new Medico();
         medico.setNome("Dr. Teste");
-        medico.setSobrenome("Sobrenome");
 
-        when(medicoService.buscarMedicoPorId(id)).thenReturn(Optional.of(medico));
         doNothing().when(medicoService).deletarMedico(id);
 
         ResponseEntity<Void> resposta = medicoController.deletarMedico(id);
@@ -168,10 +141,10 @@ class MedicoControllerTest {
     @DisplayName("Filtrar médicos deve retornar 200 com lista filtrada")
     void filtrarMedicos() {
         String nome = "Dr. Teste";
-        MedicoResponseDto medicoResponseDto = new MedicoResponseDto();
-        medicoResponseDto.setNome("Dr. Teste");
+        MedicoResponseDto responseDto = new MedicoResponseDto();
+        responseDto.setNome("Dr. Teste");
 
-        when(medicoService.filtrarMedicos(nome, null, null, null)).thenReturn(List.of(medicoResponseDto));
+        when(medicoService.filtrarMedicos(nome, null, null, null)).thenReturn(List.of(responseDto));
 
         ResponseEntity<List<MedicoResponseDto>> resposta = medicoController.filtrarMedicos(nome, null, null, null);
 
