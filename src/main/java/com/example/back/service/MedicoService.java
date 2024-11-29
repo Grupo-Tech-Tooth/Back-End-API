@@ -70,8 +70,14 @@ public class MedicoService {
         return medicoRepository.findByLoginInfo_DeletadoFalse();
     }
 
-    public Optional<Medico> buscarMedicoPorId(Long id) {
-        return medicoRepository.findByIdAndLoginInfo_DeletadoFalse(id);
+    public Medico buscarMedicoPorId(Long id) {
+        Optional<Medico> medico = medicoRepository.findByIdAndLoginInfo_DeletadoFalse(id);
+
+        if (medico.isEmpty()) {
+            throw new IllegalArgumentException("Médico não encontrado");
+        }
+
+        return medico.get();
     }
 
     public Medico atualizarMedico(Long id, MedicoRequestDto medicoRequestDto) {
@@ -125,7 +131,7 @@ public class MedicoService {
 
     public double calcularComissao(Long id, double valorServico) {
         Medico medico = medicoRepository.findByIdAndLoginInfo_DeletadoFalse(id)
-                .orElseThrow(() -> new EntityNotFoundException("Médico não encontrado"));
+                .orElseThrow(() -> new IllegalArgumentException("Médico não encontrado"));
 
         return medico.calcularComissao(valorServico); // Usa o método de calcular comissões da classe Medico
     }
@@ -143,33 +149,27 @@ public class MedicoService {
     }
 
     // Método para obter os dias disponíveis na agenda do médico
-    public List<LocalDate> getDiasDisponiveis(Long medicoId) {
+    public List<LocalDate> getDiasIndisponiveis(Long medicoId) {
         Agenda agenda = agendaRepository.findByMedicoId(medicoId)
                 .orElseThrow(() -> new EntityNotFoundException("Agenda não encontrada para o médico com ID " + medicoId));
 
         return agenda.getDisponibilidade().stream()
                 .map(LocalDateTime::toLocalDate) // Converte para LocalDate
                 .distinct() // Remove duplicados
-                .sorted()   // Ordena os dias
+                .sorted()   // Ordena os diasx
                 .collect(Collectors.toList());
     }
 
     // Método para obter os horários disponíveis de um dia específico
-    public List<LocalTime> getHorariosDisponiveis(Long medicoId, LocalDate dia) {
+    public List<LocalTime> getHorariosIndisponiveis(Long medicoId, LocalDate dia) {
         Agenda agenda = agendaRepository.findByMedicoId(medicoId)
                 .orElseThrow(() -> new EntityNotFoundException("Agenda não encontrada para o médico com ID " + medicoId));
 
-        List<LocalDateTime> agendamentos = agenda.getAgendamentos().stream()
-                .map(Agendamento::getDataHora)
-                .filter(dataHora -> dataHora.toLocalDate().equals(dia)) // Filtra pelos agendamentos do dia
+       List<LocalTime> diasOcupados = agenda.getDisponibilidade().stream()
+                .filter(dataHora -> dataHora.toLocalDate().equals(dia))
+                .map(LocalDateTime::toLocalTime)
                 .collect(Collectors.toList());
 
-        return agenda.getDisponibilidade().stream()
-                .filter(dataHora -> dataHora.toLocalDate().equals(dia)) // Filtra pela data
-                .filter(dataHora -> !agendamentos.contains(dataHora))   // Remove horários já agendados
-                .map(LocalDateTime::toLocalTime) // Converte para LocalTime
-                .distinct()
-                .sorted()
-                .collect(Collectors.toList());
+        return diasOcupados;
     }
 }
