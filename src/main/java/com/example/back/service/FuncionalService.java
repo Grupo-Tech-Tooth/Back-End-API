@@ -53,8 +53,15 @@ public class FuncionalService {
         return funcionalRepository.findByLoginInfo_AtivoTrue();
     }
 
-    public Optional<Funcional> buscarFuncionalPorId(Long id) {
-        return funcionalRepository.findByIdAndLoginInfo_AtivoTrue(id);
+    public Funcional buscarFuncionalPorId(Long id) {
+        Optional<Funcional> funcional = funcionalRepository.findByIdAndLoginInfo_AtivoTrue(id);
+
+        if (funcional.isEmpty()) {
+            throw new IllegalArgumentException("Funcional não encontrado");
+        }
+
+        return funcional.get();
+
     }
 
     public Funcional atualizarFuncional(Long id, FuncionalRequestDto funcional) {
@@ -85,7 +92,6 @@ public class FuncionalService {
         Funcional funcional = funcionalRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Funcional não encontrado"));
 
-        // Atualizando o LoginInfo antes de deletar
         LoginInfo loginInfo = funcional.getLoginInfo();
         loginInfo.setDeletado(true);
         loginInfo.setAtivo(false);
@@ -96,19 +102,43 @@ public class FuncionalService {
     }
 
     public List<Funcional> buscarPorNomeOuSobrenome(String nome, String sobrenome) {
-        return funcionalRepository.findByLoginInfo_AtivoTrueAndNomeContainingOrSobrenomeContainingIgnoreCase(nome, sobrenome);
+        List<Funcional> funcionais = funcionalRepository.findByLoginInfo_AtivoTrueAndNomeContainingOrSobrenomeContainingIgnoreCase(nome, sobrenome);
+
+        if (funcionais.isEmpty()) {
+            throw new IllegalArgumentException("Nenhum funcional encontrado");
+        }
+
+        return funcionais;
     }
 
     public List<Funcional> buscarPorEmail(String email) {
-        return funcionalRepository.findByLoginInfo_AtivoTrueAndLoginInfo_EmailContainingIgnoreCase(email);
+        List<Funcional> funcionais = funcionalRepository.findByLoginInfo_AtivoTrueAndLoginInfo_EmailContainingIgnoreCase(email);
+
+        if (funcionais.isEmpty()) {
+            throw new IllegalArgumentException("Nenhum funcional encontrado");
+        }
+
+        return funcionais;
     }
 
     public List<Funcional> buscarPorCpf(String cpf) {
-        return funcionalRepository.findByLoginInfo_AtivoTrueAndCpfContainingIgnoreCase(cpf);
+        List<Funcional> funcionais = funcionalRepository.findByLoginInfo_AtivoTrueAndCpfContainingIgnoreCase(cpf);
+
+        if (funcionais.isEmpty()) {
+            throw new IllegalArgumentException("Nenhum funcional encontrado");
+        }
+
+        return funcionais;
     }
 
     public List<Funcional> buscarPorDepartamento(String departamento) {
-        return funcionalRepository.findByLoginInfo_AtivoTrueAndDepartamentoContainingIgnoreCase(departamento);
+        List<Funcional> funcionais = funcionalRepository.findByLoginInfo_AtivoTrueAndDepartamentoContainingIgnoreCase(departamento);
+
+        if (funcionais.isEmpty()) {
+            throw new IllegalArgumentException("Nenhum funcional encontrado");
+        }
+
+        return funcionais;
     }
 
     public List<FuncionalResponseDto> filtrarFuncionais(String nome, String email, String cpf, String departamento) {
@@ -120,6 +150,10 @@ public class FuncionalService {
                 .filter(funcional -> departamento == null || (funcional.getDepartamento() != null &&
                         funcional.getDepartamento().toUpperCase().contains(departamento.toUpperCase())))
                 .toList();
+
+        if (funcionaisFiltrados.isEmpty()) {
+            throw new IllegalArgumentException("Nenhum funcional encontrado");
+        }
 
         return FuncionalResponseDto.converter(funcionaisFiltrados); // Usa o metodo estático para listas
     }

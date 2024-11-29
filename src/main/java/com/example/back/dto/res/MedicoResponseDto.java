@@ -17,6 +17,8 @@ import java.util.List;
 @AllArgsConstructor
 public class MedicoResponseDto {
 
+
+    private Long id;
     private String nome;
     private String sobrenome;
     private String email;
@@ -31,14 +33,9 @@ public class MedicoResponseDto {
     private Boolean ativo;
     private Comissao comissao;
 
-    public double calcularComissao(double valorServico) {
-        double comissaoBase = comissao.calcularComissao(valorServico);
-        double percentualEspecializacao = especializacao.getPercentualComissao();
-        return valorServico * (percentualEspecializacao / 100) + comissaoBase;
-    }
-
     public static MedicoResponseDto converter(Medico medico) {
         return new MedicoResponseDto(
+                medico.getId(),
                 medico.getNome(),
                 medico.getSobrenome(),
                 medico.getLoginInfo().getEmail(),
