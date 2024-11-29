@@ -76,16 +76,17 @@ public class AgendamentoService {
                     throw new ResourceNotFoundException("Agenda não encontrada para o médico");
                 });
 
+        List<LocalDateTime> disponibilidade = agenda.getDisponibilidade();
+        if (disponibilidade.contains(dto.dataHora())) {
+            log.error("Horário indisponível para agendamento");
+            throw new BusinessException("Horário indisponível para agendamento");
+        }
+        disponibilidade.add(dto.dataHora());
+        agenda.setDisponibilidade(disponibilidade);
+        agendaRepository.save(agenda);
+
         Agendamento agendamento = AgendamentoMapper.toEntity(dto, cliente, medico, servico, agenda);
         agendamento.setStatus("Pendente");
-
-        String mensagem = """
-                Olá %s,
-                Seu agendamento foi realizado com sucesso.
-                Data: %s
-                Médico: %s
-                Serviço: %s
-                """.formatted(cliente.getNome(), agendamento.getDataHora(), medico.getNome(), servico.getNome());
 
         // Adiciona o agendamento recém-criado à pilha
         pilhaAgendamentoService.adicionarNaPilha(AgendamentoMapper.toDTO(agendamento));

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -52,5 +53,9 @@ public class MedicoResponseDto {
                 medico.getLoginInfo().getAtivo(),
                 medico.getComissao() // Assumindo que é do mesmo tipo da classe no DTO
         );
+    }
+
+    public static List<MedicoResponseDto> converter(List<Medico> medicos) {
+        return medicos.stream().map(MedicoResponseDto::converter).toList();
     }
 }

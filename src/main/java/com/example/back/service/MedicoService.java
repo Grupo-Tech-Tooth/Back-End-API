@@ -149,7 +149,7 @@ public class MedicoService {
     }
 
     // Método para obter os dias disponíveis na agenda do médico
-    public List<LocalDate> getDiasDisponiveis(Long medicoId) {
+    public List<LocalDate> getDiasIndisponiveis(Long medicoId) {
         Agenda agenda = agendaRepository.findByMedicoId(medicoId)
                 .orElseThrow(() -> new EntityNotFoundException("Agenda não encontrada para o médico com ID " + medicoId));
 
@@ -161,21 +161,15 @@ public class MedicoService {
     }
 
     // Método para obter os horários disponíveis de um dia específico
-    public List<LocalTime> getHorariosDisponiveis(Long medicoId, LocalDate dia) {
+    public List<LocalTime> getHorariosIndisponiveis(Long medicoId, LocalDate dia) {
         Agenda agenda = agendaRepository.findByMedicoId(medicoId)
                 .orElseThrow(() -> new EntityNotFoundException("Agenda não encontrada para o médico com ID " + medicoId));
 
-        List<LocalDateTime> agendamentos = agenda.getAgendamentos().stream()
-                .map(Agendamento::getDataHora)
-                .filter(dataHora -> dataHora.toLocalDate().equals(dia)) // Filtra pelos agendamentos do dia
+       List<LocalTime> diasOcupados = agenda.getDisponibilidade().stream()
+                .filter(dataHora -> dataHora.toLocalDate().equals(dia))
+                .map(LocalDateTime::toLocalTime)
                 .collect(Collectors.toList());
 
-        return agenda.getDisponibilidade().stream()
-                .filter(dataHora -> dataHora.toLocalDate().equals(dia)) // Filtra pela data
-                .filter(dataHora -> !agendamentos.contains(dataHora))   // Remove horários já agendados
-                .map(LocalDateTime::toLocalTime) // Converte para LocalTime
-                .distinct()
-                .sorted()
-                .collect(Collectors.toList());
+        return diasOcupados;
     }
 }

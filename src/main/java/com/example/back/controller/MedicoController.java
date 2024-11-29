@@ -31,28 +31,28 @@ public class MedicoController {
     private MedicoService medicoService;
 
     @PostMapping
-    public ResponseEntity<Medico> criarMedico(@RequestBody @Valid MedicoRequestDto dto) {
+    public ResponseEntity<MedicoResponseDto> criarMedico(@RequestBody @Valid MedicoRequestDto dto) {
         Medico novoMedico = medicoService.salvarMedico(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(novoMedico);
+        return ResponseEntity.status(HttpStatus.CREATED).body(MedicoResponseDto.converter(novoMedico));
     }
 
     @GetMapping
-    public ResponseEntity<List<Medico>> listarMedicos() {
+    public ResponseEntity<List<MedicoResponseDto>> listarMedicos() {
         List<Medico> medicos = medicoService.listarMedicos();
-        return medicos.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(medicos);
+        return medicos.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(MedicoResponseDto.converter(medicos));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Medico> buscarMedicoPorId(@PathVariable Long id) {
+    public ResponseEntity<MedicoResponseDto> buscarMedicoPorId(@PathVariable Long id) {
         Medico medico = medicoService.buscarMedicoPorId(id);
 
-        return ResponseEntity.ok(medico);
+        return ResponseEntity.ok(MedicoResponseDto.converter(medico));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Medico> atualizarMedico(@PathVariable Long id, @RequestBody MedicoRequestDto medicoAtualizado) {
+    public ResponseEntity<MedicoResponseDto> atualizarMedico(@PathVariable Long id, @RequestBody MedicoRequestDto medicoAtualizado) {
         Medico atualizado = medicoService.atualizarMedico(id, medicoAtualizado);
-        return ResponseEntity.ok(atualizado);
+        return ResponseEntity.ok(MedicoResponseDto.converter(atualizado));
     }
 
     @DeleteMapping("/{id}")
@@ -62,7 +62,7 @@ public class MedicoController {
     }
 
     @GetMapping("/nome")
-    public ResponseEntity<List<Medico>> buscarPorNomeOuSobrenome(
+    public ResponseEntity<List<MedicoResponseDto>> buscarPorNomeOuSobrenome(
             @RequestParam(required = false) String nome,
             @RequestParam(required = false) String sobrenome
     ) {
@@ -72,12 +72,12 @@ public class MedicoController {
         if (medicos.isEmpty()) {
             return ResponseEntity.noContent().build();
         } else {
-            return ResponseEntity.ok(medicos);
+            return ResponseEntity.ok(MedicoResponseDto.converter(medicos));
         }
     }
 
     @GetMapping("/email")
-    public ResponseEntity<List<Medico>> buscarPorEmail(
+    public ResponseEntity<List<MedicoResponseDto>> buscarPorEmail(
             @RequestParam String email
     ){
 
@@ -86,12 +86,12 @@ public class MedicoController {
         if (medicos.isEmpty()) {
             return ResponseEntity.noContent().build();
         }else {
-            return ResponseEntity.ok(medicos);
+            return ResponseEntity.ok(MedicoResponseDto.converter(medicos));
         }
     }
 
     @GetMapping("/cpf")
-    public ResponseEntity<List<Medico>> buscarPorCpf(
+    public ResponseEntity<List<MedicoResponseDto>> buscarPorCpf(
             @RequestParam String cpf
     ){
 
@@ -100,7 +100,7 @@ public class MedicoController {
         if (medicos.isEmpty()) {
             return ResponseEntity.noContent().build();
         }else {
-            return ResponseEntity.ok(medicos);
+            return ResponseEntity.ok(MedicoResponseDto.converter(medicos));
         }
     }
 
@@ -129,9 +129,9 @@ public class MedicoController {
         return ResponseEntity.ok(medicos);
     }
 
-    @GetMapping("/{medicoId}/agenda/dias-disponiveis")
+    @GetMapping("/{medicoId}/agenda/dias-indisponiveis")
     public ResponseEntity<DiasDisponiveisResponse> getDiasDisponiveis(@PathVariable Long medicoId) {
-        List<LocalDate> diasDisponiveis = medicoService.getDiasDisponiveis(medicoId);
+        List<LocalDate> diasDisponiveis = medicoService.getDiasIndisponiveis(medicoId);
 
         if (diasDisponiveis.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -140,11 +140,11 @@ public class MedicoController {
         return ResponseEntity.ok(new DiasDisponiveisResponse(diasDisponiveis));
     }
 
-    @GetMapping("/{medicoId}/agenda/horarios-disponiveis")
+    @GetMapping("/{medicoId}/agenda/horarios-indisponiveis")
     public ResponseEntity<HorariosDisponiveisResponse> getHorariosDisponiveis(
             @PathVariable Long medicoId,
             @RequestParam("dia") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dia) {
-        List<LocalTime> horariosDisponiveis = medicoService.getHorariosDisponiveis(medicoId, dia);
+        List<LocalTime> horariosDisponiveis = medicoService.getHorariosIndisponiveis(medicoId, dia);
 
         if (horariosDisponiveis.isEmpty()) {
             return ResponseEntity.noContent().build();
