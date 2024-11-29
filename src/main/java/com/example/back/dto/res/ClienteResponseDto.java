@@ -19,7 +19,6 @@ import java.util.List;
 @AllArgsConstructor
 public class ClienteResponseDto {
 
-    // Getters e Setters
     private Long id;
     private String nome;
     private String sobrenome;
@@ -29,14 +28,13 @@ public class ClienteResponseDto {
     private String genero;
     private String telefone;
     private String cep;
-    private Integer numeroResidencia;
-    private List<String> alergias;
-    private List<String> medicamentos;
-    private Medico medicoResponsavel;
+    private String numeroResidencia;
+    private String alergias;
+    private String medicamentos;
+    private Long medicoResponsavelId;
     private AgendamentoDTO ultimoAgendamento;
 
     public ClienteResponseDto(Cliente cliente) {
-
         this.id = cliente.getId();
         this.nome = cliente.getNome();
         this.sobrenome = cliente.getSobrenome();
@@ -47,7 +45,7 @@ public class ClienteResponseDto {
         this.numeroResidencia = cliente.getNumeroResidencia();
         this.alergias = cliente.getAlergias();
         this.medicamentos = cliente.getMedicamentos();
-        this.medicoResponsavel = cliente.getMedicoResponsavel();
+        this.medicoResponsavelId = cliente.getMedicoResponsavelId();
         this.dataNascimento = cliente.getDataNascimento();
         this.genero = cliente.getGenero();
     }

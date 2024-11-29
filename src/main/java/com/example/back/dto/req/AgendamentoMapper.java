@@ -15,7 +15,8 @@ public class AgendamentoMapper {
                 agendamento.getMedico().getId(),
                 agendamento.getServico().getId(),
                 agendamento.getStatus(),
-                agendamento.getDataHora()
+                agendamento.getDataHora(),
+                agendamento.getCliente().getCpf()
         );
     }
 
@@ -26,6 +27,8 @@ public class AgendamentoMapper {
                 .agenda(agenda)
                 .servico(servico)
                 .dataHora(dto.dataHora())
+                .status(dto.status())
+                .cpf(dto.cpf())
                 .build();
     }
 

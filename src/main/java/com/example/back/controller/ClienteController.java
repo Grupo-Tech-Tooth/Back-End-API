@@ -54,10 +54,15 @@ public class ClienteController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ClienteResponseDto> buscarClientePorId(@PathVariable Long id) {
+        if (id == null || id <= 0) {
+            return ResponseEntity.badRequest().build();
+        }
+
         Cliente cliente = service.buscarClientePorId(id);
         ClienteResponseDto clienteResponseDto = new ClienteResponseDto(cliente);
         return ResponseEntity.ok(clienteResponseDto);
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<ClienteResponseDto> atualizarCliente(@PathVariable Long id, @RequestBody @Valid AtualizarClienteRequestDto clienteRequestDto) {

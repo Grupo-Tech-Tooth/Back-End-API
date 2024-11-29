@@ -22,6 +22,7 @@ public class AgendamentoResponseDto {
     private LocalDateTime dataHora;
     @NotBlank
     private String status;
+    private String cpf;
 
     @PrePersist
     public void verificarDisponibilidade() {

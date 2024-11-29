@@ -4,14 +4,16 @@ import com.example.back.entity.Funcional;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class FuncionalRequestDto {
 
     @NotBlank(message = "Nome não pode ser vazio")
@@ -46,7 +48,9 @@ public class FuncionalRequestDto {
     @NotBlank(message = "Cep é obrigatório")
     private String cep;
 
-    private Integer numeroResidencia;
+    @NotBlank(message = "Número de residência é obrigatório")
+    @NotNull(message = "Número de residência é obrigatório")
+    private String numeroResidencia;
 
     public Funcional toFuncional() {
         Funcional funcional = new Funcional();

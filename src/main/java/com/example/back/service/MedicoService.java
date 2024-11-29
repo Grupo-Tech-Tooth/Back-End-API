@@ -2,9 +2,11 @@ package com.example.back.service;
 
 import com.example.back.dto.req.MedicoRequestDto;
 import com.example.back.dto.res.MedicoResponseDto;
+import com.example.back.entity.Agenda;
 import com.example.back.entity.LoginInfo;
 import com.example.back.entity.Medico;
 import com.example.back.infra.execption.UsuarioExistenteException;
+import com.example.back.repository.AgendaRepository;
 import com.example.back.repository.LoginInfoRepository;
 import com.example.back.repository.MedicoRepository;
 import com.example.back.strategy.Comissao;
@@ -14,10 +16,14 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.example.back.entity.Agendamento;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MedicoService {
@@ -28,6 +34,8 @@ public class MedicoService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private LoginInfoRepository loginInfoRepository;
+    @Autowired
+    private AgendaRepository agendaRepository;
 
     @Transactional
     public Medico salvarMedico(MedicoRequestDto medicoDto) {
@@ -62,8 +70,14 @@ public class MedicoService {
         return medicoRepository.findByLoginInfo_DeletadoFalse();
     }
 
-    public Optional<Medico> buscarMedicoPorId(Long id) {
-        return medicoRepository.findByIdAndLoginInfo_DeletadoFalse(id);
+    public Medico buscarMedicoPorId(Long id) {
+        Optional<Medico> medico = medicoRepository.findByIdAndLoginInfo_DeletadoFalse(id);
+
+        if (medico.isEmpty()) {
+            throw new IllegalArgumentException("Médico não encontrado");
+        }
+
+        return medico.get();
     }
 
     public Medico atualizarMedico(Long id, MedicoRequestDto medicoRequestDto) {
@@ -117,7 +131,7 @@ public class MedicoService {
 
     public double calcularComissao(Long id, double valorServico) {
         Medico medico = medicoRepository.findByIdAndLoginInfo_DeletadoFalse(id)
-                .orElseThrow(() -> new EntityNotFoundException("Médico não encontrado"));
+                .orElseThrow(() -> new IllegalArgumentException("Médico não encontrado"));
 
         return medico.calcularComissao(valorServico); // Usa o método de calcular comissões da classe Medico
     }
@@ -134,5 +148,28 @@ public class MedicoService {
                 .toList();
     }
 
+    // Método para obter os dias disponíveis na agenda do médico
+    public List<LocalDate> getDiasIndisponiveis(Long medicoId) {
+        Agenda agenda = agendaRepository.findByMedicoId(medicoId)
+                .orElseThrow(() -> new EntityNotFoundException("Agenda não encontrada para o médico com ID " + medicoId));
 
+        return agenda.getDisponibilidade().stream()
+                .map(LocalDateTime::toLocalDate) // Converte para LocalDate
+                .distinct() // Remove duplicados
+                .sorted()   // Ordena os diasx
+                .collect(Collectors.toList());
+    }
+
+    // Método para obter os horários disponíveis de um dia específico
+    public List<LocalTime> getHorariosIndisponiveis(Long medicoId, LocalDate dia) {
+        Agenda agenda = agendaRepository.findByMedicoId(medicoId)
+                .orElseThrow(() -> new EntityNotFoundException("Agenda não encontrada para o médico com ID " + medicoId));
+
+       List<LocalTime> diasOcupados = agenda.getDisponibilidade().stream()
+                .filter(dataHora -> dataHora.toLocalDate().equals(dia))
+                .map(LocalDateTime::toLocalTime)
+                .collect(Collectors.toList());
+
+        return diasOcupados;
+    }
 }

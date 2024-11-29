@@ -69,9 +69,11 @@ public class ClienteService {
 
     public Cliente buscarClientePorId(Long id) {
         Optional<Cliente> clienteEncontrado = clienteRepository.findByIdAndLoginInfoDeletadoFalse(id);
+
         if (clienteEncontrado.isEmpty()) {
             throw new ResourceNotFoundException("Cliente não encontrado");
         }
+
         return clienteEncontrado.get();
     }
 
@@ -100,7 +102,7 @@ public class ClienteService {
         clienteDb.setTelefone(dto.getTelefone());
         clienteDb.setAlergias(dto.getAlergias());
         clienteDb.setMedicamentos(dto.getMedicamentos());
-        clienteDb.setMedicoResponsavel(dto.getMedicoResponsavel());
+        clienteDb.setMedicoResponsavelId(dto.getMedicoResponsavel().getId());
 
         LoginInfo loginInfo = clienteDb.getLoginInfo();
         loginInfo.setEmail(dto.getEmail());

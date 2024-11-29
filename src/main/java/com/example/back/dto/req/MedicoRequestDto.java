@@ -47,7 +47,9 @@ public class MedicoRequestDto {
     @NotBlank(message = "Cep é obrigatório")
     private String cep;
 
-    private Integer numeroResidencia;
+    @NotBlank(message = "Número de residência é obrigatório")
+    @NotNull(message = "Número de residência é obrigatório")
+    private String numeroResidencia;
 
     @NotBlank(message = "Senha é obrigatória")
     String senha;

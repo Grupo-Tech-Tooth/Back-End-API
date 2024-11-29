@@ -3,14 +3,17 @@ package com.example.back.service;
 import com.example.back.dto.req.AgendamentoDTO;
 import com.example.back.dto.req.AgendamentoCreateDTO;
 import com.example.back.dto.req.AgendamentoMapper;
+import com.example.back.dto.res.AgendamentoResponseDto;
 import com.example.back.entity.*;
 import com.example.back.infra.execption.BusinessException;
 import com.example.back.infra.execption.ResourceNotFoundException;
 import com.example.back.repository.*;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -37,6 +40,10 @@ public class AgendamentoService {
     private ServicoRepository servicoRepository;
     @Autowired
     private AgendaRepository agendaRepository;
+    @Autowired
+    private FilaAgendamentoService filaService;
+    @Autowired
+    private  PilhaAgendamentoService pilhaAgendamentoService;
 
     private static final Logger log = LoggerFactory.getLogger(AgendamentoService.class);
 
@@ -69,16 +76,20 @@ public class AgendamentoService {
                     throw new ResourceNotFoundException("Agenda não encontrada para o médico");
                 });
 
+        List<LocalDateTime> disponibilidade = agenda.getDisponibilidade();
+        if (disponibilidade.contains(dto.dataHora())) {
+            log.error("Horário indisponível para agendamento");
+            throw new BusinessException("Horário indisponível para agendamento");
+        }
+        disponibilidade.add(dto.dataHora());
+        agenda.setDisponibilidade(disponibilidade);
+        agendaRepository.save(agenda);
+
         Agendamento agendamento = AgendamentoMapper.toEntity(dto, cliente, medico, servico, agenda);
         agendamento.setStatus("Pendente");
 
-        String mensagem = """
-                Olá %s,
-                Seu agendamento foi realizado com sucesso.
-                Data: %s
-                Médico: %s
-                Serviço: %s
-                """.formatted(cliente.getNome(), agendamento.getDataHora(), medico.getNome(), servico.getNome());
+        // Adiciona o agendamento recém-criado à pilha
+        pilhaAgendamentoService.adicionarNaPilha(AgendamentoMapper.toDTO(agendamento));
 
         return AgendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
     }
@@ -167,6 +178,8 @@ public class AgendamentoService {
         agendamento.setServico(servico);
         agendamento.setAgenda(agenda);
         agendamento.setDataHora(dto.dataHora());
+        agendamento.setCpf(dto.cpf());
+        agendamento.setStatus(dto.status());
 
         return AgendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
     }
@@ -269,5 +282,116 @@ public class AgendamentoService {
 
     public Optional<AgendamentoDTO> buscarUltimoAgendamentoDeCliente(Long id) {
         return agendamentoRepository.findByClienteIdOrderByDataHoraDesc(id);
+    }
+
+    // Adicionar agendamentos à fila
+    public void verificarEAdicionarAgendamentos() {
+        LocalDateTime agora = LocalDateTime.now();
+        List<Agendamento> agendamentos = agendamentoRepository.findAllByDataHoraBetweenAndStatusIn(
+                LocalDateTime.of(agora.toLocalDate(), LocalTime.of(6, 0)),
+                LocalDateTime.of(agora.toLocalDate(), LocalTime.of(23, 59)),
+                List.of("Pendente")
+        );
+
+        for (Agendamento agendamento : agendamentos) {
+            if (agendamento.getDataHora().isBefore(agora) || agendamento.getDataHora().isEqual(agora)) {
+                filaService.adicionarNaFila(new AgendamentoDTO(
+                        agendamento.getId(),
+                        agendamento.getCliente().getId(),
+                        agendamento.getMedico().getId(),
+                        agendamento.getServico().getId(),
+                        agendamento.getStatus(),
+                        agendamento.getDataHora(),
+                        agendamento.getCpf()
+                ));
+            }
+        }
+    }
+
+    // Limpar a fila e concluir agendamentos
+    public void limparFilaEConcluirAgendamentos() {
+        List<Agendamento> agendamentos = agendamentoRepository.findAllByDataHoraBeforeAndStatusIn(
+                LocalDateTime.now(),
+                Arrays.asList("Pendente", null)
+        );
+
+
+        for (Agendamento agendamento : agendamentos) {
+            agendamento.setStatus("Concluído");
+        }
+
+        agendamentoRepository.saveAll(agendamentos);
+        filaService.limparFila();
+    }
+
+    public AgendamentoDTO concluirConsulta(Long id) {
+        // Recupera o agendamento pelo ID
+        Agendamento agendamento = agendamentoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Agendamento não encontrado"));
+
+        // Verifica se o agendamento está na fila e remove
+        filaService.getFila().removeIf(a -> a.id().equals(id));
+
+        // Atualiza o status do agendamento para "Concluído"
+        agendamento.setStatus("Concluído");
+
+        // Salva e retorna o DTO atualizado
+        return AgendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
+    }
+
+    // Desfazer um agendamento pelo ID (alterar status para "Cancelado")
+    @Transactional
+    public AgendamentoDTO desfazerPorId(Long id) {
+        // Remove o agendamento da pilha
+        AgendamentoDTO agendamentoDTO = pilhaAgendamentoService.desfazerPorId(id);
+
+        // Atualiza o status e define cancelado
+        Agendamento agendamento = agendamentoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Agendamento não encontrado"));
+        agendamento.setStatus("Cancelado");
+        agendamento.setCancelado(true);
+        return AgendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
+    }
+
+    // Metodo para limpar a pilha à meia-noite
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void limparPilha() {
+        pilhaAgendamentoService.limparPilha();
+    }
+
+    public List<AgendamentoResponseDto> filtrarAgendamentos(String nomeCliente, String nomeServico, String nomeMedico,
+                                                            LocalDate dataInicio, LocalDate dataFim) {
+        List<Agendamento> agendamentos = agendamentoRepository.findAll().stream()
+                .filter(agendamento -> nomeCliente == null ||
+                        agendamento.getCliente().getNome().toUpperCase().contains(nomeCliente.toUpperCase()))
+                .filter(agendamento -> nomeServico == null ||
+                        agendamento.getServico().getNome().toUpperCase().contains(nomeServico.toUpperCase()))
+                .filter(agendamento -> nomeMedico == null ||
+                        agendamento.getMedico().getNome().toUpperCase().contains(nomeMedico.toUpperCase()))
+                .filter(agendamento -> dataInicio == null ||
+                        !agendamento.getDataHora().toLocalDate().isBefore(dataInicio))
+                .filter(agendamento -> dataFim == null ||
+                        !agendamento.getDataHora().toLocalDate().isAfter(dataFim))
+                .toList();
+
+        return agendamentos.stream()
+                .map(agendamento -> new AgendamentoResponseDto(
+                        agendamento.getCliente(),
+                        agendamento.getAgenda(),
+                        agendamento.getDataHora(),
+                        agendamento.getStatus(),
+                        agendamento.getCliente().getCpf()
+                )).toList();
+    }
+
+    public List<AgendamentoDTO> buscarAgendamentosDoDia() {
+        LocalDateTime inicioDoDia = LocalDateTime.now().with(LocalTime.MIN); // Início do dia
+        LocalDateTime fimDoDia = LocalDateTime.now().with(LocalTime.MAX);   // Fim do dia
+
+        // Buscar agendamentos do dia
+        List<Agendamento> agendamentos = agendamentoRepository.findAgendamentosDoDia(inicioDoDia, fimDoDia);
+
+        // Usar o mapper para converter em DTOs
+        return AgendamentoMapper.converter(agendamentos);
     }
 }

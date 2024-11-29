@@ -110,7 +110,7 @@ public class ServicoService {
     }
 
     public Servico atualizarServico(Long id, ServicoDtoRequest servicoDtoRequest) {
-        Servico servico = servicoRepository.findById(id).orElseThrow();
+        Servico servico = servicoRepository.findById(id).orElseThrow( () -> new IllegalArgumentException("Serviço não encontrado"));
 
         servico.setNome(servicoDtoRequest.nome());
         servico.setDuracaoMinutos(servicoDtoRequest.duracaoMinutos());
@@ -128,5 +128,9 @@ public class ServicoService {
 
         servicoRepository.deleteById(id);
 
+    }
+
+    public List<Servico> listarServicos() {
+        return servicoRepository.findAll();
     }
 }
