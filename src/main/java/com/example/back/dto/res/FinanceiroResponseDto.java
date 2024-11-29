@@ -24,7 +24,9 @@ public class FinanceiroResponseDto {
     private LocalDateTime dataPagamento;
     private FormaPagamento formaPagamento;
     private Integer parcelas;
-    private Double valor;
+    private Double valorBruto;
+    private Double valorCorrigido;
+    private Double taxa;
     private String cpf;
 
     public static FinanceiroResponseDto converter(Financeiro financeiro) {
@@ -36,7 +38,9 @@ public class FinanceiroResponseDto {
                 financeiro.getDataPagamento(),
                 financeiro.getFormaPagamento(),
                 financeiro.getParcelas(),
-                financeiro.getValor(),
+                financeiro.getValorBruto(),
+                financeiro.getValorCorrigido(),
+                financeiro.getTaxa(),
                 financeiro.getCpf()
         );
     }
