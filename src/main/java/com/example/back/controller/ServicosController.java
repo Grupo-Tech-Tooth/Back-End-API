@@ -68,6 +68,10 @@ public class ServicosController {
             throw new IllegalArgumentException("Período inválido. Use 'mensal' ou 'anual'.");
         }
 
+        if(servicos.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
         return ResponseEntity.ok(servicos);
     }
 
