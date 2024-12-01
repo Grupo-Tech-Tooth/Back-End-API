@@ -197,16 +197,13 @@ public class ClienteService {
         );
     }
 
-    public List<ClienteResponseDto> filtrarClientes(String nome, String email, String telefone, LocalDate ultimaConsulta) {
+    public List<ClienteResponseDto> filtrarClientes(String nome, String email, String telefone, String cpf) {
         List<Cliente> clientes = clienteRepository.findAll().stream()
                 .filter(cliente -> nome == null || cliente.getNome().toUpperCase().contains(nome.toUpperCase()) ||
                         (cliente.getSobrenome() != null && cliente.getSobrenome().toUpperCase().contains(nome.toUpperCase())))
                 .filter(cliente -> email == null || cliente.getLoginInfo().getEmail().equalsIgnoreCase(email))
                 .filter(cliente -> telefone == null || cliente.getTelefone().equalsIgnoreCase(telefone))
-                .filter(cliente -> ultimaConsulta == null ||
-                        agendamentoService.buscarUltimoAgendamentoDeCliente(cliente.getId())
-                                .map(agendamento -> agendamento.getDataHora().toLocalDate().isEqual(ultimaConsulta))
-                                .orElse(false))
+                .filter(cliente -> cpf == null || cliente.getCpf().equals(cpf)) // Novo filtro por CPF
                 .toList();
 
         return ClienteResponseDto.converter(clientes);

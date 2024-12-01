@@ -147,8 +147,8 @@ public class ClienteController {
             @RequestParam(required = false) String nome,
             @RequestParam(required = false) String email,
             @RequestParam(required = false) String telefone,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate ultimaConsulta) {
-        List<ClienteResponseDto> clientes = service.filtrarClientes(nome, email, telefone, ultimaConsulta);
+            @RequestParam(required = false) String cpf) { // Adicionado CPF
+        List<ClienteResponseDto> clientes = service.filtrarClientes(nome, email, telefone, cpf);
         return ResponseEntity.ok(clientes);
     }
 
