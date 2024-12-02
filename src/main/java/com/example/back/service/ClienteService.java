@@ -198,15 +198,30 @@ public class ClienteService {
     }
 
     public List<ClienteResponseDto> filtrarClientes(String nome, String email, String telefone, String cpf) {
+        // Filtragem inicial
         List<Cliente> clientes = clienteRepository.findAll().stream()
                 .filter(cliente -> nome == null || cliente.getNome().toUpperCase().contains(nome.toUpperCase()) ||
                         (cliente.getSobrenome() != null && cliente.getSobrenome().toUpperCase().contains(nome.toUpperCase())))
                 .filter(cliente -> email == null || cliente.getLoginInfo().getEmail().equalsIgnoreCase(email))
                 .filter(cliente -> telefone == null || cliente.getTelefone().equalsIgnoreCase(telefone))
-                .filter(cliente -> cpf == null || cliente.getCpf().equals(cpf)) // Novo filtro por CPF
+                .filter(cliente -> cpf == null || cliente.getCpf().equals(cpf)) // Filtro por CPF
                 .toList();
 
-        return ClienteResponseDto.converter(clientes);
+        // Conversão para DTO
+        List<ClienteResponseDto> clientesDto = ClienteResponseDto.converter(clientes);
+
+        // Buscar últimos agendamentos
+        clientesDto.forEach(cliente -> {
+            List<Agendamento> agendamentosEntidade = agendamentoService.buscarAgendamentosPorCliente(cliente.getId());
+            List<AgendamentoDTO> agendamentos = AgendamentoMapper.converter(agendamentosEntidade);
+
+            if (!agendamentos.isEmpty()) {
+                int lastIndex = agendamentos.size() - 1;
+                cliente.setUltimoAgendamento(agendamentos.get(lastIndex));
+            }
+        });
+
+        return clientesDto;
     }
 
 }
