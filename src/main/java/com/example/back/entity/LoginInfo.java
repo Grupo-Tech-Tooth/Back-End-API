@@ -43,6 +43,7 @@ public class LoginInfo implements UserDetails {
     private LocalDateTime deletadoEm;
 
     @Column(name = "hierarquia")
+    @Enumerated(EnumType.STRING)
     private Hierarquia hierarquia;
 
     @Column(name = "data_criacao", columnDefinition = "TIMESTAMP")
