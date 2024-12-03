@@ -54,6 +54,11 @@ public class MedicoService {
         Medico medico = medicoDto.toMedico(); // Usa o método toMedico do DTO
         medico.setComissao(comissaoStrategy); // define a comissão aqui
 
+        Agenda agenda = new Agenda();
+        agenda.setMedico(medico);
+
+        agendaRepository.save(agenda);
+
         // Criando e salvando LoginInfo
         LoginInfo loginInfo = new LoginInfo();
         loginInfo.setEmail(medicoDto.getEmail());
