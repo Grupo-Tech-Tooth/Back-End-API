@@ -1,5 +1,8 @@
 package com.example.back.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum Hierarquia {
     MEDICO("MEDICO"),
     FUNCIONAL("FUNCIONAL"),
@@ -12,7 +15,4 @@ public enum Hierarquia {
         this.role = role;
     }
 
-    public String getRole() {
-        return role;
-    }
 }
