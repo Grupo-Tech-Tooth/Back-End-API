@@ -41,8 +41,7 @@ public class FinanceiroResponseDto {
                 financeiro.getParcelas(),
                 financeiro.getValorBruto(),
                 financeiro.getValorCorrigido(),
-                financeiro.getTaxa(),
-                financeiro.getCpf()
+                financeiro.getTaxa()
         );
     }
 }
