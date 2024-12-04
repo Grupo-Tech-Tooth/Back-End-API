@@ -1,7 +1,6 @@
 package com.example.back.entity;
 
 import com.example.back.enums.EspecializacaoOdontologica;
-import com.example.back.strategy.Comissao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
