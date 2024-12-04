@@ -135,11 +135,11 @@ class ClienteControllerTest {
         loginInfo.setEmail("teste@gmail.com");
         cliente.setLoginInfo(loginInfo);
 
-        when(clienteService.filtrarClientes(nome, null, null, ultimaConsulta))
+        when(clienteService.filtrarClientes(nome, null, null, null))
                 .thenReturn(List.of(new ClienteResponseDto(cliente)));
 
         ResponseEntity<List<ClienteResponseDto>> resposta = clienteController.filtrarClientes(
-                nome, null, null, ultimaConsulta);
+                nome, null, null, null);
 
         assertEquals(200, resposta.getStatusCodeValue());
         assertNotNull(resposta.getBody());

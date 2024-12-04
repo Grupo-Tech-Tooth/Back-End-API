@@ -51,11 +51,9 @@ public class MedicoService {
             throw new UsuarioExistenteException("Médico já existe com esse Email");
         }
 
-//        Comissao comissaoStrategy = new ComissaoMedico(5.0); // ou algum outro cálculo
 
         // Criando o médico a partir do DTO
         Medico medico = medicoDto.toMedico(); // Usa o método toMedico do DTO
-//        medico.setComissao(comissaoStrategy.calcularComissao(5.0)); // define a comissão aqui
 
         //Criação da senha
         String primeirasLetras =medicoDto.getSobrenome().substring(0,3);
@@ -66,7 +64,6 @@ public class MedicoService {
         Agenda agenda = new Agenda();
         agenda.setMedico(medico);
 
-        agendaRepository.save(agenda);
 
         // Criando e salvando LoginInfo
         LoginInfo loginInfo = new LoginInfo();
@@ -77,8 +74,10 @@ public class MedicoService {
 
         loginInfoRepository.save(loginInfo);
         medico.setLoginInfo(loginInfo);
+        Medico save = medicoRepository.save(medico);
+        agendaRepository.save(agenda);
 
-        return medicoRepository.save(medico);
+        return save;
     }
 
     public List<Medico> listarMedicos() {

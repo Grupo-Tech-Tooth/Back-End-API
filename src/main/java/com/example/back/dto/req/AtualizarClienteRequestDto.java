@@ -11,6 +11,7 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -41,10 +42,6 @@ public class AtualizarClienteRequestDto {
     @Email(message = "Email inválido")
     private String email;
 
-    @NotBlank(message = "Senha não pode ser vazia")
-    @NotNull
-    private String senha;
-
     @NotNull(message = "Hierarquia não pode ser nula")
     private Hierarquia hierarquia;
 
@@ -64,9 +61,11 @@ public class AtualizarClienteRequestDto {
 
     private String medicamentos;
 
-    @NotBlank(message = "Dentista Responsável não pode ser vazio")
-    @NotNull(message = "Dentista Responsável não pode ser nulo")
-    private Medico medicoResponsavel;
+    private Long medicoResponsavelId;
+
+    private LocalDate ultimoAgendamento;
+
+    private String observacoes;
 
     public Cliente toCliente() {
         Cliente cliente = new Cliente();
@@ -80,7 +79,9 @@ public class AtualizarClienteRequestDto {
         cliente.setNumeroResidencia(this.numeroResidencia);
         cliente.setAlergias(this.alergias);
         cliente.setMedicamentos(this.medicamentos);
-        cliente.setMedicoResponsavelId(this.medicoResponsavel.getId());
+        cliente.setMedicoResponsavelId(this.medicoResponsavelId);
+        cliente.setUltimoAgendamento(this.ultimoAgendamento);
+        cliente.setObservacoes(this.observacoes);
         return cliente;
     }
 }
