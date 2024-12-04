@@ -91,6 +91,8 @@ public class FuncionalService {
         LoginInfo loginInfo = funcionalDb.getLoginInfo();
         loginInfo.setEmail(funcional.getEmail());
 
+        loginInfoRepository.save(loginInfo);
+
         return funcionalRepository.save(funcionalDb);
 
     }
