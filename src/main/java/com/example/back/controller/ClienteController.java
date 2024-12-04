@@ -142,13 +142,18 @@ public class ClienteController {
         return ResponseEntity.ok(fluxoMensal);
     }
 
-    @GetMapping("/clientes/filtrar")
+    @GetMapping("/filtrar")
     public ResponseEntity<List<ClienteResponseDto>> filtrarClientes(
             @RequestParam(required = false) String nome,
             @RequestParam(required = false) String email,
             @RequestParam(required = false) String telefone,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate ultimaConsulta) {
-        List<ClienteResponseDto> clientes = service.filtrarClientes(nome, email, telefone, ultimaConsulta);
+            @RequestParam(required = false) String cpf) {
+        List<ClienteResponseDto> clientes = service.filtrarClientes(nome, email, telefone, cpf);
+
+        if (clientes.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
         return ResponseEntity.ok(clientes);
     }
 

@@ -9,6 +9,7 @@ import com.example.back.dto.res.FluxoSemanal;
 import com.example.back.entity.Agendamento;
 import com.example.back.entity.Cliente;
 import com.example.back.entity.LoginInfo;
+import com.example.back.enums.Hierarquia;
 import com.example.back.infra.execption.ResourceNotFoundException;
 import com.example.back.repository.ClienteRepository;
 import com.example.back.repository.LoginInfoRepository;
@@ -54,11 +55,11 @@ public class ClienteService {
             throw new IllegalArgumentException("Cliente já existe com esse CPF");
         }
 
+        dto.setHierarquia(Hierarquia.CLIENTE);
         Cliente cliente = new Cliente(dto);
 
         LoginInfo loginInfo = new LoginInfo();
         loginInfo.setEmail(dto.getEmail());
-        loginInfo.setSenha(passwordEncoder.encode(dto.getSenha()));
         loginInfo.setCliente(cliente);
 
         loginInfoRepository.save(loginInfo);
@@ -102,7 +103,9 @@ public class ClienteService {
         clienteDb.setTelefone(dto.getTelefone());
         clienteDb.setAlergias(dto.getAlergias());
         clienteDb.setMedicamentos(dto.getMedicamentos());
-        clienteDb.setMedicoResponsavelId(dto.getMedicoResponsavel().getId());
+        clienteDb.setMedicoResponsavelId(dto.getMedicoResponsavelId());
+        clienteDb.setUltimoAgendamento(dto.getUltimoAgendamento());
+        clienteDb.setObservacoes(dto.getObservacoes());
 
         LoginInfo loginInfo = clienteDb.getLoginInfo();
         loginInfo.setEmail(dto.getEmail());
@@ -197,19 +200,31 @@ public class ClienteService {
         );
     }
 
-    public List<ClienteResponseDto> filtrarClientes(String nome, String email, String telefone, LocalDate ultimaConsulta) {
+    public List<ClienteResponseDto> filtrarClientes(String nome, String email, String telefone, String cpf) {
+        // Filtragem inicial
         List<Cliente> clientes = clienteRepository.findAll().stream()
                 .filter(cliente -> nome == null || cliente.getNome().toUpperCase().contains(nome.toUpperCase()) ||
                         (cliente.getSobrenome() != null && cliente.getSobrenome().toUpperCase().contains(nome.toUpperCase())))
                 .filter(cliente -> email == null || cliente.getLoginInfo().getEmail().equalsIgnoreCase(email))
                 .filter(cliente -> telefone == null || cliente.getTelefone().equalsIgnoreCase(telefone))
-                .filter(cliente -> ultimaConsulta == null ||
-                        agendamentoService.buscarUltimoAgendamentoDeCliente(cliente.getId())
-                                .map(agendamento -> agendamento.getDataHora().toLocalDate().isEqual(ultimaConsulta))
-                                .orElse(false))
+                .filter(cliente -> cpf == null || cliente.getCpf().equals(cpf)) // Filtro por CPF
                 .toList();
 
-        return ClienteResponseDto.converter(clientes);
+        // Conversão para DTO
+        List<ClienteResponseDto> clientesDto = ClienteResponseDto.converter(clientes);
+
+        // Buscar últimos agendamentos
+        clientesDto.forEach(cliente -> {
+            List<Agendamento> agendamentosEntidade = agendamentoService.buscarAgendamentosPorCliente(cliente.getId());
+            List<AgendamentoDTO> agendamentos = AgendamentoMapper.converter(agendamentosEntidade);
+
+            if (!agendamentos.isEmpty()) {
+                int lastIndex = agendamentos.size() - 1;
+                cliente.setUltimoAgendamento(agendamentos.get(lastIndex));
+            }
+        });
+
+        return clientesDto;
     }
 
 }
