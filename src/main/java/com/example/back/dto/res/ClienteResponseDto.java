@@ -33,6 +33,7 @@ public class ClienteResponseDto {
     private String medicamentos;
     private Long medicoResponsavelId;
     private AgendamentoDTO ultimoAgendamento;
+    private String observacoes;
 
     public ClienteResponseDto(Cliente cliente) {
         this.id = cliente.getId();
@@ -48,6 +49,7 @@ public class ClienteResponseDto {
         this.medicoResponsavelId = cliente.getMedicoResponsavelId();
         this.dataNascimento = cliente.getDataNascimento();
         this.genero = cliente.getGenero();
+        this.observacoes = cliente.getObservacoes();
     }
 
     public static List<ClienteResponseDto> converter(List<Cliente> clientes) {

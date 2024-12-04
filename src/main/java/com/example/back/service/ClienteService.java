@@ -9,6 +9,7 @@ import com.example.back.dto.res.FluxoSemanal;
 import com.example.back.entity.Agendamento;
 import com.example.back.entity.Cliente;
 import com.example.back.entity.LoginInfo;
+import com.example.back.enums.Hierarquia;
 import com.example.back.infra.execption.ResourceNotFoundException;
 import com.example.back.repository.ClienteRepository;
 import com.example.back.repository.LoginInfoRepository;
@@ -54,11 +55,11 @@ public class ClienteService {
             throw new IllegalArgumentException("Cliente já existe com esse CPF");
         }
 
+        dto.setHierarquia(Hierarquia.CLIENTE);
         Cliente cliente = new Cliente(dto);
 
         LoginInfo loginInfo = new LoginInfo();
         loginInfo.setEmail(dto.getEmail());
-        loginInfo.setSenha(passwordEncoder.encode(dto.getSenha()));
         loginInfo.setCliente(cliente);
 
         loginInfoRepository.save(loginInfo);
@@ -102,7 +103,9 @@ public class ClienteService {
         clienteDb.setTelefone(dto.getTelefone());
         clienteDb.setAlergias(dto.getAlergias());
         clienteDb.setMedicamentos(dto.getMedicamentos());
-        clienteDb.setMedicoResponsavelId(dto.getMedicoResponsavel().getId());
+        clienteDb.setMedicoResponsavelId(dto.getMedicoResponsavelId());
+        clienteDb.setUltimoAgendamento(dto.getUltimoAgendamento());
+        clienteDb.setObservacoes(dto.getObservacoes());
 
         LoginInfo loginInfo = clienteDb.getLoginInfo();
         loginInfo.setEmail(dto.getEmail());

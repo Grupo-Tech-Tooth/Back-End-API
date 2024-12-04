@@ -12,6 +12,7 @@ import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -43,11 +44,6 @@ public class SalvarClienteRequestDto {
     @Email(message = "Email inválido")
     private String email;
 
-    @NotBlank(message = "Senha não pode ser vazia")
-    @NotNull
-    private String senha;
-
-    @NotNull(message = "Hierarquia não pode ser nula")
     private Hierarquia hierarquia;
 
     @NotBlank(message = "Telefone não pode ser vazio")
@@ -66,8 +62,11 @@ public class SalvarClienteRequestDto {
 
     private String medicamentos;
 
-    @NotNull(message = "ID do médico responsável não pode ser nulo")
     private Long medicoResponsavelId;
+
+    private LocalDate ultimoAgendamento;
+
+    private String observacoes;
 
     public Cliente toCliente() {
         Cliente cliente = new Cliente();
@@ -82,6 +81,8 @@ public class SalvarClienteRequestDto {
         cliente.setAlergias(this.alergias);
         cliente.setMedicamentos(this.medicamentos);
         cliente.setMedicoResponsavelId(this.medicoResponsavelId);
+        cliente.setUltimoAgendamento(this.ultimoAgendamento);
+        cliente.setObservacoes(this.observacoes);
         return cliente;
     }
 }
