@@ -2,6 +2,7 @@ package com.example.back.dto.res;
 
 import com.example.back.entity.Medico;
 import com.example.back.enums.EspecializacaoOdontologica;
+import com.example.back.enums.Hierarquia;
 import com.example.back.strategy.Comissao;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,8 +27,10 @@ public class MedicoResponseDto {
     private LocalDate dataNascimento;
     private String telefone;
     private String genero;
+    private String matricula;
     private String cep;
     private String numeroResidencia;
+    private String complemento;
     private String crm;
     private EspecializacaoOdontologica especializacao;
     private Boolean ativo;
@@ -43,12 +46,14 @@ public class MedicoResponseDto {
                 medico.getDataNascimento(),
                 medico.getTelefone(),
                 medico.getGenero(),
+                medico.getMatricula(),
                 medico.getCep(),
                 medico.getNumeroResidencia(),
+                medico.getComplemento(),
                 medico.getCrm(),
                 medico.getEspecializacao(), // Enum EspecializacaoOdontologica já está no Medico
                 medico.getLoginInfo().getAtivo(),
-                medico.getComissao() // Assumindo que é do mesmo tipo da classe no DTO
+                medico.getComissao() // Assumindo que é do mesmo tipo da classe no DT
         );
     }
 

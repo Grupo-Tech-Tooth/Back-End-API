@@ -1,6 +1,7 @@
 package com.example.back.dto.res;
 
 import com.example.back.entity.Funcional;
+import com.example.back.enums.Hierarquia;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,11 +21,13 @@ public class FuncionalResponseDto {
     private String email;
     private String cpf;
     private String departamento;
+    private String matricula;
     private LocalDate dataNascimento;
     private String telefone;
     private String genero;
     private String cep;
     private String numeroResidencia;
+    private String complemento;
 
     public FuncionalResponseDto(Funcional funcional) {
         this.id = funcional.getId();
@@ -33,11 +36,13 @@ public class FuncionalResponseDto {
         this.email = funcional.getLoginInfo().getEmail();
         this.cpf = funcional.getCpf();
         this.departamento = funcional.getDepartamento();
+        this.matricula = funcional.getMatricula();
         this.dataNascimento = funcional.getDataNascimento();
         this.telefone = funcional.getTelefone();
         this.genero = funcional.getGenero();
         this.cep = funcional.getCep();
         this.numeroResidencia = funcional.getNumeroResidencia();
+        this.complemento = funcional.getComplemento();
     }
 
     public static List<FuncionalResponseDto> converter(List<Funcional> funcionais) {

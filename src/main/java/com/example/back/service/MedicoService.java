@@ -5,6 +5,7 @@ import com.example.back.dto.res.MedicoResponseDto;
 import com.example.back.entity.Agenda;
 import com.example.back.entity.LoginInfo;
 import com.example.back.entity.Medico;
+import com.example.back.enums.Hierarquia;
 import com.example.back.infra.execption.UsuarioExistenteException;
 import com.example.back.repository.AgendaRepository;
 import com.example.back.repository.LoginInfoRepository;
@@ -24,6 +25,8 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.example.back.enums.Hierarquia.MEDICO;
 
 @Service
 public class MedicoService {
@@ -48,11 +51,17 @@ public class MedicoService {
             throw new UsuarioExistenteException("Médico já existe com esse Email");
         }
 
-        Comissao comissaoStrategy = new ComissaoMedico(5.0); // ou algum outro cálculo
+//        Comissao comissaoStrategy = new ComissaoMedico(5.0); // ou algum outro cálculo
 
         // Criando o médico a partir do DTO
         Medico medico = medicoDto.toMedico(); // Usa o método toMedico do DTO
-        medico.setComissao(comissaoStrategy); // define a comissão aqui
+//        medico.setComissao(comissaoStrategy.calcularComissao(5.0)); // define a comissão aqui
+
+        //Criação da senha
+        String primeirasLetras =medicoDto.getSobrenome().substring(0,3);
+        String cpfNumerico = medicoDto.getCpf().replaceAll("\\D", "");
+        String ultimosTresDigitos = cpfNumerico.substring(cpfNumerico.length() - 3);
+        String senhaFinal = primeirasLetras + ultimosTresDigitos;
 
         Agenda agenda = new Agenda();
         agenda.setMedico(medico);
@@ -62,8 +71,9 @@ public class MedicoService {
         // Criando e salvando LoginInfo
         LoginInfo loginInfo = new LoginInfo();
         loginInfo.setEmail(medicoDto.getEmail());
-        loginInfo.setSenha(passwordEncoder.encode(medicoDto.getSenha()));
+        loginInfo.setSenha(passwordEncoder.encode(senhaFinal));
         loginInfo.setFuncionario(medico);
+        loginInfo.setHierarquia(Hierarquia.MEDICO);
 
         loginInfoRepository.save(loginInfo);
         medico.setLoginInfo(loginInfo);
@@ -93,6 +103,11 @@ public class MedicoService {
         medicoIdDb.setSobrenome(medicoRequestDto.getSobrenome());
         medicoIdDb.setCpf(medicoRequestDto.getCpf());
         medicoIdDb.setCrm(medicoRequestDto.getCrm());
+        medicoIdDb.setGenero(medicoRequestDto.getGenero());
+        medicoIdDb.setDataNascimento(medicoRequestDto.getDataNascimento());
+        medicoIdDb.setNumeroResidencia(medicoRequestDto.getNumeroResidencia());
+        medicoIdDb.setComplemento(medicoRequestDto.getComplemento());
+        medicoIdDb.setMatricula(medicoRequestDto.getMatricula());
         medicoIdDb.setEspecializacao(medicoRequestDto.getEspecializacao());
 
         LoginInfo loginInfo = medicoIdDb.getLoginInfo();
