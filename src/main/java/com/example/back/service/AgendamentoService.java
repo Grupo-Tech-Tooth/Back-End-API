@@ -157,9 +157,7 @@ public class AgendamentoService {
     public AgendamentoDTO atualizar(Long id, AgendamentoCreateDTO dto) {
         Agendamento agendamento = agendamentoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Agendamento não encontrado"));
-
-        validarRegrasDeNegocio(dto);
-
+        
         Cliente cliente = clienteRepository.findById(dto.clienteId())
                 .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
 
@@ -178,7 +176,6 @@ public class AgendamentoService {
         agendamento.setServico(servico);
         agendamento.setAgenda(agenda);
         agendamento.setDataHora(dto.dataHora());
-        agendamento.setCpf(dto.cpf());
         agendamento.setStatus(dto.status());
 
         return AgendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
@@ -322,8 +319,7 @@ public class AgendamentoService {
                         agendamento.getMedico(),
                         agendamento.getServico(),
                         agendamento.getStatus(),
-                        agendamento.getDataHora(),
-                        agendamento.getCpf()
+                        agendamento.getDataHora()
                 ));
             }
         }
