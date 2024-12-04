@@ -54,6 +54,7 @@ public class Servico {
                     .nome(this.name())
                     .duracaoMinutos(30)
                     .preco(BigDecimal.valueOf(this.preco))
+                    .descricao("Descrição do serviço " + this.name())
                     .build();
         }
 

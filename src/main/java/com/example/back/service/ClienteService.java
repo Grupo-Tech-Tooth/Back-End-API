@@ -69,9 +69,11 @@ public class ClienteService {
 
     public Cliente buscarClientePorId(Long id) {
         Optional<Cliente> clienteEncontrado = clienteRepository.findByIdAndLoginInfoDeletadoFalse(id);
+
         if (clienteEncontrado.isEmpty()) {
             throw new ResourceNotFoundException("Cliente não encontrado");
         }
+
         return clienteEncontrado.get();
     }
 

@@ -53,4 +53,8 @@ public class ClienteResponseDto {
     public static List<ClienteResponseDto> converter(List<Cliente> clientes) {
         return clientes.stream().map(ClienteResponseDto::new).toList();
     }
+
+    public static ClienteResponseDto converter(Cliente cliente) {
+        return new ClienteResponseDto(cliente);
+    }
 }

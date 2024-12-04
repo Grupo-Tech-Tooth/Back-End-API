@@ -27,10 +27,10 @@ public class FuncionalController {
     private FuncionalService funcionalService;
 
     @PostMapping
-    public ResponseEntity<Funcional> criarFuncional(@RequestBody @Valid FuncionalRequestDto dto) {
+    public ResponseEntity<FuncionalResponseDto> criarFuncional(@RequestBody @Valid FuncionalRequestDto dto) {
 
         Funcional novoFuncional = funcionalService.salvarFuncional(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(novoFuncional);
+        return ResponseEntity.status(HttpStatus.CREATED).body(FuncionalResponseDto.converter(novoFuncional));
     }
 
     @GetMapping
@@ -43,9 +43,10 @@ public class FuncionalController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Funcional> buscarFuncionalPorId(@PathVariable Long id) {
-        Optional<Funcional> funcional = funcionalService.buscarFuncionalPorId(id);
-        return funcional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<FuncionalResponseDto> buscarFuncionalPorId(@PathVariable Long id) {
+        Funcional funcional = funcionalService.buscarFuncionalPorId(id);
+
+        return ResponseEntity.ok(FuncionalResponseDto.converter(funcional));
     }
 
     @PutMapping("/{id}")
@@ -61,17 +62,14 @@ public class FuncionalController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarFuncional(@PathVariable Long id) {
-        Optional<Funcional> funcional = funcionalService.buscarFuncionalPorId(id);
-        if (funcional.isPresent()) {
+        Funcional funcional = funcionalService.buscarFuncionalPorId(id);
+
             funcionalService.deletarFuncional(id);
             return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
     }
 
     @GetMapping("/nome")
-    public ResponseEntity<List<Funcional>> buscarPorNomeOuSobrenome(
+    public ResponseEntity<List<FuncionalResponseDto>> buscarPorNomeOuSobrenome(
             @RequestParam(required = false) String nome,
             @RequestParam(required = false) String sobrenome
     ) {
@@ -81,13 +79,13 @@ public class FuncionalController {
         if (funcionais.isEmpty()) {
             return ResponseEntity.noContent().build();
         } else {
-            return ResponseEntity.ok(funcionais);
+            return ResponseEntity.ok(FuncionalResponseDto.converter(funcionais));
         }
 
     }
 
     @GetMapping("/email")
-    public ResponseEntity<List<Funcional>> buscarPorEmail(
+    public ResponseEntity<List<FuncionalResponseDto>> buscarPorEmail(
             @RequestParam String email
     ){
 
@@ -96,12 +94,12 @@ public class FuncionalController {
         if (funcionals.isEmpty()) {
             return ResponseEntity.noContent().build();
         }else {
-            return ResponseEntity.ok(funcionals);
+            return ResponseEntity.ok(FuncionalResponseDto.converter(funcionals));
         }
     }
 
     @GetMapping("/cpf")
-    public ResponseEntity<List<Funcional>> buscarPorCpf(
+    public ResponseEntity<List<FuncionalResponseDto>> buscarPorCpf(
             @RequestParam String cpf
     ){
 
@@ -110,12 +108,12 @@ public class FuncionalController {
         if (funcionals.isEmpty()) {
             return ResponseEntity.noContent().build();
         }else {
-            return ResponseEntity.ok(funcionals);
+            return ResponseEntity.ok(FuncionalResponseDto.converter(funcionals));
         }
     }
 
     @GetMapping("/departamento")
-    public ResponseEntity<List<Funcional>> buscarPorDepartamento(
+    public ResponseEntity<List<FuncionalResponseDto>> buscarPorDepartamento(
             @RequestParam String departamento
     ){
 
@@ -124,7 +122,7 @@ public class FuncionalController {
         if (funcionals.isEmpty()) {
             return ResponseEntity.noContent().build();
         }else {
-            return ResponseEntity.ok(funcionals);
+            return ResponseEntity.ok(FuncionalResponseDto.converter(funcionals));
         }
     }
 
