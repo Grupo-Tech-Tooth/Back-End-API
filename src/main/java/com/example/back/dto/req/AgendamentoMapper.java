@@ -17,8 +17,7 @@ public class AgendamentoMapper {
                 MedicoResponseDto.converter(agendamento.getMedico()),
                 agendamento.getServico(),
                 agendamento.getStatus(),
-                agendamento.getDataHora(),
-                agendamento.getCliente().getCpf()
+                agendamento.getDataHora()
         );
     }
 
@@ -30,7 +29,6 @@ public class AgendamentoMapper {
                 .servico(servico)
                 .dataHora(dto.dataHora())
                 .status(dto.status())
-                .cpf(dto.cpf())
                 .build();
     }
 

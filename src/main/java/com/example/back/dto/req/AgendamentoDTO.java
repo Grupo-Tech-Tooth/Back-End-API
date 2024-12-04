@@ -14,11 +14,10 @@ public record AgendamentoDTO(
         MedicoResponseDto medico,
         Servico servico,
         String status,
-        LocalDateTime dataHora,
-        String cpf
+        LocalDateTime dataHora
 ) {
-    public AgendamentoDTO(Long id, Cliente cliente, Medico medico, Servico servico, String status, LocalDateTime dataHora, String cpf) {
-        this(id, ClienteResponseDto.converter(cliente), MedicoResponseDto.converter(medico), servico, status, dataHora, cpf);
+    public AgendamentoDTO(Long id, Cliente cliente, Medico medico, Servico servico, String status, LocalDateTime dataHora) {
+        this(id, ClienteResponseDto.converter(cliente), MedicoResponseDto.converter(medico), servico, status, dataHora);
     }
 
     public LocalDateTime getDataHora() {
