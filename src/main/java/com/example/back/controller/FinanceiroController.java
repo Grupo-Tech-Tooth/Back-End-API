@@ -56,10 +56,8 @@ public class FinanceiroController {
     public ResponseEntity<List<FinanceiroResponseDto>> filtrarFinanceiro(
             @RequestParam(required = false) String nomePaciente,
             @RequestParam(required = false) LocalDate dataPagamento,
-            @RequestParam(required = false) String cpfPaciente,
             @RequestParam(required = false) String metodoPagamento){
-
-        List<FinanceiroResponseDto> financas = financeiroService.filtrarFinancas(nomePaciente, dataPagamento, cpfPaciente, metodoPagamento);
+        List<FinanceiroResponseDto> financas = financeiroService.filtrarFinancas(nomePaciente, dataPagamento, metodoPagamento);
         if (financas.isEmpty()) {
             return ResponseEntity.status(204).build();
         }

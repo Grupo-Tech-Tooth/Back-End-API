@@ -16,11 +16,11 @@ public class FinanceiroDtoRequest {
     @NotNull(message = "Data da consulta é obrigatório")
     LocalDateTime dataConsulta;
 
-    @NotNull(message = "Nome do Paciente é obrigatório")
-    String nomePaciente;
+    @NotNull(message = "Id do Paciente é obrigatório")
+    Long idPaciente;
 
-    @NotNull(message = "Nome do Médico é obrigatório")
-    String medico;
+    @NotNull(message = "Id do Médico é obrigatório")
+    Long idMedico;
 
     @NotNull(message = "Data do pagamento é obrigatória")
     LocalDateTime dataPagamento;
@@ -38,8 +38,5 @@ public class FinanceiroDtoRequest {
 
     Double taxas;
 
-    @CPF(message = "CPF inválido")
-    @NotBlank (message = "CPF é obrigatório")
-    String cpf;
 }
 

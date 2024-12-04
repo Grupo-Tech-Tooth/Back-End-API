@@ -26,11 +26,13 @@ public class Financeiro{
     @Column(name = "data_consulta")
     private LocalDateTime dataConsulta;
 
-    @Column(name = "nomePaciente")
-    private String nomePaciente;
+    @ManyToOne
+    @JoinColumn(name = "cliente_id", nullable = false)
+    private Cliente cliente;
 
-    @Column(name = "medico")
-    private String medico;
+    @ManyToOne
+    @JoinColumn(name = "medico_id", nullable = false)
+    private Medico medico;
 
     @Column(name = "dataPagamento")
     private LocalDateTime dataPagamento;
@@ -41,7 +43,7 @@ public class Financeiro{
 
     @Column(name = "parcelas")
     private Integer parcelas;
-
+  
     @Column(name = "valorBruto")
     private Double valorBruto;
 
@@ -50,9 +52,6 @@ public class Financeiro{
 
     @Column(name = "taxa")
     private Double taxa;
-
-    @Column(name = "cpf")
-    private String cpf;
 
     @Column(name = "deletado", columnDefinition = "TINYINT(1)")
     private Boolean deletado = false;

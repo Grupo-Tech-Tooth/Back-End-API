@@ -1,6 +1,8 @@
 package com.example.back.dto.res;
 
+import com.example.back.entity.Cliente;
 import com.example.back.entity.Financeiro;
+import com.example.back.entity.Medico;
 import com.example.back.enums.FormaPagamento;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,21 +21,20 @@ public class FinanceiroResponseDto {
 
     private Long id;
     private LocalDateTime dataConsulta;
-    private String nomePaciente;
-    private String medico;
+    private Cliente cliente;
+    private Medico medico;
     private LocalDateTime dataPagamento;
     private FormaPagamento formaPagamento;
     private Integer parcelas;
     private Double valorBruto;
     private Double valorCorrigido;
     private Double taxa;
-    private String cpf;
 
     public static FinanceiroResponseDto converter(Financeiro financeiro) {
         return new FinanceiroResponseDto(
                 financeiro.getId(),
                 financeiro.getDataConsulta(),
-                financeiro.getNomePaciente(),
+                financeiro.getCliente(),
                 financeiro.getMedico(),
                 financeiro.getDataPagamento(),
                 financeiro.getFormaPagamento(),
