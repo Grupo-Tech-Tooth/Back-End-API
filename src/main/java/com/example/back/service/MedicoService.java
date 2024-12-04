@@ -9,8 +9,6 @@ import com.example.back.infra.execption.UsuarioExistenteException;
 import com.example.back.repository.AgendaRepository;
 import com.example.back.repository.LoginInfoRepository;
 import com.example.back.repository.MedicoRepository;
-import com.example.back.strategy.Comissao;
-import com.example.back.strategy.ComissaoMedico;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,11 +46,9 @@ public class MedicoService {
             throw new UsuarioExistenteException("Médico já existe com esse Email");
         }
 
-        Comissao comissaoStrategy = new ComissaoMedico(5.0); // ou algum outro cálculo
 
         // Criando o médico a partir do DTO
         Medico medico = medicoDto.toMedico(); // Usa o método toMedico do DTO
-        medico.setComissao(comissaoStrategy); // define a comissão aqui
 
         Agenda agenda = new Agenda();
         agenda.setMedico(medico);
@@ -132,13 +128,6 @@ public class MedicoService {
 
     public List<Medico> buscarPorCf(String cpf){
         return medicoRepository.findByLoginInfo_DeletadoFalseAndCpfContainingIgnoreCase(cpf);
-    }
-
-    public double calcularComissao(Long id, double valorServico) {
-        Medico medico = medicoRepository.findByIdAndLoginInfo_DeletadoFalse(id)
-                .orElseThrow(() -> new IllegalArgumentException("Médico não encontrado"));
-
-        return medico.calcularComissao(valorServico); // Usa o método de calcular comissões da classe Medico
     }
 
     public List<MedicoResponseDto> filtrarMedicos(String nome, String email, String cpf, String especializacao) {

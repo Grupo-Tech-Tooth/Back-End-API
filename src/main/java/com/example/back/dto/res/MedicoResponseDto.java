@@ -2,7 +2,6 @@ package com.example.back.dto.res;
 
 import com.example.back.entity.Medico;
 import com.example.back.enums.EspecializacaoOdontologica;
-import com.example.back.strategy.Comissao;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,7 +30,6 @@ public class MedicoResponseDto {
     private String crm;
     private EspecializacaoOdontologica especializacao;
     private Boolean ativo;
-    private Comissao comissao;
 
     public static MedicoResponseDto converter(Medico medico) {
         return new MedicoResponseDto(
@@ -47,8 +45,7 @@ public class MedicoResponseDto {
                 medico.getNumeroResidencia(),
                 medico.getCrm(),
                 medico.getEspecializacao(), // Enum EspecializacaoOdontologica já está no Medico
-                medico.getLoginInfo().getAtivo(),
-                medico.getComissao() // Assumindo que é do mesmo tipo da classe no DTO
+                medico.getLoginInfo().getAtivo()
         );
     }
 

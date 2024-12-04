@@ -104,15 +104,6 @@ public class MedicoController {
         }
     }
 
-    @GetMapping("/{id}/comissao")
-    public ResponseEntity<Double> calcularComissao(
-            @PathVariable Long id,
-            @RequestParam double valorServico) {
-
-        double comissao = medicoService.calcularComissao(id, valorServico);
-        return ResponseEntity.ok(comissao);
-    }
-
     @GetMapping("/medicos/filtrar")
     public ResponseEntity<List<MedicoResponseDto>> filtrarMedicos(
             @RequestParam(required = false) String nome,

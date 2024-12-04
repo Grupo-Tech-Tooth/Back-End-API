@@ -19,13 +19,4 @@ public class Medico extends Funcionario {
     @Column(name = "especializacao")
     private EspecializacaoOdontologica especializacao;
 
-    @Transient
-    @JsonIgnore
-    private Comissao comissao;
-
-    public double calcularComissao(double valorServico) {
-        double comissaoBase = valorServico;
-        double percentualEspecializacao = especializacao.getPercentualComissao();
-        return valorServico * (percentualEspecializacao / 100) + comissaoBase;
-    }
 }
