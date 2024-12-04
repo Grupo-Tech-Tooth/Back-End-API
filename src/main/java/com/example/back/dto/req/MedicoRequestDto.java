@@ -2,7 +2,6 @@ package com.example.back.dto.req;
 
 import com.example.back.entity.Medico;
 import com.example.back.enums.EspecializacaoOdontologica;
-import com.example.back.strategy.Comissao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
