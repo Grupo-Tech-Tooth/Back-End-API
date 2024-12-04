@@ -43,7 +43,7 @@ public class ServicoService {
         Map<String, ServicoDTO> servicoMap = new HashMap<>();
 
         for (AgendamentoDTO consulta : consultas) {
-            Servico servico = servicoRepository.findById(consulta.servicoId()).orElseThrow();
+            Servico servico = servicoRepository.findById(consulta.servico().getId()).orElseThrow();
             servicoMap.compute(servico.getNome(), (nome, dto) -> {
                 if (dto == null) {
                     return new ServicoDTO(nome, 1);
@@ -68,7 +68,7 @@ public class ServicoService {
 
         for (AgendamentoDTO consulta : consultas) {
 
-            Servico servico = servicoRepository.findById(consulta.servicoId()).orElseThrow();
+            Servico servico = servicoRepository.findById(consulta.servico().getId()).orElseThrow();
             ServicoDTO servicoDTO = new ServicoDTO(servico.getNome(), 1);
 
             if (servicoDTOS.contains(servicoDTO)) {

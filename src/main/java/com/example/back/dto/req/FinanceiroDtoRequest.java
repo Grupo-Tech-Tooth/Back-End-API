@@ -34,7 +34,9 @@ public class FinanceiroDtoRequest {
 
     @Positive(message = "Valor da consulta deve ser positivo e maior que zero")
     @NotNull(message = "Valor da consulta é obrigatório")
-    Double valor;
+    Double valorBruto;
+
+    Double taxas;
 
 }
 

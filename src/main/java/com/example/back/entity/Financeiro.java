@@ -43,9 +43,15 @@ public class Financeiro{
 
     @Column(name = "parcelas")
     private Integer parcelas;
+  
+    @Column(name = "valorBruto")
+    private Double valorBruto;
 
-    @Column(name = "valor")
-    private Double valor;
+    @Column(name = "valorCorrigido")
+    private Double valorCorrigido;
+
+    @Column(name = "taxa")
+    private Double taxa;
 
     @Column(name = "deletado", columnDefinition = "TINYINT(1)")
     private Boolean deletado = false;

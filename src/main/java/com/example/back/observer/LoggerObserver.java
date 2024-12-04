@@ -12,14 +12,14 @@ public class LoggerObserver implements AgendamentoObserver {
     @Override
     public void onAgendamentoCreated(AgendamentoDTO agendamento) {
         logger.info("Agendamento criado com sucesso: ID={}, Cliente={}, Médico={}, Data={}, Horário={}",
-                agendamento.id(), agendamento.clienteId(), agendamento.medicoId(),
+                agendamento.id(), agendamento.cliente().getId(), agendamento.medico().getId(),
                 agendamento.dataHora().toLocalDate(), agendamento.dataHora().toLocalTime());
     }
 
     @Override
     public void onAgendamentoUpdated(AgendamentoDTO agendamento) {
         logger.info("Agendamento atualizado: ID={}, Cliente={}, Médico={}, Nova Data={}, Novo Horário={}",
-                agendamento.id(), agendamento.clienteId(), agendamento.medicoId(),
+                agendamento.id(), agendamento.cliente().getId(), agendamento.medico().getId(),
                 agendamento.dataHora().toLocalDate(), agendamento.dataHora().toLocalTime());
     }
 
@@ -31,7 +31,7 @@ public class LoggerObserver implements AgendamentoObserver {
     @Override
     public void onAgendamentoRetrieved(AgendamentoDTO agendamento) {
         logger.info("Agendamento consultado: ID={}, Cliente={}, Médico={}, Data={}, Horário={}",
-                agendamento.id(), agendamento.clienteId(), agendamento.medicoId(),
+                agendamento.id(), agendamento.cliente().getId(), agendamento.medico().getId(),
                 agendamento.dataHora().toLocalDate(), agendamento.dataHora().toLocalTime());
     }
 

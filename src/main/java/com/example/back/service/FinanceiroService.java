@@ -31,6 +31,14 @@ public class FinanceiroService {
     private ClienteRepository clienteRepository;
 
     public Financeiro criarFinanceiro(FinanceiroDtoRequest financeiroDtoRequest) {
+      
+      Double valorCorrigido = 0.0;
+        if(financeiroDtoRequest.getTaxas()>0.0){
+           valorCorrigido =  financeiroDtoRequest.getValorBruto() - (financeiroDtoRequest.getValorBruto() * (financeiroDtoRequest.getTaxas()/100));
+        }else {
+            valorCorrigido = financeiroDtoRequest.getValorBruto();
+        }
+      
         Financeiro financeiro = Financeiro.builder()
                 .id(null)
                 .dataConsulta(financeiroDtoRequest.getDataConsulta())
@@ -39,9 +47,12 @@ public class FinanceiroService {
                 .dataPagamento(financeiroDtoRequest.getDataPagamento())
                 .formaPagamento(financeiroDtoRequest.getFormaPagamento())
                 .parcelas(financeiroDtoRequest.getParcelas())
-                .valor(financeiroDtoRequest.getValor())
+                .valorBruto(financeiroDtoRequest.getValorBruto())
+                .valorCorrigido(valorCorrigido)
+                .taxa(financeiroDtoRequest.getTaxas())
                 .deletado(false)
                 .build();
+
         return financeiroRepository.save(financeiro);
     }
 
@@ -58,7 +69,17 @@ public class FinanceiroService {
         financeiro.setDataPagamento(financeiroDtoRequest.getDataPagamento());
         financeiro.setFormaPagamento(financeiroDtoRequest.getFormaPagamento());
         financeiro.setParcelas(financeiroDtoRequest.getParcelas());
-        financeiro.setValor(financeiroDtoRequest.getValor());
+      
+        Double valorCorrigido = 0.0;
+        if(financeiroDtoRequest.getTaxas()>0.0){
+            valorCorrigido =  financeiroDtoRequest.getValorBruto() - (financeiroDtoRequest.getValorBruto() * (financeiroDtoRequest.getTaxas()/100));
+        }else {
+            valorCorrigido = financeiroDtoRequest.getValorBruto();
+        }
+
+        financeiro.setValorBruto(financeiroDtoRequest.getValorBruto());
+        financeiro.setValorCorrigido(valorCorrigido);
+        financeiro.setTaxa(financeiroDtoRequest.getTaxas());
 
         return financeiroRepository.save(financeiro);
     }
