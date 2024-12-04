@@ -21,4 +21,8 @@ public abstract class Funcionario extends Usuario {
     @OneToOne
     @JoinColumn(name = "login_info_id")
     private LoginInfo loginInfo;
+
+    @Column(name = "complemento")
+    private String complemento;
+
 }

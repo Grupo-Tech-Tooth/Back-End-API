@@ -44,6 +44,8 @@ public class MedicoRequestDto {
     @NotBlank(message = "Gênero é obrigatório")
     private String genero;
 
+    private String matricula;
+
     @NotBlank(message = "Cep é obrigatório")
     private String cep;
 
@@ -51,7 +53,8 @@ public class MedicoRequestDto {
     @NotNull(message = "Número de residência é obrigatório")
     private String numeroResidencia;
 
-    @NotBlank(message = "Senha é obrigatória")
+    private String complemento;
+
     String senha;
 
     @NotBlank(message = "CRM é obrigatório")
@@ -67,9 +70,11 @@ public class MedicoRequestDto {
         medico.setCpf(this.cpf);
         medico.setDataNascimento(this.dataNascimento);
         medico.setTelefone(this.telefone);
+        medico.setMatricula(this.matricula);
         medico.setGenero(this.genero);
         medico.setCep(this.cep);
         medico.setNumeroResidencia(this.numeroResidencia);
+        medico.setComplemento(this.complemento);
         medico.setCrm(this.crm);
         medico.setEspecializacao(this.especializacao);
         return medico;
