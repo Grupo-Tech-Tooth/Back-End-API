@@ -126,7 +126,9 @@ public class ServicoService {
             throw new IllegalArgumentException("Serviço não encontrado");
         }
 
-        servicoRepository.deleteById(id);
+        Servico servico = servicoRepository.findById(id).orElseThrow();
+        servico.setDeletado(true);
+        servico.setDeletadoEm(LocalDateTime.now());
 
     }
 

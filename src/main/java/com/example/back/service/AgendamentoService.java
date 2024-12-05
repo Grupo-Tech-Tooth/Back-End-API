@@ -404,4 +404,16 @@ public class AgendamentoService {
         // Usar o mapper para converter em DTOs
         return AgendamentoMapper.converter(agendamentos);
     }
+
+    public AgendamentoDTO deletar(Long id) {
+
+        Agendamento agendamento = agendamentoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Agendamento não encontrado"));
+
+        agendamento.setDeletado(true);
+        agendamento.setDeletadoEm(LocalDateTime.now());
+
+        return AgendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
+
+    }
 }
