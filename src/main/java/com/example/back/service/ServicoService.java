@@ -134,6 +134,12 @@ public class ServicoService {
     }
 
     public List<Servico> listarServicos() {
-        return servicoRepository.findAll();
+        List<Servico> servicos = servicoRepository.findByDeletadoFalse();
+
+        if (servicos.isEmpty()) {
+            throw new IllegalArgumentException("Nenhum serviço encontrado");
+        }
+
+        return servicos;
     }
 }

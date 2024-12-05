@@ -238,7 +238,7 @@ public class AgendamentoService {
     }
 
     public List<AgendamentoDTO> buscarTodosAgendamentos() {
-        return agendamentoRepository.findAll().stream()
+        return agendamentoRepository.findByDeletadoFalse().stream()
                 .map(AgendamentoMapper::toDTO)
                 .collect(Collectors.toList());
     }
