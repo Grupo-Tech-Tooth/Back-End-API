@@ -104,7 +104,6 @@ public class ClienteService {
         clienteDb.setAlergias(dto.getAlergias());
         clienteDb.setMedicamentos(dto.getMedicamentos());
         clienteDb.setMedicoResponsavelId(dto.getMedicoResponsavelId());
-        clienteDb.setUltimoAgendamento(dto.getUltimoAgendamento());
         clienteDb.setObservacoes(dto.getObservacoes());
 
         LoginInfo loginInfo = clienteDb.getLoginInfo();
@@ -157,13 +156,17 @@ public class ClienteService {
         List<ClienteResponseDto> clientes = ClienteResponseDto.converter(clientesEntidade);
 
         clientes.forEach(cliente -> {
-            List<Agendamento> agendamentosEntidade = agendamentoService.buscarAgendamentosPorCliente(cliente.getId());
+            if (cliente.getUltimoAgendamento() == null) {
+                List<Agendamento> agendamentosEntidade = agendamentoService.buscarAgendamentosPorCliente(cliente.getId());
 
-            List<AgendamentoDTO> agendamentos = AgendamentoMapper.converter(agendamentosEntidade);
+                List<AgendamentoDTO> agendamentos = AgendamentoMapper.converter(agendamentosEntidade);
 
-            if (!agendamentos.isEmpty()) {
-                int lastIndex = agendamentos.size() - 1;
-                cliente.setUltimoAgendamento(agendamentos.get(lastIndex));
+                if (!agendamentos.isEmpty()) {
+                    int lastIndex = agendamentos.size() - 1;
+                    cliente.setUltimoAgendamento(agendamentos.get(lastIndex));
+                }
+            } else {
+                cliente.setUltimoAgendamento(cliente.getUltimoAgendamento());
             }
         });
 

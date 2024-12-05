@@ -16,7 +16,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.example.back.entity.Agendamento;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -171,5 +170,15 @@ public class MedicoService {
                 .collect(Collectors.toList());
 
         return diasOcupados;
+    }
+
+    public Optional<Long> buscarIdDoMedicoPorCpf(String cpf) {
+        Optional<Long> medicoId = medicoRepository.findIdByLoginInfo_DeletadoFalseAndCpfContainingIgnoreCase(cpf);
+
+        if (medicoId.isEmpty()) {
+            throw new IllegalArgumentException("Id do Médico não encontrado");
+        }
+
+        return medicoId;
     }
 }

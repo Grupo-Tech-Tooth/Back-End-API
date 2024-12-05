@@ -3,6 +3,7 @@ package com.example.back.dto.req;
 import com.example.back.entity.Cliente;
 import com.example.back.entity.Medico;
 import com.example.back.enums.Hierarquia;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -64,7 +65,9 @@ public class SalvarClienteRequestDto {
 
     private Long medicoResponsavelId;
 
-    private LocalDate ultimoAgendamento;
+    private String medicoResponsavel;
+
+    private Long medicoId;
 
     private String observacoes;
 
@@ -81,7 +84,6 @@ public class SalvarClienteRequestDto {
         cliente.setAlergias(this.alergias);
         cliente.setMedicamentos(this.medicamentos);
         cliente.setMedicoResponsavelId(this.medicoResponsavelId);
-        cliente.setUltimoAgendamento(this.ultimoAgendamento);
         cliente.setObservacoes(this.observacoes);
         return cliente;
     }

@@ -19,8 +19,6 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
-import static com.example.back.enums.Hierarquia.MEDICO;
-
 @RestController
 @RequestMapping("/medicos")
 @SecurityRequirement(name = "bearer-key")
@@ -151,5 +149,12 @@ public class MedicoController {
         }
 
         return ResponseEntity.ok(new HorariosDisponiveisResponse(horariosDisponiveis));
+    }
+
+    @GetMapping("/cpf/identification")
+    public ResponseEntity<Optional<Long>> buscarIdDoMedicoPorCpf(@RequestParam String cpf) {
+        Optional<Long> medicoId = medicoService.buscarIdDoMedicoPorCpf(cpf);
+
+        return ResponseEntity.ok(medicoId);
     }
 }

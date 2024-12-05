@@ -3,6 +3,7 @@ package com.example.back.dto.req;
 import com.example.back.entity.Cliente;
 import com.example.back.entity.Medico;
 import com.example.back.enums.Hierarquia;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -42,9 +43,6 @@ public class AtualizarClienteRequestDto {
     @Email(message = "Email inválido")
     private String email;
 
-    @NotNull(message = "Hierarquia não pode ser nula")
-    private Hierarquia hierarquia;
-
     @NotBlank(message = "Telefone não pode ser vazio")
     @NotNull(message = "Telefone não pode ser nulo")
     private String telefone;
@@ -63,8 +61,6 @@ public class AtualizarClienteRequestDto {
 
     private Long medicoResponsavelId;
 
-    private LocalDate ultimoAgendamento;
-
     private String observacoes;
 
     public Cliente toCliente() {
@@ -80,7 +76,6 @@ public class AtualizarClienteRequestDto {
         cliente.setAlergias(this.alergias);
         cliente.setMedicamentos(this.medicamentos);
         cliente.setMedicoResponsavelId(this.medicoResponsavelId);
-        cliente.setUltimoAgendamento(this.ultimoAgendamento);
         cliente.setObservacoes(this.observacoes);
         return cliente;
     }
