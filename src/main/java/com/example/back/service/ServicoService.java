@@ -126,11 +126,20 @@ public class ServicoService {
             throw new IllegalArgumentException("Serviço não encontrado");
         }
 
-        servicoRepository.deleteById(id);
+        Servico servico = servicoRepository.findById(id).orElseThrow();
+        servico.setDeletado(true);
+        servico.setDeletadoEm(LocalDateTime.now());
 
+        servicoRepository.save(servico);
     }
 
     public List<Servico> listarServicos() {
-        return servicoRepository.findAll();
+        List<Servico> servicos = servicoRepository.findByDeletadoFalse();
+
+        if (servicos.isEmpty()) {
+            throw new IllegalArgumentException("Nenhum serviço encontrado");
+        }
+
+        return servicos;
     }
 }

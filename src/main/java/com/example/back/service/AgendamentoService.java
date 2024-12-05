@@ -238,7 +238,7 @@ public class AgendamentoService {
     }
 
     public List<AgendamentoDTO> buscarTodosAgendamentos() {
-        return agendamentoRepository.findAll().stream()
+        return agendamentoRepository.findByDeletadoFalse().stream()
                 .map(AgendamentoMapper::toDTO)
                 .collect(Collectors.toList());
     }
@@ -403,5 +403,17 @@ public class AgendamentoService {
 
         // Usar o mapper para converter em DTOs
         return AgendamentoMapper.converter(agendamentos);
+    }
+
+    public AgendamentoDTO deletar(Long id) {
+
+        Agendamento agendamento = agendamentoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Agendamento não encontrado"));
+
+        agendamento.setDeletado(true);
+        agendamento.setDeletadoEm(LocalDateTime.now());
+
+        return AgendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
+
     }
 }

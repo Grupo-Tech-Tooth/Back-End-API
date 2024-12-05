@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "servicos")
@@ -28,6 +29,13 @@ public class Servico {
 
     @Column(nullable = false)
     private String descricao;
+
+
+    @Column(name = "deletado", columnDefinition = "TINYINT(1)")
+    private Boolean deletado = false;
+
+    @Column(name = "deletado_em")
+    private LocalDateTime deletadoEm;
 
     public enum Tipo {
         Consulta(1L, 20.0),
