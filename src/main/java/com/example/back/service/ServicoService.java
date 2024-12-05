@@ -130,6 +130,7 @@ public class ServicoService {
         servico.setDeletado(true);
         servico.setDeletadoEm(LocalDateTime.now());
 
+        servicoRepository.save(servico);
     }
 
     public List<Servico> listarServicos() {
