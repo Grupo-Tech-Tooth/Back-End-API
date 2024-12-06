@@ -151,4 +151,57 @@ class ServicosControllerTest {
         assertEquals(1, resposta.getBody().size());
         assertEquals("Teste", resposta.getBody().get(0).nome());
     }
+
+    @Test
+    @DisplayName("Buscar servicos mais usados deve lançar exceção para periodo invalido")
+    void buscarServicosMaisUsadosPeriodoInvalido() {
+        // ARRANGE
+        String periodoInvalido = "semanal";
+
+        // ACT & ASSERT
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
+                servicosController.buscarServicosMaisUsados(periodoInvalido)
+        );
+        assertEquals("Período inválido. Use 'mensal' ou 'anual'.", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Buscar servicos mais usados deve retornar 204 se lista estiver vazia")
+    void buscarServicosMaisUsadosListaVazia() {
+        // ARRANGE
+        when(servicoService.buscarMaisUsadosMensal()).thenReturn(List.of());
+
+        // ACT
+        ResponseEntity<List<ServicoDTO>> resposta = servicosController.buscarServicosMaisUsados("mensal");
+
+        // ASSERT
+        assertEquals(204, resposta.getStatusCodeValue());
+        assertNull(resposta.getBody());
+    }
+
+    @Test
+    @DisplayName("Filtrar servicos deve lançar exceção para duracao invalida")
+    void filtrarServicosDuracaoInvalida() {
+        // ARRANGE
+        Integer duracaoInvalida = 0;
+
+        // ACT & ASSERT
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
+                servicosController.filtrarServicos(null, duracaoInvalida, null, null)
+        );
+        assertEquals("A duração deve ser maior que zero.", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Filtrar servicos deve lançar exceção para preco invalido")
+    void filtrarServicosPrecoInvalido() {
+        // ARRANGE
+        BigDecimal precoInvalido = BigDecimal.ZERO;
+
+        // ACT & ASSERT
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
+                servicosController.filtrarServicos(null, null, precoInvalido, null)
+        );
+        assertEquals("O preço deve ser maior que zero.", exception.getMessage());
+    }
 }

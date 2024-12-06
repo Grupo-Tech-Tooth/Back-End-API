@@ -153,4 +153,85 @@ class MedicoControllerTest {
         assertEquals(1, resposta.getBody().size());
         assertEquals("Dr. Teste", resposta.getBody().get(0).getNome());
     }
+
+    @Test
+    @DisplayName("Buscar médico por email deve retornar 200 se encontrado")
+    void buscarMedicoPorEmailEncontrado() {
+        String email = "teste@gmail.com";
+        LoginInfo loginInfo = new LoginInfo();
+        loginInfo.setEmail(email);
+
+        Medico medico = new Medico();
+        medico.setNome("Dr. Teste");
+        medico.setLoginInfo(loginInfo); // Associando LoginInfo ao Medico
+
+        when(medicoService.buscarPorEmail(email)).thenReturn(List.of(medico));
+
+        ResponseEntity<List<MedicoResponseDto>> resposta = medicoController.buscarPorEmail(email);
+
+        assertEquals(200, resposta.getStatusCodeValue());
+        assertNotNull(resposta.getBody());
+        assertEquals(1, resposta.getBody().size());
+        assertEquals("Dr. Teste", resposta.getBody().get(0).getNome());
+    }
+
+    @Test
+    @DisplayName("Buscar médico por CPF deve retornar 200 se encontrado")
+    void buscarMedicoPorCpfEncontrado() {
+        String cpf = "12345678901";
+        String email = "teste@gmail.com";
+        LoginInfo loginInfo = new LoginInfo();
+        loginInfo.setEmail(email);
+
+        Medico medico = new Medico();
+        medico.setNome("Dr. Teste");
+        medico.setLoginInfo(loginInfo); // Associando LoginInfo ao Medico
+
+        when(medicoService.buscarPorCpf(cpf)).thenReturn(List.of(medico));
+
+        ResponseEntity<List<MedicoResponseDto>> resposta = medicoController.buscarPorCpf(cpf);
+
+        assertEquals(200, resposta.getStatusCodeValue());
+        assertNotNull(resposta.getBody());
+        assertEquals(1, resposta.getBody().size());
+        assertEquals("Dr. Teste", resposta.getBody().get(0).getNome());
+    }
+
+    @Test
+    @DisplayName("Calcular comissão deve retornar 200 com o valor correto")
+    void calcularComissao() {
+        Long id = 1L;
+        double valorServico = 100.0;
+        double comissaoEsperada = 10.0;
+
+        when(medicoService.calcularComissao(id, valorServico)).thenReturn(comissaoEsperada);
+
+        ResponseEntity<Double> resposta = medicoController.calcularComissao(id, valorServico);
+
+        assertEquals(200, resposta.getStatusCodeValue());
+        assertNotNull(resposta.getBody());
+        assertEquals(comissaoEsperada, resposta.getBody());
+    }
+
+    @Test
+    @DisplayName("Atualizar médico deve retornar 200 com dados atualizados")
+    void atualizarMedico() {
+        Long id = 1L;
+        MedicoRequestDto request = new MedicoRequestDto();
+        String email = "teste@gmail.com";
+        LoginInfo loginInfo = new LoginInfo();
+        loginInfo.setEmail(email);
+
+        Medico medicoAtualizado = new Medico();
+        medicoAtualizado.setNome("Dr. Atualizado");
+        medicoAtualizado.setLoginInfo(loginInfo); // Associando LoginInfo ao Medico
+
+        when(medicoService.atualizarMedico(id, request)).thenReturn(medicoAtualizado);
+
+        ResponseEntity<MedicoResponseDto> resposta = medicoController.atualizarMedico(id, request);
+
+        assertEquals(200, resposta.getStatusCodeValue());
+        assertNotNull(resposta.getBody());
+        assertEquals("Dr. Atualizado", resposta.getBody().getNome());
+    }
 }

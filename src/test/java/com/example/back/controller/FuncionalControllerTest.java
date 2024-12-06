@@ -280,4 +280,51 @@ class FuncionalControllerTest {
         assertEquals(1, resposta.getBody().size());
         assertEquals("Teste", resposta.getBody().get(0).getNome());
     }
+
+    @Test
+    @DisplayName("Filtrar funcionais com critérios válidos deve retornar 200 e a lista correspondente")
+    void filtrarFuncionaisComCriteriosValidos() {
+        String nome = "Teste";
+        String email = "teste@gmail.com";
+        String cpf = "12345678900";
+        String departamento = "TI";
+
+        Funcional funcional = new Funcional();
+        funcional.setNome(nome);
+        funcional.setSobrenome("Sobrenome");
+        funcional.setCpf(cpf);
+        funcional.setDepartamento(departamento);
+
+        LoginInfo loginInfo = new LoginInfo();
+        loginInfo.setEmail(email);
+        funcional.setLoginInfo(loginInfo);
+
+        List<Funcional> funcionaisFiltrados = List.of(funcional);
+        when(funcionalService.filtrarFuncionais(nome, email, cpf, departamento))
+                .thenReturn(FuncionalResponseDto.converter(funcionaisFiltrados));
+
+        ResponseEntity<List<FuncionalResponseDto>> resposta = funcionalController.filtrarFuncionais(nome, email, cpf, departamento);
+
+        assertEquals(200, resposta.getStatusCodeValue());
+        assertNotNull(resposta.getBody());
+        assertEquals(1, resposta.getBody().size());
+        assertEquals(nome, resposta.getBody().get(0).getNome());
+        assertEquals(departamento, resposta.getBody().get(0).getDepartamento());
+        assertEquals(email, resposta.getBody().get(0).getEmail());
+    }
+
+    @Test
+    @DisplayName("Filtrar funcionais sem resultados deve lançar exceção")
+    void filtrarFuncionaisSemResultados() {
+        String nome = "Inexistente";
+
+        when(funcionalService.filtrarFuncionais(nome, null, null, null))
+                .thenThrow(new IllegalArgumentException("Nenhum funcional encontrado"));
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () ->
+                funcionalController.filtrarFuncionais(nome, null, null, null));
+
+        assertEquals("Nenhum funcional encontrado", exception.getMessage());
+    }
+
 }

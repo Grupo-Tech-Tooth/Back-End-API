@@ -95,7 +95,7 @@ public class MedicoController {
             @RequestParam String cpf
     ){
 
-        List<Medico> medicos = medicoService.buscarPorCf(cpf);
+        List<Medico> medicos = medicoService.buscarPorCpf(cpf);
 
         if (medicos.isEmpty()) {
             return ResponseEntity.noContent().build();
