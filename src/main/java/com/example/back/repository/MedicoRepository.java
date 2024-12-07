@@ -1,6 +1,7 @@
 package com.example.back.repository;
 
 import com.example.back.entity.Medico;
+import feign.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -33,4 +34,8 @@ public interface MedicoRepository extends JpaRepository<Medico, Long> {
     List<Medico> findByLoginInfo_DeletadoFalseAndLoginInfo_EmailContainingIgnoreCase(String email);
 
     List<Medico> findByLoginInfo_DeletadoFalseAndCpfContainingIgnoreCase(String cpf);
+
+    @Query("SELECT m.id FROM Medico m WHERE m.loginInfo.deletado = false AND LOWER(m.cpf) LIKE LOWER(CONCAT('%', :cpf, '%'))")
+    Optional<Long> findIdByLoginInfo_DeletadoFalseAndCpfContainingIgnoreCase(@Param("cpf") String cpf);
+
 }
