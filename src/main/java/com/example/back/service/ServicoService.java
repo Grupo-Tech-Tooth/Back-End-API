@@ -104,6 +104,7 @@ public class ServicoService {
                 .duracaoMinutos(servicoDtoRequest.duracaoMinutos())
                 .preco(BigDecimal.valueOf(servicoDtoRequest.preco()))
                 .descricao(servicoDtoRequest.descricao())
+                .deletado(false)
                 .build();
 
         return servicoRepository.save(servico);

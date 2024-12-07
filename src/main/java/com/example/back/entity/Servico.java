@@ -30,7 +30,6 @@ public class Servico {
     @Column(nullable = false)
     private String descricao;
 
-
     @Column(name = "deletado", columnDefinition = "TINYINT(1)")
     private Boolean deletado = false;
 

@@ -11,6 +11,8 @@ public record ServicoDtoRequest(
         @Positive
         Double preco,
         @NotBlank
-        String descricao
+        String descricao,
+        @NotBlank
+        String categoria
 ) {
 }
