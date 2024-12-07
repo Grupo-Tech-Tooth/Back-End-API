@@ -44,7 +44,6 @@ public class LoginInfo implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "hierarquia")
-    @Enumerated(EnumType.STRING)
     private Hierarquia hierarquia;
 
     @Column(name = "data_criacao", columnDefinition = "TIMESTAMP")
