@@ -144,7 +144,7 @@ public class MedicoService {
         return medicoRepository.findByLoginInfo_DeletadoFalseAndLoginInfo_EmailContainingIgnoreCase(email);
     }
 
-    public List<Medico> buscarPorCf(String cpf){
+    public List<Medico> buscarPorCpf(String cpf){
         return medicoRepository.findByLoginInfo_DeletadoFalseAndCpfContainingIgnoreCase(cpf);
     }
 
