@@ -94,7 +94,8 @@ public class ServicoService {
                         servico.getNome(),
                         servico.getDuracaoMinutos(),
                         servico.getPreco().doubleValue(),
-                        servico.getDescricao())).toList();
+                        servico.getDescricao(),
+                        servico.getCategoria())).toList();
     }
 
 
@@ -104,6 +105,8 @@ public class ServicoService {
                 .duracaoMinutos(servicoDtoRequest.duracaoMinutos())
                 .preco(BigDecimal.valueOf(servicoDtoRequest.preco()))
                 .descricao(servicoDtoRequest.descricao())
+                .deletado(false)
+                .categoria(servicoDtoRequest.categoria())
                 .build();
 
         return servicoRepository.save(servico);
@@ -116,6 +119,7 @@ public class ServicoService {
         servico.setDuracaoMinutos(servicoDtoRequest.duracaoMinutos());
         servico.setPreco(BigDecimal.valueOf(servicoDtoRequest.preco()));
         servico.setDescricao(servicoDtoRequest.descricao());
+        servico.setCategoria(servicoDtoRequest.categoria());
 
         return servicoRepository.save(servico);
     }
