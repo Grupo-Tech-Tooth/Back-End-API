@@ -14,7 +14,7 @@ public record ServicoDtoRequest(
         Double preco,
         @NotBlank
         String descricao,
-        @NotNull
+        @NotNull(message = "Categoria não pode ser nula")
         Categoria categoria
 ) {
 }
