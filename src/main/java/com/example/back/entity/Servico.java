@@ -1,5 +1,6 @@
 package com.example.back.entity;
 
+import com.example.back.enums.Categoria;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,6 +31,9 @@ public class Servico {
     @Column(nullable = false)
     private String descricao;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Categoria categoria;
 
     @Column(name = "deletado", columnDefinition = "TINYINT(1)")
     private Boolean deletado = false;
