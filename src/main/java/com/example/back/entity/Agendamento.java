@@ -41,8 +41,12 @@ public class Agendamento {
     @Column(nullable = false)
     private String status;
 
-    @JoinColumn(name = "cliente_cpf" ,nullable = false)
-    private String cpf;
+
+    @Column(name = "deletado", columnDefinition = "TINYINT(1)")
+    private Boolean deletado = false;
+
+    @Column(name = "deletado_em")
+    private LocalDateTime deletadoEm;
 
     public void setCancelado(boolean b) {
     }

@@ -42,9 +42,15 @@ class FuncionalControllerTest {
         funcional.setNome("Teste");
         funcional.setSobrenome("Sobrenome");
 
+        LoginInfo loginInfo = new LoginInfo();
+        loginInfo.setEmail("teste@gmail.com");
+        loginInfo.setEmail("12345678900");
+
+        funcional.setLoginInfo(loginInfo);
+
         when(funcionalService.salvarFuncional(request)).thenReturn(funcional);
 
-        ResponseEntity<Funcional> resposta = funcionalController.criarFuncional(request);
+        ResponseEntity<FuncionalResponseDto> resposta = funcionalController.criarFuncional(request);
 
         assertEquals(201, resposta.getStatusCodeValue());
         assertNotNull(resposta.getBody());
@@ -86,17 +92,6 @@ class FuncionalControllerTest {
     }
 
     @Test
-    @DisplayName("Buscar funcional por ID deve retornar 404 se não encontrado")
-    void buscarFuncionalPorIdNaoEncontrado() {
-        Long id = 1L;
-        when(funcionalService.buscarFuncionalPorId(id)).thenReturn(Optional.empty());
-
-        ResponseEntity<Funcional> resposta = funcionalController.buscarFuncionalPorId(id);
-
-        assertEquals(404, resposta.getStatusCodeValue());
-    }
-
-    @Test
     @DisplayName("Buscar funcional por ID deve retornar 200 se encontrado")
     void buscarFuncionalPorIdEncontrado() {
         Long id = 1L;
@@ -110,9 +105,9 @@ class FuncionalControllerTest {
 
         funcional.setLoginInfo(loginInfo);
 
-        when(funcionalService.buscarFuncionalPorId(id)).thenReturn(Optional.of(funcional));
+        when(funcionalService.buscarFuncionalPorId(id)).thenReturn(funcional);
 
-        ResponseEntity<Funcional> resposta = funcionalController.buscarFuncionalPorId(id);
+        ResponseEntity<FuncionalResponseDto> resposta = funcionalController.buscarFuncionalPorId(id);
 
         assertEquals(200, resposta.getStatusCodeValue());
         assertNotNull(resposta.getBody());
@@ -130,15 +125,15 @@ class FuncionalControllerTest {
         request.setCpf("12345678900");
         request.setDepartamento("TI");
 
-        LoginInfo loginInfo = new LoginInfo();
-        loginInfo.setEmail("teste@gmail.com");
-        loginInfo.setEmail("12345678900");
-
         Funcional funcionalAtualizado = new Funcional();
         funcionalAtualizado.setNome("Atualizado");
         funcionalAtualizado.setSobrenome("Sobrenome");
-        funcionalAtualizado.setLoginInfo(loginInfo);
 
+        LoginInfo loginInfo = new LoginInfo();
+        loginInfo.setEmail("teste@gmai.com");
+        loginInfo.setEmail("12345678900");
+
+        funcionalAtualizado.setLoginInfo(loginInfo);
 
         when(funcionalService.atualizarFuncional(id, request)).thenReturn(funcionalAtualizado);
 
@@ -149,16 +144,6 @@ class FuncionalControllerTest {
         assertEquals("Atualizado", resposta.getBody().getNome());
     }
 
-    @Test
-    @DisplayName("Deletar funcional deve retornar 404 se o funcional não existir")
-    void deletarFuncionalNaoEncontrado() {
-        Long id = 1L;
-        when(funcionalService.buscarFuncionalPorId(id)).thenReturn(Optional.empty());
-
-        ResponseEntity<Void> resposta = funcionalController.deletarFuncional(id);
-
-        assertEquals(404, resposta.getStatusCodeValue());
-    }
 
     @Test
     @DisplayName("Deletar funcional deve retornar 204 se o funcional for deletado")
@@ -168,7 +153,7 @@ class FuncionalControllerTest {
         funcional.setNome("Teste");
         funcional.setSobrenome("Sobrenome");
 
-        when(funcionalService.buscarFuncionalPorId(id)).thenReturn(Optional.of(funcional));
+        when(funcionalService.buscarFuncionalPorId(id)).thenReturn(null);
         doNothing().when(funcionalService).deletarFuncional(id);
 
         ResponseEntity<Void> resposta = funcionalController.deletarFuncional(id);
@@ -199,4 +184,147 @@ class FuncionalControllerTest {
         assertEquals(1, resposta.getBody().size());
         assertEquals("Teste", resposta.getBody().get(0).getNome());
     }
+
+    @Test
+    @DisplayName("Buscar funcional por nome ou sobrenome deve retornar 200 com lista filtrada")
+    void buscarPorNomeOuSobrenome() {
+        String nome = "Teste";
+        Funcional funcional = new Funcional();
+        funcional.setNome("Teste");
+        funcional.setSobrenome("Sobrenome");
+
+        LoginInfo loginInfo = new LoginInfo();
+        loginInfo.setEmail("teste@gmai.com");
+        loginInfo.setEmail("12345678900");
+
+        funcional.setLoginInfo(loginInfo);
+
+        when(funcionalService.buscarPorNomeOuSobrenome(nome, null)).thenReturn(List.of(funcional));
+
+        ResponseEntity<List<FuncionalResponseDto>> resposta = funcionalController.buscarPorNomeOuSobrenome(nome, null);
+
+        assertEquals(200, resposta.getStatusCodeValue());
+        assertNotNull(resposta.getBody());
+        assertEquals(1, resposta.getBody().size());
+        assertEquals("Teste", resposta.getBody().get(0).getNome());
+    }
+
+    @Test
+    @DisplayName("Buscar funcional por email deve retornar 200 com lista filtrada")
+    void buscarPorEmail() {
+        String email = "teste@gmail.com";
+        Funcional funcional = new Funcional();
+        funcional.setNome("Teste");
+        funcional.setSobrenome("Sobrenome");
+
+        LoginInfo loginInfo = new LoginInfo();
+        loginInfo.setEmail("teste@gmai.com");
+        loginInfo.setEmail("12345678900");
+
+        funcional.setLoginInfo(loginInfo);
+
+        when(funcionalService.buscarPorEmail(email)).thenReturn(List.of(funcional));
+
+        ResponseEntity<List<FuncionalResponseDto>> resposta = funcionalController.buscarPorEmail(email);
+
+        assertEquals(200, resposta.getStatusCodeValue());
+        assertNotNull(resposta.getBody());
+        assertEquals(1, resposta.getBody().size());
+        assertEquals("Teste", resposta.getBody().get(0).getNome());
+    }
+
+    @Test
+    @DisplayName("Buscar funcional por cpf deve retornar 200 com lista filtrada")
+    void buscarPorCpf() {
+        String cpf = "12345678900";
+        Funcional funcional = new Funcional();
+        funcional.setNome("Teste");
+        funcional.setSobrenome("Sobrenome");
+
+        LoginInfo loginInfo = new LoginInfo();
+        loginInfo.setEmail("teste@gmai.com");
+        loginInfo.setEmail("12345678900");
+
+        funcional.setLoginInfo(loginInfo);
+
+        when(funcionalService.buscarPorCpf(cpf)).thenReturn(List.of(funcional));
+
+        ResponseEntity<List<FuncionalResponseDto>> resposta = funcionalController.buscarPorCpf(cpf);
+
+        assertEquals(200, resposta.getStatusCodeValue());
+        assertNotNull(resposta.getBody());
+        assertEquals(1, resposta.getBody().size());
+        assertEquals("Teste", resposta.getBody().get(0).getNome());
+    }
+
+    @Test
+    @DisplayName("Buscar funcional por departamento deve retornar 200 com lista filtrada")
+    void buscarPorDepartamento() {
+        String departamento = "TI";
+        Funcional funcional = new Funcional();
+        funcional.setNome("Teste");
+        funcional.setSobrenome("Sobrenome");
+
+        LoginInfo loginInfo = new LoginInfo();
+        loginInfo.setEmail("teste@gmai.com");
+        loginInfo.setEmail("12345678900");
+
+        funcional.setLoginInfo(loginInfo);
+
+        when(funcionalService.buscarPorDepartamento(departamento)).thenReturn(List.of(funcional));
+
+        ResponseEntity<List<FuncionalResponseDto>> resposta = funcionalController.buscarPorDepartamento(departamento);
+
+        assertEquals(200, resposta.getStatusCodeValue());
+        assertNotNull(resposta.getBody());
+        assertEquals(1, resposta.getBody().size());
+        assertEquals("Teste", resposta.getBody().get(0).getNome());
+    }
+
+    @Test
+    @DisplayName("Filtrar funcionais com critérios válidos deve retornar 200 e a lista correspondente")
+    void filtrarFuncionaisComCriteriosValidos() {
+        String nome = "Teste";
+        String email = "teste@gmail.com";
+        String cpf = "12345678900";
+        String departamento = "TI";
+
+        Funcional funcional = new Funcional();
+        funcional.setNome(nome);
+        funcional.setSobrenome("Sobrenome");
+        funcional.setCpf(cpf);
+        funcional.setDepartamento(departamento);
+
+        LoginInfo loginInfo = new LoginInfo();
+        loginInfo.setEmail(email);
+        funcional.setLoginInfo(loginInfo);
+
+        List<Funcional> funcionaisFiltrados = List.of(funcional);
+        when(funcionalService.filtrarFuncionais(nome, email, cpf, departamento))
+                .thenReturn(FuncionalResponseDto.converter(funcionaisFiltrados));
+
+        ResponseEntity<List<FuncionalResponseDto>> resposta = funcionalController.filtrarFuncionais(nome, email, cpf, departamento);
+
+        assertEquals(200, resposta.getStatusCodeValue());
+        assertNotNull(resposta.getBody());
+        assertEquals(1, resposta.getBody().size());
+        assertEquals(nome, resposta.getBody().get(0).getNome());
+        assertEquals(departamento, resposta.getBody().get(0).getDepartamento());
+        assertEquals(email, resposta.getBody().get(0).getEmail());
+    }
+
+    @Test
+    @DisplayName("Filtrar funcionais sem resultados deve lançar exceção")
+    void filtrarFuncionaisSemResultados() {
+        String nome = "Inexistente";
+
+        when(funcionalService.filtrarFuncionais(nome, null, null, null))
+                .thenThrow(new IllegalArgumentException("Nenhum funcional encontrado"));
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () ->
+                funcionalController.filtrarFuncionais(nome, null, null, null));
+
+        assertEquals("Nenhum funcional encontrado", exception.getMessage());
+    }
+
 }

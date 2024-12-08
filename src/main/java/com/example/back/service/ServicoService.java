@@ -43,7 +43,7 @@ public class ServicoService {
         Map<String, ServicoDTO> servicoMap = new HashMap<>();
 
         for (AgendamentoDTO consulta : consultas) {
-            Servico servico = servicoRepository.findById(consulta.servicoId()).orElseThrow();
+            Servico servico = servicoRepository.findById(consulta.servico().getId()).orElseThrow();
             servicoMap.compute(servico.getNome(), (nome, dto) -> {
                 if (dto == null) {
                     return new ServicoDTO(nome, 1);
@@ -68,7 +68,7 @@ public class ServicoService {
 
         for (AgendamentoDTO consulta : consultas) {
 
-            Servico servico = servicoRepository.findById(consulta.servicoId()).orElseThrow();
+            Servico servico = servicoRepository.findById(consulta.servico().getId()).orElseThrow();
             ServicoDTO servicoDTO = new ServicoDTO(servico.getNome(), 1);
 
             if (servicoDTOS.contains(servicoDTO)) {
@@ -94,7 +94,8 @@ public class ServicoService {
                         servico.getNome(),
                         servico.getDuracaoMinutos(),
                         servico.getPreco().doubleValue(),
-                        servico.getDescricao())).toList();
+                        servico.getDescricao(),
+                        servico.getCategoria())).toList();
     }
 
 
@@ -104,6 +105,8 @@ public class ServicoService {
                 .duracaoMinutos(servicoDtoRequest.duracaoMinutos())
                 .preco(BigDecimal.valueOf(servicoDtoRequest.preco()))
                 .descricao(servicoDtoRequest.descricao())
+                .deletado(false)
+                .categoria(servicoDtoRequest.categoria())
                 .build();
 
         return servicoRepository.save(servico);
@@ -116,6 +119,7 @@ public class ServicoService {
         servico.setDuracaoMinutos(servicoDtoRequest.duracaoMinutos());
         servico.setPreco(BigDecimal.valueOf(servicoDtoRequest.preco()));
         servico.setDescricao(servicoDtoRequest.descricao());
+        servico.setCategoria(servicoDtoRequest.categoria());
 
         return servicoRepository.save(servico);
     }
@@ -126,11 +130,20 @@ public class ServicoService {
             throw new IllegalArgumentException("Serviço não encontrado");
         }
 
-        servicoRepository.deleteById(id);
+        Servico servico = servicoRepository.findById(id).orElseThrow();
+        servico.setDeletado(true);
+        servico.setDeletadoEm(LocalDateTime.now());
 
+        servicoRepository.save(servico);
     }
 
     public List<Servico> listarServicos() {
-        return servicoRepository.findAll();
+        List<Servico> servicos = servicoRepository.findByDeletadoFalse();
+
+        if (servicos.isEmpty()) {
+            throw new IllegalArgumentException("Nenhum serviço encontrado");
+        }
+
+        return servicos;
     }
 }

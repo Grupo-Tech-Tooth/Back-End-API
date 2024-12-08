@@ -38,7 +38,7 @@ public class ServicosController {
         return ResponseEntity.ok(servicos);
     }
 
-    @PostMapping("/cadastrar")
+    @PostMapping
     public ResponseEntity<Servico> cadastrarServico(@Valid @RequestBody ServicoDtoRequest servicoDtoRequest) {
         Servico servico = servicoService.cadastrarServico(servicoDtoRequest);
         return ResponseEntity.ok(servico);

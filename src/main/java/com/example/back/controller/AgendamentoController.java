@@ -59,7 +59,7 @@ public class AgendamentoController {
 
         if (agendamentos.isEmpty()) {
             loggerObserver.logBusinessException("Nenhum agendamento encontrado");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.noContent().build();
         }
 
         return ResponseEntity.ok(agendamentos);
@@ -82,7 +82,15 @@ public class AgendamentoController {
 
     @GetMapping("/cliente/{clienteId}")
     public ResponseEntity<List<AgendamentoDTO>> buscarPorCliente(@PathVariable Long clienteId) {
-        return ResponseEntity.ok(agendamentoService.buscarPorCliente(clienteId));
+
+        List<AgendamentoDTO> agendamentos = agendamentoService.buscarPorCliente(clienteId);
+
+        if (agendamentos.isEmpty()) {
+            loggerObserver.logBusinessException("Nenhum agendamento encontrado para o cliente de id: " + clienteId);
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(agendamentos);
     }
 
     @GetMapping("/cliente/agendamento/{clienteId}")
@@ -120,6 +128,11 @@ public class AgendamentoController {
         return ResponseEntity.ok(agendamentos);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<AgendamentoDTO> deletar(@PathVariable Long id) {
+        return ResponseEntity.ok(agendamentoService.deletar(id));
+    }
+
     @DeleteMapping("/{id}/cancelar")
     public ResponseEntity<AgendamentoDTO> cancelarConsulta(@PathVariable Long id) {
         return ResponseEntity.ok(agendamentoService.cancelarConsulta(id));
@@ -143,7 +156,15 @@ public class AgendamentoController {
 
     @GetMapping("/servicos")
     public ResponseEntity<List<Servico>> listarServicos() {
-        return ResponseEntity.ok(agendamentoService.listarServicos());
+
+        List<Servico> consultas = agendamentoService.listarServicos();
+
+        if (consultas.isEmpty()) {
+            loggerObserver.logBusinessException("Nenhum serviço encontrado");
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(consultas);
     }
 
     @GetMapping("/fila")

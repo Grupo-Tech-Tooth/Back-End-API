@@ -23,8 +23,5 @@ public record AgendamentoCreateDTO(
         String status,
 
         @NotNull(message = "A data e hora não pode ser nula")
-        LocalDateTime dataHora,
-
-        @NotNull(message = "O CPF não pode ser nulo")
-        String cpf
+        LocalDateTime dataHora
 ) {}

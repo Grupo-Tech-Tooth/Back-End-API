@@ -1,6 +1,8 @@
 package com.example.back.dto.req;
 
+import com.example.back.enums.Categoria;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 public record ServicoDtoRequest(
@@ -11,6 +13,8 @@ public record ServicoDtoRequest(
         @Positive
         Double preco,
         @NotBlank
-        String descricao
+        String descricao,
+        @NotNull(message = "Categoria não pode ser nula")
+        Categoria categoria
 ) {
 }

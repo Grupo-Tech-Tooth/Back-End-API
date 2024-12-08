@@ -32,7 +32,8 @@ public class FuncionalRequestDto {
     @NotBlank(message = "Departamento não pode ser vazio")
     private String departamento;
 
-    @NotBlank(message = "Senha não pode ser vazia")
+    private String matricula;
+
     String senha;
 
     @NotNull(message = "Data de nascimento é obrigatória")
@@ -52,17 +53,21 @@ public class FuncionalRequestDto {
     @NotNull(message = "Número de residência é obrigatório")
     private String numeroResidencia;
 
+    private String complemento;
+
     public Funcional toFuncional() {
         Funcional funcional = new Funcional();
         funcional.setNome(this.nome);
         funcional.setSobrenome(this.sobrenome);
         funcional.setCpf(this.cpf);
         funcional.setDepartamento(this.departamento);
+        funcional.setMatricula(this.matricula);
         funcional.setDataNascimento(this.dataNascimento);
         funcional.setTelefone(this.telefone);
         funcional.setGenero(this.genero);
         funcional.setCep(this.cep);
         funcional.setNumeroResidencia(this.numeroResidencia);
+        funcional.setComplemento(this.complemento);
         return funcional;
     }
 

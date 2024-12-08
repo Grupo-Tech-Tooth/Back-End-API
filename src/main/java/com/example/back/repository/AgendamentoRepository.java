@@ -14,6 +14,7 @@ import java.util.Optional;
 
 @Repository
 public interface AgendamentoRepository extends JpaRepository<Agendamento, Long> {
+    List<Agendamento> findByDeletadoFalse();
     List<Agendamento> findByMedicoId(Long medicoId);
     List<Agendamento> findByClienteId(Long clienteId);
     // buscar por id do cliente em ordem decrescente, do mais recente para o mais antigo

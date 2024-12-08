@@ -1,5 +1,7 @@
 package com.example.back.dto.req;
 
+import com.example.back.dto.res.ClienteResponseDto;
+import com.example.back.dto.res.MedicoResponseDto;
 import com.example.back.entity.*;
 import org.springframework.stereotype.Component;
 
@@ -11,12 +13,11 @@ public class AgendamentoMapper {
     public static AgendamentoDTO toDTO(Agendamento agendamento) {
         return new AgendamentoDTO(
                 agendamento.getId(),
-                agendamento.getCliente().getId(),
-                agendamento.getMedico().getId(),
-                agendamento.getServico().getId(),
+                ClienteResponseDto.converter(agendamento.getCliente()),
+                MedicoResponseDto.converter(agendamento.getMedico()),
+                agendamento.getServico(),
                 agendamento.getStatus(),
-                agendamento.getDataHora(),
-                agendamento.getCliente().getCpf()
+                agendamento.getDataHora()
         );
     }
 
@@ -28,7 +29,6 @@ public class AgendamentoMapper {
                 .servico(servico)
                 .dataHora(dto.dataHora())
                 .status(dto.status())
-                .cpf(dto.cpf())
                 .build();
     }
 

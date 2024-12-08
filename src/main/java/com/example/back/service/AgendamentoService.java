@@ -157,9 +157,7 @@ public class AgendamentoService {
     public AgendamentoDTO atualizar(Long id, AgendamentoCreateDTO dto) {
         Agendamento agendamento = agendamentoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Agendamento não encontrado"));
-
-        validarRegrasDeNegocio(dto);
-
+        
         Cliente cliente = clienteRepository.findById(dto.clienteId())
                 .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
 
@@ -178,7 +176,6 @@ public class AgendamentoService {
         agendamento.setServico(servico);
         agendamento.setAgenda(agenda);
         agendamento.setDataHora(dto.dataHora());
-        agendamento.setCpf(dto.cpf());
         agendamento.setStatus(dto.status());
 
         return AgendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
@@ -197,21 +194,36 @@ public class AgendamentoService {
     }
 
     public List<AgendamentoDTO> buscarPorCliente(Long clienteId) {
-        return agendamentoRepository.findByClienteId(clienteId).stream()
+        List<AgendamentoDTO> agendamento = agendamentoRepository.findByClienteId(clienteId).stream()
                 .map(AgendamentoMapper::toDTO)
                 .collect(Collectors.toList());
+
+        return agendamento;
     }
 
     public List<Agendamento> buscarPorData(LocalDate data) {
         LocalDateTime inicio = data.atStartOfDay();
         LocalDateTime fim = data.plusDays(1).atStartOfDay();
-        return agendamentoRepository.findByDataHoraBetween(inicio, fim);
+
+        List<Agendamento> consultas = agendamentoRepository.findByDataHoraBetween(inicio, fim);
+
+        if (consultas.isEmpty()) {
+            throw new ResourceNotFoundException("Nenhuma consulta encontrada para a data: " + data);
+        }
+
+        return consultas;
     }
 
     public List<AgendamentoDTO> buscarPorPeriodo(LocalDateTime inicio, LocalDateTime fim) {
-        return agendamentoRepository.findByDataHoraBetween(inicio, fim).stream()
+        List<AgendamentoDTO> consultas = agendamentoRepository.findByDataHoraBetween(inicio, fim).stream()
                 .map(AgendamentoMapper::toDTO)
                 .collect(Collectors.toList());
+
+        if (consultas.isEmpty()) {
+            throw new ResourceNotFoundException("Nenhuma consulta encontrada para o período: " + inicio + " a " + fim);
+        }
+
+        return consultas;
     }
 
     public List<Servico> listarServicos() { return servicoRepository.findAll(); }
@@ -226,7 +238,7 @@ public class AgendamentoService {
     }
 
     public List<AgendamentoDTO> buscarTodosAgendamentos() {
-        return agendamentoRepository.findAll().stream()
+        return agendamentoRepository.findByDeletadoFalse().stream()
                 .map(AgendamentoMapper::toDTO)
                 .collect(Collectors.toList());
     }
@@ -242,11 +254,11 @@ public class AgendamentoService {
             saida.format("ID; ClienteNome; ClienteEmail; MedicoNome; DataHora; ServicoNome;\n");
 
             for (AgendamentoDTO agendamento : lista) {
-                Cliente cliente = clienteRepository.findById(agendamento.clienteId())
+                Cliente cliente = clienteRepository.findById(agendamento.cliente().getId())
                         .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
-                Medico medico = medicoRepository.findById(agendamento.medicoId())
+                Medico medico = medicoRepository.findById(agendamento.medico().getId())
                         .orElseThrow(() -> new ResourceNotFoundException("Médico não encontrado"));
-                Servico servico = servicoRepository.findById(agendamento.servicoId())
+                Servico servico = servicoRepository.findById(agendamento.servico().getId())
                         .orElseThrow(() -> new ResourceNotFoundException("Serviço não encontrado"));
 
                 saida.format("%d;%s;%s;%s;%s;%s\n",
@@ -281,7 +293,13 @@ public class AgendamentoService {
     }
 
     public Optional<AgendamentoDTO> buscarUltimoAgendamentoDeCliente(Long id) {
-        return agendamentoRepository.findByClienteIdOrderByDataHoraDesc(id);
+        Optional<AgendamentoDTO> consulta = agendamentoRepository.findByClienteIdOrderByDataHoraDesc(id);
+
+        if (consulta.isEmpty()) {
+            throw new ResourceNotFoundException("Nenhum agendamento encontrado para o cliente de id: " + id);
+        }
+
+        return consulta;
     }
 
     // Adicionar agendamentos à fila
@@ -297,12 +315,11 @@ public class AgendamentoService {
             if (agendamento.getDataHora().isBefore(agora) || agendamento.getDataHora().isEqual(agora)) {
                 filaService.adicionarNaFila(new AgendamentoDTO(
                         agendamento.getId(),
-                        agendamento.getCliente().getId(),
-                        agendamento.getMedico().getId(),
-                        agendamento.getServico().getId(),
+                        agendamento.getCliente(),
+                        agendamento.getMedico(),
+                        agendamento.getServico(),
                         agendamento.getStatus(),
-                        agendamento.getDataHora(),
-                        agendamento.getCpf()
+                        agendamento.getDataHora()
                 ));
             }
         }
@@ -325,27 +342,20 @@ public class AgendamentoService {
     }
 
     public AgendamentoDTO concluirConsulta(Long id) {
-        // Recupera o agendamento pelo ID
         Agendamento agendamento = agendamentoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Agendamento não encontrado"));
 
-        // Verifica se o agendamento está na fila e remove
         filaService.getFila().removeIf(a -> a.id().equals(id));
 
-        // Atualiza o status do agendamento para "Concluído"
         agendamento.setStatus("Concluído");
 
-        // Salva e retorna o DTO atualizado
         return AgendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
     }
 
-    // Desfazer um agendamento pelo ID (alterar status para "Cancelado")
     @Transactional
     public AgendamentoDTO desfazerPorId(Long id) {
-        // Remove o agendamento da pilha
         AgendamentoDTO agendamentoDTO = pilhaAgendamentoService.desfazerPorId(id);
 
-        // Atualiza o status e define cancelado
         Agendamento agendamento = agendamentoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Agendamento não encontrado"));
         agendamento.setStatus("Cancelado");
@@ -393,5 +403,17 @@ public class AgendamentoService {
 
         // Usar o mapper para converter em DTOs
         return AgendamentoMapper.converter(agendamentos);
+    }
+
+    public AgendamentoDTO deletar(Long id) {
+
+        Agendamento agendamento = agendamentoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Agendamento não encontrado"));
+
+        agendamento.setDeletado(true);
+        agendamento.setDeletadoEm(LocalDateTime.now());
+
+        return AgendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
+
     }
 }

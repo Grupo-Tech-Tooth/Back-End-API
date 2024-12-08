@@ -1,9 +1,11 @@
 package com.example.back.entity;
 
+import com.example.back.enums.Categoria;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "servicos")
@@ -28,6 +30,16 @@ public class Servico {
 
     @Column(nullable = false)
     private String descricao;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Categoria categoria;
+
+    @Column(name = "deletado", columnDefinition = "TINYINT(1)")
+    private Boolean deletado = false;
+
+    @Column(name = "deletado_em")
+    private LocalDateTime deletadoEm;
 
     public enum Tipo {
         Consulta(1L, 20.0),
@@ -54,6 +66,7 @@ public class Servico {
                     .nome(this.name())
                     .duracaoMinutos(30)
                     .preco(BigDecimal.valueOf(this.preco))
+                    .descricao("Descrição do serviço " + this.name())
                     .build();
         }
 

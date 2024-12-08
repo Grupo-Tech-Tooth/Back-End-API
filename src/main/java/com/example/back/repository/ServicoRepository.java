@@ -14,4 +14,7 @@ public interface ServicoRepository extends JpaRepository<Servico, Long> {
     List<Servico> findByDuracaoMinutos(Integer duracao);
 
     List<Servico> findByPreco(BigDecimal bigDecimal);
+
+    //Buscar os não deletados (deletado false)
+    List<Servico> findByDeletadoFalse();
 }

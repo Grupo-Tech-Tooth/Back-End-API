@@ -9,9 +9,12 @@ import com.example.back.dto.res.FluxoSemanal;
 import com.example.back.entity.Agendamento;
 import com.example.back.entity.Cliente;
 import com.example.back.entity.LoginInfo;
+import com.example.back.entity.Medico;
+import com.example.back.enums.Hierarquia;
 import com.example.back.infra.execption.ResourceNotFoundException;
 import com.example.back.repository.ClienteRepository;
 import com.example.back.repository.LoginInfoRepository;
+import com.example.back.repository.MedicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,18 +34,18 @@ import java.util.stream.Collectors;
 public class ClienteService {
 
     private final ClienteRepository clienteRepository;
-    private final PasswordEncoder passwordEncoder;
     private final LoginInfoRepository loginInfoRepository;
     private final AgendamentoService agendamentoService;
+    private final MedicoRepository medicoRepository;
 
     @Autowired
     public ClienteService(ClienteRepository clienteRepository,
                           PasswordEncoder passwordEncoder,
-                          LoginInfoRepository loginInfoRepository, AgendamentoService agendamentoService) {
+                          LoginInfoRepository loginInfoRepository, AgendamentoService agendamentoService, MedicoRepository medicoRepository) {
         this.clienteRepository = clienteRepository;
-        this.passwordEncoder = passwordEncoder;
         this.loginInfoRepository = loginInfoRepository;
         this.agendamentoService = agendamentoService;
+        this.medicoRepository = medicoRepository;
     }
 
     public List<Cliente> listarClientes() {
@@ -54,11 +57,25 @@ public class ClienteService {
             throw new IllegalArgumentException("Cliente já existe com esse CPF");
         }
 
-        Cliente cliente = new Cliente(dto);
+        Medico medico = (Medico) medicoRepository.findByIdAndLoginInfoDeletadoFalse(dto.getMedicoId())
+                .orElseThrow(() -> new ResourceNotFoundException("Médico não encontrado"));
+
+        dto.setHierarquia(Hierarquia.CLIENTE);
+        Cliente cliente = new Cliente();
+        cliente.setNome(dto.getNome());
+        cliente.setSobrenome(dto.getSobrenome());
+        cliente.setDataNascimento(dto.getDataNascimento());
+        cliente.setGenero(dto.getGenero());
+        cliente.setCpf(dto.getCpf());
+        cliente.setTelefone(dto.getTelefone());
+        cliente.setCep(dto.getCep());
+        cliente.setNumeroResidencia(dto.getNumeroResidencia());
+        cliente.setAlergias(dto.getAlergias());
+        cliente.setMedicamentos(dto.getMedicamentos());
+        cliente.setMedico(medico);
 
         LoginInfo loginInfo = new LoginInfo();
         loginInfo.setEmail(dto.getEmail());
-        loginInfo.setSenha(passwordEncoder.encode(dto.getSenha()));
         loginInfo.setCliente(cliente);
 
         loginInfoRepository.save(loginInfo);
@@ -92,6 +109,9 @@ public class ClienteService {
     public ClienteResponseDto atualizarCliente(Long id, AtualizarClienteRequestDto dto) {
         Cliente clienteDb = buscarClientePorId(id);
 
+        Medico medico = (Medico) medicoRepository.findByIdAndLoginInfoDeletadoFalse(dto.getMedicoId())
+                .orElseThrow(() -> new ResourceNotFoundException("Médico não encontrado"));
+
         clienteDb.setNome(dto.getNome());
         clienteDb.setSobrenome(dto.getSobrenome());
         clienteDb.setGenero(dto.getGenero());
@@ -102,7 +122,8 @@ public class ClienteService {
         clienteDb.setTelefone(dto.getTelefone());
         clienteDb.setAlergias(dto.getAlergias());
         clienteDb.setMedicamentos(dto.getMedicamentos());
-        clienteDb.setMedicoResponsavelId(dto.getMedicoResponsavel().getId());
+        clienteDb.setObservacoes(dto.getObservacoes());
+        clienteDb.setMedico(medico);
 
         LoginInfo loginInfo = clienteDb.getLoginInfo();
         loginInfo.setEmail(dto.getEmail());
@@ -154,13 +175,17 @@ public class ClienteService {
         List<ClienteResponseDto> clientes = ClienteResponseDto.converter(clientesEntidade);
 
         clientes.forEach(cliente -> {
-            List<Agendamento> agendamentosEntidade = agendamentoService.buscarAgendamentosPorCliente(cliente.getId());
+            if (cliente.getUltimoAgendamento() == null) {
+                List<Agendamento> agendamentosEntidade = agendamentoService.buscarAgendamentosPorCliente(cliente.getId());
 
-            List<AgendamentoDTO> agendamentos = AgendamentoMapper.converter(agendamentosEntidade);
+                List<AgendamentoDTO> agendamentos = AgendamentoMapper.converter(agendamentosEntidade);
 
-            if (!agendamentos.isEmpty()) {
-                int lastIndex = agendamentos.size() - 1;
-                cliente.setUltimoAgendamento(agendamentos.get(lastIndex));
+                if (!agendamentos.isEmpty()) {
+                    int lastIndex = agendamentos.size() - 1;
+                    cliente.setUltimoAgendamento(agendamentos.get(lastIndex));
+                }
+            } else {
+                cliente.setUltimoAgendamento(cliente.getUltimoAgendamento());
             }
         });
 
@@ -197,19 +222,31 @@ public class ClienteService {
         );
     }
 
-    public List<ClienteResponseDto> filtrarClientes(String nome, String email, String telefone, LocalDate ultimaConsulta) {
+    public List<ClienteResponseDto> filtrarClientes(String nome, String email, String telefone, String cpf) {
+        // Filtragem inicial
         List<Cliente> clientes = clienteRepository.findAll().stream()
                 .filter(cliente -> nome == null || cliente.getNome().toUpperCase().contains(nome.toUpperCase()) ||
                         (cliente.getSobrenome() != null && cliente.getSobrenome().toUpperCase().contains(nome.toUpperCase())))
                 .filter(cliente -> email == null || cliente.getLoginInfo().getEmail().equalsIgnoreCase(email))
                 .filter(cliente -> telefone == null || cliente.getTelefone().equalsIgnoreCase(telefone))
-                .filter(cliente -> ultimaConsulta == null ||
-                        agendamentoService.buscarUltimoAgendamentoDeCliente(cliente.getId())
-                                .map(agendamento -> agendamento.getDataHora().toLocalDate().isEqual(ultimaConsulta))
-                                .orElse(false))
+                .filter(cliente -> cpf == null || cliente.getCpf().equals(cpf)) // Filtro por CPF
                 .toList();
 
-        return ClienteResponseDto.converter(clientes);
+        // Conversão para DTO
+        List<ClienteResponseDto> clientesDto = ClienteResponseDto.converter(clientes);
+
+        // Buscar últimos agendamentos
+        clientesDto.forEach(cliente -> {
+            List<Agendamento> agendamentosEntidade = agendamentoService.buscarAgendamentosPorCliente(cliente.getId());
+            List<AgendamentoDTO> agendamentos = AgendamentoMapper.converter(agendamentosEntidade);
+
+            if (!agendamentos.isEmpty()) {
+                int lastIndex = agendamentos.size() - 1;
+                cliente.setUltimoAgendamento(agendamentos.get(lastIndex));
+            }
+        });
+
+        return clientesDto;
     }
 
 }

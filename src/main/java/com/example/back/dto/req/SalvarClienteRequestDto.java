@@ -3,6 +3,7 @@ package com.example.back.dto.req;
 import com.example.back.entity.Cliente;
 import com.example.back.entity.Medico;
 import com.example.back.enums.Hierarquia;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -12,6 +13,7 @@ import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -43,11 +45,6 @@ public class SalvarClienteRequestDto {
     @Email(message = "Email inválido")
     private String email;
 
-    @NotBlank(message = "Senha não pode ser vazia")
-    @NotNull
-    private String senha;
-
-    @NotNull(message = "Hierarquia não pode ser nula")
     private Hierarquia hierarquia;
 
     @NotBlank(message = "Telefone não pode ser vazio")
@@ -66,8 +63,9 @@ public class SalvarClienteRequestDto {
 
     private String medicamentos;
 
-    @NotNull(message = "ID do médico responsável não pode ser nulo")
-    private Long medicoResponsavelId;
+    private Long medicoId;
+
+    private String observacoes;
 
     public Cliente toCliente() {
         Cliente cliente = new Cliente();
@@ -81,7 +79,7 @@ public class SalvarClienteRequestDto {
         cliente.setNumeroResidencia(this.numeroResidencia);
         cliente.setAlergias(this.alergias);
         cliente.setMedicamentos(this.medicamentos);
-        cliente.setMedicoResponsavelId(this.medicoResponsavelId);
+        cliente.setObservacoes(this.observacoes);
         return cliente;
     }
 }
