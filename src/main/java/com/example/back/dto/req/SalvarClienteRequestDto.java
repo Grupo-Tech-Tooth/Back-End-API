@@ -63,10 +63,6 @@ public class SalvarClienteRequestDto {
 
     private String medicamentos;
 
-    private Long medicoResponsavelId;
-
-    private String medicoResponsavel;
-
     private Long medicoId;
 
     private String observacoes;
@@ -83,7 +79,6 @@ public class SalvarClienteRequestDto {
         cliente.setNumeroResidencia(this.numeroResidencia);
         cliente.setAlergias(this.alergias);
         cliente.setMedicamentos(this.medicamentos);
-        cliente.setMedicoResponsavelId(this.medicoResponsavelId);
         cliente.setObservacoes(this.observacoes);
         return cliente;
     }
