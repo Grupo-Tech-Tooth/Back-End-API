@@ -38,4 +38,5 @@ public interface MedicoRepository extends JpaRepository<Medico, Long> {
     @Query("SELECT m.id FROM Medico m WHERE m.loginInfo.deletado = false AND LOWER(m.cpf) LIKE LOWER(CONCAT('%', :cpf, '%'))")
     Optional<Long> findIdByLoginInfo_DeletadoFalseAndCpfContainingIgnoreCase(@Param("cpf") String cpf);
 
+    Optional<Object> findByIdAndLoginInfoDeletadoFalse(Long medicoId);
 }

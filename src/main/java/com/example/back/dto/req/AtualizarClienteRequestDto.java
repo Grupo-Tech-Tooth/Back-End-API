@@ -59,24 +59,8 @@ public class AtualizarClienteRequestDto {
 
     private String medicamentos;
 
-    private Long medicoResponsavelId;
+    private Long medicoId;
 
     private String observacoes;
 
-    public Cliente toCliente() {
-        Cliente cliente = new Cliente();
-        cliente.setNome(this.nome);
-        cliente.setSobrenome(this.sobrenome);
-        cliente.setCpf(this.cpf);
-        cliente.setDataNascimento(this.dataNascimento);
-        cliente.setTelefone(this.telefone);
-        cliente.setGenero(this.genero);
-        cliente.setCep(this.cep);
-        cliente.setNumeroResidencia(this.numeroResidencia);
-        cliente.setAlergias(this.alergias);
-        cliente.setMedicamentos(this.medicamentos);
-        cliente.setMedicoResponsavelId(this.medicoResponsavelId);
-        cliente.setObservacoes(this.observacoes);
-        return cliente;
-    }
 }
