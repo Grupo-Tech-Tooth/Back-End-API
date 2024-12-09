@@ -3,6 +3,7 @@ package com.example.back.controller;
 import com.example.back.dto.req.FinanceiroDtoRequest;
 import com.example.back.dto.res.FinanceiroResponseDto;
 import com.example.back.entity.Financeiro;
+import com.example.back.enums.EspecializacaoOdontologica;
 import com.example.back.service.FinanceiroService;
 import com.example.back.service.FuncionalService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -11,8 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -64,5 +67,46 @@ public class FinanceiroController {
         return ResponseEntity.status(200).body(financas);
     }
 
+    @GetMapping("/semestral/{especializacao}")
+    public ResponseEntity<List<FinanceiroResponseDto>> getFinanceiroData(@PathVariable String especializacao) {
+        try {
 
+            if(especializacao.equals("Todos")){
+                List<FinanceiroResponseDto> financeiroData = financeiroService.getFinanceiroTodos();
+                return ResponseEntity.ok(financeiroData);
+            }
+
+            EspecializacaoOdontologica especializacaoEnum = EspecializacaoOdontologica.valueOf(especializacao.toUpperCase());
+            List<FinanceiroResponseDto> financeiroData = financeiroService.getFinanceiroData(especializacaoEnum);
+            return ResponseEntity.ok(financeiroData);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+    @GetMapping("/soma-transacoes")
+    public ResponseEntity<?> getSomaTransacoes(@RequestParam String periodo) {
+        switch (periodo.toLowerCase()) {
+            case "diasemana":
+                Map<DayOfWeek, Double> somaPorDia = financeiroService.getSomaTransacoesPorDiaDaSemanaMesAtual();
+                if (somaPorDia.isEmpty()) {
+                    return ResponseEntity.status(204).build();
+                }
+                return ResponseEntity.status(200).body(somaPorDia);
+            case "semanal":
+                Map<String, Double> somaPorSemana = financeiroService.getSomaTransacoesPorSemanaMesAtual();
+                if (somaPorSemana.isEmpty()) {
+                    return ResponseEntity.status(204).build();
+                }
+                return ResponseEntity.status(200).body(somaPorSemana);
+            case "mensal":
+                Map<Integer, Double> somaPorMes = financeiroService.getSomaTransacoesPorMesAnoAtual();
+                if (somaPorMes.isEmpty()) {
+                    return ResponseEntity.status(204).build();
+                }
+                return ResponseEntity.status(200).body(somaPorMes);
+            default:
+                return ResponseEntity.status(400).body("Período inválido. Use 'dia', 'semana' ou 'mes'.");
+        }
+    }
 }

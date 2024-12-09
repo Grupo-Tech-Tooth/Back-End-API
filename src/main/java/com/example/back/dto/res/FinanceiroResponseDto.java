@@ -10,9 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.text.DecimalFormat;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Getter
 @Setter
@@ -33,6 +31,7 @@ public class FinanceiroResponseDto {
     private String observacao;
     private Double valorCorrigido;
     private Double taxa;
+    private String especializacao;
 
     public static FinanceiroResponseDto converter(Financeiro financeiro) {
         return new FinanceiroResponseDto(
@@ -48,7 +47,8 @@ public class FinanceiroResponseDto {
                 financeiro.getValorBruto(),
                 financeiro.getObservacao(),
                 financeiro.getValorCorrigido(),
-                financeiro.getTaxa()
+                financeiro.getTaxa(),
+                financeiro.getMedico().getEspecializacao().name()
         );
     }
 }
