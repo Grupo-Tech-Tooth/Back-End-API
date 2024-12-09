@@ -59,7 +59,7 @@ public class AtualizarClienteRequestDto {
 
     private String medicamentos;
 
-    private Long medicoResponsavelId;
+    private Long medicoId;
 
     private String observacoes;
 
@@ -75,7 +75,7 @@ public class AtualizarClienteRequestDto {
         cliente.setNumeroResidencia(this.numeroResidencia);
         cliente.setAlergias(this.alergias);
         cliente.setMedicamentos(this.medicamentos);
-        cliente.setMedicoResponsavelId(this.medicoResponsavelId);
+        cliente.setMedicoId(this.medicoId);
         cliente.setObservacoes(this.observacoes);
         return cliente;
     }

@@ -103,7 +103,7 @@ public class ClienteService {
         clienteDb.setTelefone(dto.getTelefone());
         clienteDb.setAlergias(dto.getAlergias());
         clienteDb.setMedicamentos(dto.getMedicamentos());
-        clienteDb.setMedicoResponsavelId(dto.getMedicoResponsavelId());
+        clienteDb.setMedicoId(dto.getMedicoId());
         clienteDb.setObservacoes(dto.getObservacoes());
 
         LoginInfo loginInfo = clienteDb.getLoginInfo();

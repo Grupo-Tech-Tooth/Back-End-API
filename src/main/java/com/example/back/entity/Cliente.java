@@ -28,14 +28,8 @@ public class Cliente extends Usuario {
     @Column(name = "medicamentos", columnDefinition = "TEXT")
     private String medicamentos;
 
-    @Column(name = "medico_responsavel_id", nullable = false)
-    private Long medicoResponsavelId;
-
     @Column(name = "medico_id", nullable = false)
     private Long medicoId;
-
-    @Column(name = "medico_responsavel")
-    private String medicoResponsavel;
 
     @Lob
     @Column(name = "observacoes", columnDefinition = "TEXT")
@@ -56,9 +50,7 @@ public class Cliente extends Usuario {
         this.setGenero(dto.getGenero());
         this.setAlergias(dto.getAlergias());
         this.setMedicamentos(dto.getMedicamentos());
-        this.setMedicoResponsavelId(dto.getMedicoResponsavelId());
         this.setMedicoId(dto.getMedicoId());
-        this.setMedicoResponsavel(dto.getMedicoResponsavel());
         this.setObservacoes(dto.getObservacoes());
     }
 }
