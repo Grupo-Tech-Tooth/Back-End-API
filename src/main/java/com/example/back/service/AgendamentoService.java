@@ -47,7 +47,7 @@ public class AgendamentoService {
 
     private static final Logger log = LoggerFactory.getLogger(AgendamentoService.class);
 
-    public AgendamentoDTO criar(AgendamentoCreateDTO dto){
+        public AgendamentoDTO criar(AgendamentoCreateDTO dto){
         validarRegrasDeNegocio(dto);
 
         Cliente cliente = clienteRepository.findById(dto.clienteId())
@@ -87,6 +87,7 @@ public class AgendamentoService {
 
         Agendamento agendamento = AgendamentoMapper.toEntity(dto, cliente, medico, servico, agenda);
         agendamento.setStatus("Pendente");
+        agendamento.setDeletado(false);
 
         // Adiciona o agendamento recém-criado à pilha
         pilhaAgendamentoService.adicionarNaPilha(AgendamentoMapper.toDTO(agendamento));
@@ -238,7 +239,7 @@ public class AgendamentoService {
     }
 
     public List<AgendamentoDTO> buscarTodosAgendamentos() {
-        return agendamentoRepository.findByDeletadoFalse().stream()
+        return agendamentoRepository.findByDeletadoFalseOrderByDataHoraAsc().stream()
                 .map(AgendamentoMapper::toDTO)
                 .collect(Collectors.toList());
     }
