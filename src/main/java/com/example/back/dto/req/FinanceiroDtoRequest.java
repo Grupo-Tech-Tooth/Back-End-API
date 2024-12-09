@@ -16,6 +16,11 @@ public class FinanceiroDtoRequest {
     @NotNull(message = "Data da consulta é obrigatório")
     LocalDateTime dataConsulta;
 
+    @NotNull(message = "O tratamento principal é obrigatório")
+    Long tratamentoPrincipalId;
+
+    Long tratamentoAdicionalId;
+
     @NotNull(message = "Id do Paciente é obrigatório")
     Long idPaciente;
 

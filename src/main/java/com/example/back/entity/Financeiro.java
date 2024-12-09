@@ -27,6 +27,14 @@ public class Financeiro{
     private LocalDateTime dataConsulta;
 
     @ManyToOne
+    @JoinColumn(name = "tratamento_principal", nullable = false)
+    private Servico tratamentoPrincipal;
+
+    @ManyToOne
+    @JoinColumn(name = "tratamento_adicional")
+    private Servico tratamentoAdicional;
+
+    @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
 
