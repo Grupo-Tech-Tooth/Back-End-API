@@ -1,14 +1,10 @@
 package com.example.back.dto.req;
-
 import com.example.back.enums.FormaPagamento;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.validator.constraints.br.CPF;
 
-import java.text.DecimalFormat;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Getter
 @Setter
@@ -40,6 +36,8 @@ public class FinanceiroDtoRequest {
     @Positive(message = "Valor da consulta deve ser positivo e maior que zero")
     @NotNull(message = "Valor da consulta é obrigatório")
     Double valorBruto;
+
+    String observacao;
 
     Double taxas;
 

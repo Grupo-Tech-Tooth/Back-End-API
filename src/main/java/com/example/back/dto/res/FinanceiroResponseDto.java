@@ -30,6 +30,7 @@ public class FinanceiroResponseDto {
     private FormaPagamento formaPagamento;
     private Integer parcelas;
     private Double valorBruto;
+    private String observacao;
     private Double valorCorrigido;
     private Double taxa;
 
@@ -45,6 +46,7 @@ public class FinanceiroResponseDto {
                 financeiro.getFormaPagamento(),
                 financeiro.getParcelas(),
                 financeiro.getValorBruto(),
+                financeiro.getObservacao(),
                 financeiro.getValorCorrigido(),
                 financeiro.getTaxa()
         );

@@ -3,11 +3,7 @@ package com.example.back.entity;
 import com.example.back.enums.FormaPagamento;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.text.DecimalFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Table(name = "financeiro")
@@ -58,9 +54,13 @@ public class Financeiro{
     @Column(name = "valorCorrigido")
     private Double valorCorrigido;
 
+    @Column(name = "observacao")
+    private String observacao;
+
     @Column(name = "taxa")
     private Double taxa;
 
+    @Builder.Default
     @Column(name = "deletado", columnDefinition = "TINYINT(1)")
     private Boolean deletado = false;
 
