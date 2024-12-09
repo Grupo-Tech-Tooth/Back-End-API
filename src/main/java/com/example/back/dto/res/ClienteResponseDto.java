@@ -31,7 +31,7 @@ public class ClienteResponseDto {
     private String numeroResidencia;
     private String alergias;
     private String medicamentos;
-    private Long medicoResponsavelId;
+    private Long medicoId;
     private AgendamentoDTO ultimoAgendamento;
     private String observacoes;
 
@@ -46,7 +46,7 @@ public class ClienteResponseDto {
         this.numeroResidencia = cliente.getNumeroResidencia();
         this.alergias = cliente.getAlergias();
         this.medicamentos = cliente.getMedicamentos();
-        this.medicoResponsavelId = cliente.getMedicoResponsavelId();
+        this.medicoId = cliente.getMedico().getId();
         this.dataNascimento = cliente.getDataNascimento();
         this.genero = cliente.getGenero();
         this.observacoes = cliente.getObservacoes();

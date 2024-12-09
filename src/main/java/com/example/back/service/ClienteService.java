@@ -9,10 +9,12 @@ import com.example.back.dto.res.FluxoSemanal;
 import com.example.back.entity.Agendamento;
 import com.example.back.entity.Cliente;
 import com.example.back.entity.LoginInfo;
+import com.example.back.entity.Medico;
 import com.example.back.enums.Hierarquia;
 import com.example.back.infra.execption.ResourceNotFoundException;
 import com.example.back.repository.ClienteRepository;
 import com.example.back.repository.LoginInfoRepository;
+import com.example.back.repository.MedicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,18 +34,18 @@ import java.util.stream.Collectors;
 public class ClienteService {
 
     private final ClienteRepository clienteRepository;
-    private final PasswordEncoder passwordEncoder;
     private final LoginInfoRepository loginInfoRepository;
     private final AgendamentoService agendamentoService;
+    private final MedicoRepository medicoRepository;
 
     @Autowired
     public ClienteService(ClienteRepository clienteRepository,
                           PasswordEncoder passwordEncoder,
-                          LoginInfoRepository loginInfoRepository, AgendamentoService agendamentoService) {
+                          LoginInfoRepository loginInfoRepository, AgendamentoService agendamentoService, MedicoRepository medicoRepository) {
         this.clienteRepository = clienteRepository;
-        this.passwordEncoder = passwordEncoder;
         this.loginInfoRepository = loginInfoRepository;
         this.agendamentoService = agendamentoService;
+        this.medicoRepository = medicoRepository;
     }
 
     public List<Cliente> listarClientes() {
@@ -55,8 +57,22 @@ public class ClienteService {
             throw new IllegalArgumentException("Cliente já existe com esse CPF");
         }
 
+        Medico medico = (Medico) medicoRepository.findByIdAndLoginInfoDeletadoFalse(dto.getMedicoId())
+                .orElseThrow(() -> new ResourceNotFoundException("Médico não encontrado"));
+
         dto.setHierarquia(Hierarquia.CLIENTE);
-        Cliente cliente = new Cliente(dto);
+        Cliente cliente = new Cliente();
+        cliente.setNome(dto.getNome());
+        cliente.setSobrenome(dto.getSobrenome());
+        cliente.setDataNascimento(dto.getDataNascimento());
+        cliente.setGenero(dto.getGenero());
+        cliente.setCpf(dto.getCpf());
+        cliente.setTelefone(dto.getTelefone());
+        cliente.setCep(dto.getCep());
+        cliente.setNumeroResidencia(dto.getNumeroResidencia());
+        cliente.setAlergias(dto.getAlergias());
+        cliente.setMedicamentos(dto.getMedicamentos());
+        cliente.setMedico(medico);
 
         LoginInfo loginInfo = new LoginInfo();
         loginInfo.setEmail(dto.getEmail());
@@ -93,6 +109,9 @@ public class ClienteService {
     public ClienteResponseDto atualizarCliente(Long id, AtualizarClienteRequestDto dto) {
         Cliente clienteDb = buscarClientePorId(id);
 
+        Medico medico = (Medico) medicoRepository.findByIdAndLoginInfoDeletadoFalse(dto.getMedicoId())
+                .orElseThrow(() -> new ResourceNotFoundException("Médico não encontrado"));
+
         clienteDb.setNome(dto.getNome());
         clienteDb.setSobrenome(dto.getSobrenome());
         clienteDb.setGenero(dto.getGenero());
@@ -103,8 +122,8 @@ public class ClienteService {
         clienteDb.setTelefone(dto.getTelefone());
         clienteDb.setAlergias(dto.getAlergias());
         clienteDb.setMedicamentos(dto.getMedicamentos());
-        clienteDb.setMedicoResponsavelId(dto.getMedicoResponsavelId());
         clienteDb.setObservacoes(dto.getObservacoes());
+        clienteDb.setMedico(medico);
 
         LoginInfo loginInfo = clienteDb.getLoginInfo();
         loginInfo.setEmail(dto.getEmail());

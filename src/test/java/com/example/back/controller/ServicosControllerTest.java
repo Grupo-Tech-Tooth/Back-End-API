@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+import static com.example.back.enums.Categoria.CONSULTAS_GERAIS;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -65,12 +66,16 @@ class ServicosControllerTest {
     @Test
     @DisplayName("Cadastrar serviço deve retornar 200 e salvar o serviço")
     void cadastrarServicoComSucesso() {
+
+
         // ARRANGE
-        ServicoDtoRequest request = new ServicoDtoRequest("Teste", 60, 100.0, "Descrição");
+        ServicoDtoRequest request = new ServicoDtoRequest("Teste", 60, 100.0, "Descrição", CONSULTAS_GERAIS);
         Servico servico = new Servico();
         servico.setNome("Teste");
         servico.setDuracaoMinutos(60);
         servico.setPreco(new BigDecimal("100.0"));
+        servico.setDescricao("Descrição");
+        servico.setCategoria(CONSULTAS_GERAIS);
 
         when(servicoService.cadastrarServico(request)).thenReturn(servico);
 
@@ -88,7 +93,7 @@ class ServicosControllerTest {
     void atualizarServicoComSucesso() {
         // ARRANGE
         Long id = 1L;
-        ServicoDtoRequest requestAtualizado = new ServicoDtoRequest("Teste Atualizado", 90, 150.0, "Nova Descrição");
+        ServicoDtoRequest requestAtualizado = new ServicoDtoRequest("Teste Atualizado", 90, 150.0, "Nova Descrição", CONSULTAS_GERAIS);
         Servico servicoAtualizado = new Servico();
         servicoAtualizado.setNome("Teste Atualizado");
         servicoAtualizado.setDuracaoMinutos(90);
@@ -139,7 +144,7 @@ class ServicosControllerTest {
     @DisplayName("Filtrar serviços deve retornar 200 com lista filtrada")
     void filtrarServicos() {
         // ARRANGE
-        ServicoDtoRequest filtro1 = new ServicoDtoRequest("Teste", 60, 100.0, "Descrição");
+        ServicoDtoRequest filtro1 = new ServicoDtoRequest("Teste", 60, 100.0, "Descrição", CONSULTAS_GERAIS);
         when(servicoService.filtrarServicos(null, null, null, null)).thenReturn(List.of(filtro1));
 
         // ACT
