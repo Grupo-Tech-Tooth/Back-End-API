@@ -36,9 +36,6 @@ public class FinanceiroController {
     @GetMapping
     public ResponseEntity<List<Financeiro>> listarFinanceiros() {
         List<Financeiro> financeiros = financeiroService.listarFinanceiros();
-        if (financeiros.isEmpty()) {
-            return ResponseEntity.status(204).build();
-        }
 
         return ResponseEntity.status(200).body(financeiros);
     }

@@ -19,9 +19,7 @@ import java.time.LocalDateTime;
 public class FinanceiroResponseDto {
 
     private Long id;
-    private LocalDateTime dataConsulta;
-    private Servico tratamentoPrincipal;
-    private Servico tratamentoAdicional;
+    private AgendamentoResponseDto agendamento;
     private Cliente cliente;
     private Medico medico;
     private LocalDateTime dataPagamento;
@@ -36,9 +34,7 @@ public class FinanceiroResponseDto {
     public static FinanceiroResponseDto converter(Financeiro financeiro) {
         return new FinanceiroResponseDto(
                 financeiro.getId(),
-                financeiro.getDataConsulta(),
-                financeiro.getTratamentoPrincipal(),
-                financeiro.getTratamentoAdicional(),
+                AgendamentoResponseDto.converter(financeiro.getAgendamento()),
                 financeiro.getCliente(),
                 financeiro.getMedico(),
                 financeiro.getDataPagamento(),
