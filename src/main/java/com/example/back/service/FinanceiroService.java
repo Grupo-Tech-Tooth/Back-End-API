@@ -3,10 +3,8 @@ package com.example.back.service;
 import com.example.back.dto.req.FinanceiroDtoRequest;
 import com.example.back.dto.res.FinanceiroResponseDto;
 import com.example.back.entity.Financeiro;
-import com.example.back.enums.EspecializacaoOdontologica;
-import com.example.back.repository.ClienteRepository;
-import com.example.back.repository.FinanceiroRepository;
-import com.example.back.repository.MedicoRepository;
+import com.example.back.repository.*;
+import com.example.back.enums.EspecializacaoOdontologica;;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +29,9 @@ public class FinanceiroService {
     @Autowired
     private ClienteRepository clienteRepository;
 
+    @Autowired
+    private ServicoRepository servicoRepository;
+
     public Financeiro criarFinanceiro(FinanceiroDtoRequest financeiroDtoRequest) {
         Double valorCorrigido = 0.0;
         if (financeiroDtoRequest.getTaxas() > 0.0) {
@@ -42,12 +43,15 @@ public class FinanceiroService {
         Financeiro financeiro = Financeiro.builder()
                 .id(null)
                 .dataConsulta(financeiroDtoRequest.getDataConsulta())
+                .tratamentoPrincipal((servicoRepository.findById(financeiroDtoRequest.getTratamentoPrincipalId()).orElseThrow()))
+                .tratamentoAdicional(servicoRepository.findById(financeiroDtoRequest.getTratamentoAdicionalId()).orElseThrow())
                 .cliente(clienteRepository.findById(financeiroDtoRequest.getIdPaciente()).orElseThrow())
                 .medico(medicoRepository.findById(financeiroDtoRequest.getIdMedico()).orElseThrow())
                 .dataPagamento(financeiroDtoRequest.getDataPagamento())
                 .formaPagamento(financeiroDtoRequest.getFormaPagamento())
                 .parcelas(financeiroDtoRequest.getParcelas())
                 .valorBruto(financeiroDtoRequest.getValorBruto())
+                .observacao(financeiroDtoRequest.getObservacao())
                 .valorCorrigido(valorCorrigido)
                 .taxa(financeiroDtoRequest.getTaxas())
                 .deletado(false)
@@ -65,6 +69,9 @@ public class FinanceiroService {
 
         financeiro.setDataConsulta(financeiroDtoRequest.getDataConsulta());
         financeiro.setCliente(clienteRepository.findById(financeiroDtoRequest.getIdPaciente()).orElseThrow());
+        financeiro.setTratamentoPrincipal(servicoRepository.findById(financeiroDtoRequest.getTratamentoPrincipalId()).orElseThrow());
+        financeiro.setTratamentoAdicional(servicoRepository.findById(financeiroDtoRequest.getTratamentoAdicionalId()).orElseThrow());
+        financeiro.setObservacao(financeiroDtoRequest.getObservacao());
         financeiro.setMedico(medicoRepository.findById(financeiroDtoRequest.getIdMedico()).orElseThrow());
         financeiro.setDataPagamento(financeiroDtoRequest.getDataPagamento());
         financeiro.setFormaPagamento(financeiroDtoRequest.getFormaPagamento());
