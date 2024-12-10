@@ -68,9 +68,6 @@ public class FinanceiroService {
 
     public List<FinanceiroResponseDto> listarFinanceiros() {
         List<FinanceiroResponseDto> financeiros = FinanceiroResponseDto.converter(financeiroRepository.findByAndDeletadoFalse());
-        if (financeiros.isEmpty()) {
-            throw new IllegalArgumentException("Nenhuma finança encontrada");
-        }
         return financeiros;
     }
 
