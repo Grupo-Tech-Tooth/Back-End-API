@@ -79,7 +79,7 @@ class FinanceiroControllerTest {
         when(financeiroService.criarFinanceiro(request)).thenReturn(financeiro);
 
         // ACT
-        ResponseEntity<Financeiro> resposta = financeiroController.criarFinanceiro(request);
+        ResponseEntity<FinanceiroResponseDto> resposta = financeiroController.criarFinanceiro(request);
 
         // ASSERT
         assertEquals(200, resposta.getStatusCodeValue());

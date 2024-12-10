@@ -28,8 +28,8 @@ public class FinanceiroController {
     private FinanceiroService financeiroService;
 
     @PostMapping
-    public ResponseEntity<Financeiro> criarFinanceiro(@Valid @RequestBody FinanceiroDtoRequest dto) {
-        Financeiro novoFinanceiro = financeiroService.criarFinanceiro(dto);
+    public ResponseEntity<FinanceiroResponseDto> criarFinanceiro(@Valid @RequestBody FinanceiroDtoRequest dto) {
+        FinanceiroResponseDto novoFinanceiro = FinanceiroResponseDto.converter(financeiroService.criarFinanceiro(dto));
         return ResponseEntity.status(200).body(novoFinanceiro);
     }
 
