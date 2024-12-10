@@ -3,6 +3,8 @@ package com.example.back.service;
 import com.example.back.dto.req.FinanceiroDtoRequest;
 import com.example.back.dto.res.FinanceiroResponseDto;
 import com.example.back.entity.Financeiro;
+import com.example.back.entity.Medico;
+import com.example.back.infra.execption.ResourceNotFoundException;
 import com.example.back.repository.*;
 import com.example.back.enums.EspecializacaoOdontologica;;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,12 @@ public class FinanceiroService {
             valorCorrigido = financeiroDtoRequest.getValorBruto() - (financeiroDtoRequest.getValorBruto() * (financeiroDtoRequest.getTaxas() / 100));
         } else {
             valorCorrigido = financeiroDtoRequest.getValorBruto();
+        }
+
+        Optional<Medico> medico = medicoRepository.findById(financeiroDtoRequest.getIdMedico());
+
+        if (medico.isEmpty()){
+            throw new ResourceNotFoundException("Medico Não encontrado");
         }
 
         Financeiro financeiro = Financeiro.builder()
