@@ -87,6 +87,7 @@ public class AgendamentoService {
 
         Agendamento agendamento = AgendamentoMapper.toEntity(dto, cliente, medico, servico, agenda);
         agendamento.setStatus("Pendente");
+        agendamento.setDeletado(false);
 
         // Adiciona o agendamento recém-criado à pilha
         pilhaAgendamentoService.adicionarNaPilha(AgendamentoMapper.toDTO(agendamento));
