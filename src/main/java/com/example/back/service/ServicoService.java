@@ -85,17 +85,16 @@ public class ServicoService {
 
 
     public List<ServicoDtoRequest> filtrarServicos(String nome, Integer duracao, BigDecimal preco, String descricao) {
-        return servicoRepository.findAll().stream()
-                .filter(servico -> nome == null || servico.getNome().toUpperCase().contains(nome.toUpperCase()))
-                .filter(servico -> duracao == null || servico.getDuracaoMinutos().equals(duracao))
-                .filter(servico -> preco == null || servico.getPreco().compareTo(preco) == 0)
-                .filter(servico -> descricao == null || servico.getDescricao().toUpperCase().contains(descricao.toUpperCase()))
+        List<Servico> servicos = servicoRepository.filtrarServicos(nome, duracao, preco, descricao);
+
+        return servicos.stream()
                 .map(servico -> new ServicoDtoRequest(
                         servico.getNome(),
                         servico.getDuracaoMinutos(),
                         servico.getPreco().doubleValue(),
                         servico.getDescricao(),
-                        servico.getCategoria())).toList();
+                        servico.getCategoria()))
+                .toList();
     }
 
 
