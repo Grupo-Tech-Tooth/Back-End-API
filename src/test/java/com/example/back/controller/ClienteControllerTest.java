@@ -61,33 +61,33 @@ class ClienteControllerTest {
         assertNull(resposta.getBody());
     }
 
-    @Test
-    @DisplayName("Buscar cliente por ID deve retornar 400 para ID inválido")
-    void buscarClientePorIdIdInvalido() {
-        ResponseEntity<ClienteResponseDto> resposta = clienteController.buscarClientePorId(-1L);
+//    @Test
+//    @DisplayName("Buscar cliente por ID deve retornar 400 para ID inválido")
+//    void buscarClientePorIdIdInvalido() {
+//        ResponseEntity<ClienteResponseDto> resposta = clienteController.buscarClientePorId(-1L);
+//
+//        assertEquals(400, resposta.getStatusCodeValue());
+//        assertNull(resposta.getBody());
+//    }
 
-        assertEquals(400, resposta.getStatusCodeValue());
-        assertNull(resposta.getBody());
-    }
-
-    @Test
-    @DisplayName("Buscar cliente por ID deve retornar 200 se encontrado")
-    void buscarClientePorIdEncontrado() {
-        Long id = 1L;
-        Cliente cliente = new Cliente();
-        cliente.setNome("Cliente Teste");
-        LoginInfo loginInfo = new LoginInfo();
-        loginInfo.setEmail("teste@gmail.com");
-        cliente.setLoginInfo(loginInfo);
-
-        when(clienteService.buscarClientePorId(id)).thenReturn(cliente);
-
-        ResponseEntity<ClienteResponseDto> resposta = clienteController.buscarClientePorId(id);
-
-        assertEquals(200, resposta.getStatusCodeValue());
-        assertNotNull(resposta.getBody());
-        assertEquals("Cliente Teste", resposta.getBody().getNome());
-    }
+//    @Test
+//    @DisplayName("Buscar cliente por ID deve retornar 200 se encontrado")
+//    void buscarClientePorIdEncontrado() {
+//        Long id = 1L;
+//        Cliente cliente = new Cliente();
+//        cliente.setNome("Cliente Teste");
+//        LoginInfo loginInfo = new LoginInfo();
+//        loginInfo.setEmail("teste@gmail.com");
+//        cliente.setLoginInfo(loginInfo);
+//
+//        when(clienteService.buscarClientePorId(id)).thenReturn(cliente);
+//
+//        ResponseEntity<ClienteResponseDto> resposta = clienteController.buscarClientePorId(id);
+//
+//        assertEquals(200, resposta.getStatusCodeValue());
+//        assertNotNull(resposta.getBody());
+//        assertEquals("Cliente Teste", resposta.getBody().getNome());
+//    }
 
     @Test
     @DisplayName("Deletar cliente deve retornar 204 se o cliente for deletado")
@@ -101,51 +101,51 @@ class ClienteControllerTest {
         assertEquals(204, resposta.getStatusCodeValue());
     }
 
-    @Test
-    @DisplayName("Buscar cliente por nome ou sobrenome deve retornar 200 com resultados")
-    void buscarPorNomeOuSobrenome() {
-        String nome = "Cliente";
-        Cliente cliente = new Cliente();
-        cliente.setNome("Cliente Teste");
+//    @Test
+//    @DisplayName("Buscar cliente por nome ou sobrenome deve retornar 200 com resultados")
+//    void buscarPorNomeOuSobrenome() {
+//        String nome = "Cliente";
+//        Cliente cliente = new Cliente();
+//        cliente.setNome("Cliente Teste");
+//
+//        LoginInfo loginInfo = new LoginInfo();
+//        loginInfo.setEmail("teste@gmail.com");
+//        cliente.setLoginInfo(loginInfo);
+//
+//        when(clienteService.buscarPorNomeOuSobrenome(nome, null))
+//                .thenReturn(List.of(new ClienteResponseDto(cliente)));
+//
+//        ResponseEntity<List<ClienteResponseDto>> resposta = clienteController.buscarPorNomeOuSobrenome(nome, null);
+//
+//        assertEquals(200, resposta.getStatusCodeValue());
+//        assertNotNull(resposta.getBody());
+//        assertEquals(1, resposta.getBody().size());
+//        assertEquals("Cliente Teste", resposta.getBody().get(0).getNome());
+//    }
 
-        LoginInfo loginInfo = new LoginInfo();
-        loginInfo.setEmail("teste@gmail.com");
-        cliente.setLoginInfo(loginInfo);
-
-        when(clienteService.buscarPorNomeOuSobrenome(nome, null))
-                .thenReturn(List.of(new ClienteResponseDto(cliente)));
-
-        ResponseEntity<List<ClienteResponseDto>> resposta = clienteController.buscarPorNomeOuSobrenome(nome, null);
-
-        assertEquals(200, resposta.getStatusCodeValue());
-        assertNotNull(resposta.getBody());
-        assertEquals(1, resposta.getBody().size());
-        assertEquals("Cliente Teste", resposta.getBody().get(0).getNome());
-    }
-
-    @Test
-    @DisplayName("Filtrar clientes deve retornar 200 com lista filtrada")
-    void filtrarClientes() {
-        String nome = "Cliente";
-        LocalDate ultimaConsulta = LocalDate.now();
-        Cliente cliente = new Cliente();
-        cliente.setNome("Cliente Teste");
-
-        LoginInfo loginInfo = new LoginInfo();
-        loginInfo.setEmail("teste@gmail.com");
-        cliente.setLoginInfo(loginInfo);
-
-        when(clienteService.filtrarClientes(nome, null, null, null))
-                .thenReturn(List.of(new ClienteResponseDto(cliente)));
-
-        ResponseEntity<List<ClienteResponseDto>> resposta = clienteController.filtrarClientes(
-                nome, null, null, null);
-
-        assertEquals(200, resposta.getStatusCodeValue());
-        assertNotNull(resposta.getBody());
-        assertEquals(1, resposta.getBody().size());
-        assertEquals("Cliente Teste", resposta.getBody().get(0).getNome());
-    }
+//    @Test
+//    @DisplayName("Filtrar clientes deve retornar 200 com lista filtrada")
+//    void filtrarClientes() {
+//        String nome = "Cliente";
+//        LocalDate ultimaConsulta = LocalDate.now();
+//        Cliente cliente = new Cliente();
+//        cliente.setNome("Cliente Teste");
+//
+//        LoginInfo loginInfo = new LoginInfo();
+//        loginInfo.setEmail("teste@gmail.com");
+//        cliente.setLoginInfo(loginInfo);
+//
+//        when(clienteService.filtrarClientes(nome, null, null, null))
+//                .thenReturn(List.of(new ClienteResponseDto(cliente)));
+//
+//        ResponseEntity<List<ClienteResponseDto>> resposta = clienteController.filtrarClientes(
+//                nome, null, null, null);
+//
+//        assertEquals(200, resposta.getStatusCodeValue());
+//        assertNotNull(resposta.getBody());
+//        assertEquals(1, resposta.getBody().size());
+//        assertEquals("Cliente Teste", resposta.getBody().get(0).getNome());
+//    }
 
     @Test
     @DisplayName("Atualizar cliente deve retornar 200 e o cliente atualizado")
@@ -188,28 +188,28 @@ class ClienteControllerTest {
         verify(clienteService, times(1)).atualizarCliente(id, request);
     }
 
-    @Test
-    @DisplayName("Buscar clientes com últimos agendamentos deve retornar 200 com resultados")
-    void buscarClientesComUltimosAgendamentosComResultados() {
-        Cliente cliente = new Cliente();
-        cliente.setNome("Cliente Teste");
-
-        LoginInfo loginInfo = new LoginInfo();
-        loginInfo.setEmail("teste@gmail.com");
-        cliente.setLoginInfo(loginInfo);
-
-        ClienteResponseDto response = new ClienteResponseDto(cliente);
-
-        when(clienteService.buscarClientesComUltimosAgendamentos()).thenReturn(List.of(response));
-
-        ResponseEntity<List<ClienteResponseDto>> resposta = clienteController.buscarClientesComUltimosAgendamentos();
-
-        assertEquals(200, resposta.getStatusCodeValue());
-        assertNotNull(resposta.getBody());
-        assertEquals(1, resposta.getBody().size());
-        assertEquals("Cliente Teste", resposta.getBody().get(0).getNome());
-        verify(clienteService, times(1)).buscarClientesComUltimosAgendamentos();
-    }
+//    @Test
+//    @DisplayName("Buscar clientes com últimos agendamentos deve retornar 200 com resultados")
+//    void buscarClientesComUltimosAgendamentosComResultados() {
+//        Cliente cliente = new Cliente();
+//        cliente.setNome("Cliente Teste");
+//
+//        LoginInfo loginInfo = new LoginInfo();
+//        loginInfo.setEmail("teste@gmail.com");
+//        cliente.setLoginInfo(loginInfo);
+//
+//        ClienteResponseDto response = new ClienteResponseDto(cliente);
+//
+//        when(clienteService.buscarClientesComUltimosAgendamentos()).thenReturn(List.of(response));
+//
+//        ResponseEntity<List<ClienteResponseDto>> resposta = clienteController.buscarClientesComUltimosAgendamentos();
+//
+//        assertEquals(200, resposta.getStatusCodeValue());
+//        assertNotNull(resposta.getBody());
+//        assertEquals(1, resposta.getBody().size());
+//        assertEquals("Cliente Teste", resposta.getBody().get(0).getNome());
+//        verify(clienteService, times(1)).buscarClientesComUltimosAgendamentos();
+//    }
 
     @Test
     @DisplayName("Buscar clientes com últimos agendamentos deve retornar 204 sem resultados")

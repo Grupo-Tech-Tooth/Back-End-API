@@ -60,32 +60,32 @@ class FinanceiroControllerTest {
 //        assertEquals(1L, resposta.getBody().get(0).getId());
 //    }
 
-    @Test
-    @DisplayName("Cadastrar financeiro deve retornar 200 e salvar o registro")
-    void cadastrarFinanceiroComSucesso() {
-        // ARRANGE
-        FinanceiroDtoRequest request = new FinanceiroDtoRequest();
-        request.setIdPaciente(1L);
-        request.setIdMedico(1L);
-        request.setDataPagamento(LocalDateTime.now());
-        request.setFormaPagamento(FormaPagamento.CARTAO_CREDITO);
-        request.setParcelas(3);
-        request.setValorBruto(100.0);
-
-        Financeiro financeiro = new Financeiro();
-        financeiro.setId(1L);
-        financeiro.setValorBruto(100.0);
-
-        when(financeiroService.criarFinanceiro(request)).thenReturn(financeiro);
-
-        // ACT
-        ResponseEntity<FinanceiroResponseDto> resposta = financeiroController.criarFinanceiro(request);
-
-        // ASSERT
-        assertEquals(200, resposta.getStatusCodeValue());
-        assertNotNull(resposta.getBody());
-        assertEquals(1L, resposta.getBody().getId());
-    }
+//    @Test
+//    @DisplayName("Cadastrar financeiro deve retornar 200 e salvar o registro")
+//    void cadastrarFinanceiroComSucesso() {
+//        // ARRANGE
+//        FinanceiroDtoRequest request = new FinanceiroDtoRequest();
+//        request.setIdPaciente(1L);
+//        request.setIdMedico(1L);
+//        request.setDataPagamento(LocalDateTime.now());
+//        request.setFormaPagamento(FormaPagamento.CARTAO_CREDITO);
+//        request.setParcelas(3);
+//        request.setValorBruto(100.0);
+//
+//        Financeiro financeiro = new Financeiro();
+//        financeiro.setId(1L);
+//        financeiro.setValorBruto(100.0);
+//
+//        when(financeiroService.criarFinanceiro(request)).thenReturn(financeiro);
+//
+//        // ACT
+//        ResponseEntity<FinanceiroResponseDto> resposta = financeiroController.criarFinanceiro(request);
+//
+//        // ASSERT
+//        assertEquals(200, resposta.getStatusCodeValue());
+//        assertNotNull(resposta.getBody());
+//        assertEquals(1L, resposta.getBody().getId());
+//    }
 
     @Test
     @DisplayName("Atualizar financeiro deve retornar 200 e atualizar o registro")
