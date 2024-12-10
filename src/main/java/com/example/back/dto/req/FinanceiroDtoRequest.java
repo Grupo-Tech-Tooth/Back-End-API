@@ -9,13 +9,8 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class FinanceiroDtoRequest {
-    @NotNull(message = "Data da consulta é obrigatório")
-    LocalDateTime dataConsulta;
-
-    @NotNull(message = "O tratamento principal é obrigatório")
-    Long tratamentoPrincipalId;
-
-    Long tratamentoAdicionalId;
+    @NotNull(message = "Id do Agendamento é obrigatório")
+    Long idAgendamento;
 
     @NotNull(message = "Id do Paciente é obrigatório")
     Long idPaciente;

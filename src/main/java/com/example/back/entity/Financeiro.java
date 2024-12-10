@@ -1,6 +1,7 @@
 package com.example.back.entity;
 
 import com.example.back.enums.FormaPagamento;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -19,22 +20,16 @@ public class Financeiro{
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "data_consulta")
-    private LocalDateTime dataConsulta;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "agendamento_id", nullable = false)
+    @JsonManagedReference
+    private Agendamento agendamento;
 
-    @ManyToOne
-    @JoinColumn(name = "tratamento_principal", nullable = false)
-    private Servico tratamentoPrincipal;
-
-    @ManyToOne
-    @JoinColumn(name = "tratamento_adicional")
-    private Servico tratamentoAdicional;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "medico_id", nullable = false)
     private Medico medico;
 

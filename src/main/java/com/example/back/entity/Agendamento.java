@@ -21,10 +21,12 @@ public class Agendamento {
 
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
+    @JsonBackReference
     private Cliente cliente;
 
     @ManyToOne
     @JoinColumn(name = "medico_id", nullable = false)
+    @JsonBackReference
     private Medico medico;
 
     @ManyToOne

@@ -34,11 +34,8 @@ public class FinanceiroController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Financeiro>> listarFinanceiros() {
-        List<Financeiro> financeiros = financeiroService.listarFinanceiros();
-        if (financeiros.isEmpty()) {
-            return ResponseEntity.status(204).build();
-        }
+    public ResponseEntity<List<FinanceiroResponseDto>> listarFinanceiros() {
+        List<FinanceiroResponseDto> financeiros = financeiroService.listarFinanceiros();
 
         return ResponseEntity.status(200).body(financeiros);
     }
@@ -50,7 +47,7 @@ public class FinanceiroController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Financeiro> deletarFinanceiro(@PathVariable Long id) {
+    public ResponseEntity<FinanceiroResponseDto> deletarFinanceiro(@PathVariable Long id) {
             financeiroService.deletarFinanceiro(id);
             return ResponseEntity.status(204).build();
     }
@@ -71,7 +68,7 @@ public class FinanceiroController {
     public ResponseEntity<List<FinanceiroResponseDto>> getFinanceiroData(@PathVariable String especializacao) {
         try {
 
-            if(especializacao.equals("Todos")){
+            if(especializacao.equalsIgnoreCase("TODOS")){
                 List<FinanceiroResponseDto> financeiroData = financeiroService.getFinanceiroTodos();
                 return ResponseEntity.ok(financeiroData);
             }

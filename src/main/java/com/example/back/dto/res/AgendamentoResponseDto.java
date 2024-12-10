@@ -1,6 +1,7 @@
 package com.example.back.dto.res;
 
 import com.example.back.entity.Agenda;
+import com.example.back.entity.Agendamento;
 import com.example.back.entity.Cliente;
 import jakarta.persistence.PrePersist;
 import jakarta.validation.constraints.NotBlank;
@@ -23,6 +24,16 @@ public class AgendamentoResponseDto {
     @NotBlank
     private String status;
     private String cpf;
+
+    public static AgendamentoResponseDto converter(Agendamento agendamento) {
+        return new AgendamentoResponseDto(
+                agendamento.getCliente(),
+                agendamento.getAgenda(),
+                agendamento.getDataHora(),
+                agendamento.getStatus(),
+                agendamento.getCliente().getCpf()
+        );
+    }
 
     @PrePersist
     public void verificarDisponibilidade() {
