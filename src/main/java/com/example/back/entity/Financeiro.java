@@ -1,13 +1,10 @@
 package com.example.back.entity;
 
 import com.example.back.enums.FormaPagamento;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.text.DecimalFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Table(name = "financeiro")
@@ -23,14 +20,16 @@ public class Financeiro{
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "data_consulta")
-    private LocalDateTime dataConsulta;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "agendamento_id", nullable = false)
+    @JsonManagedReference
+    private Agendamento agendamento;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "medico_id", nullable = false)
     private Medico medico;
 
@@ -50,9 +49,13 @@ public class Financeiro{
     @Column(name = "valorCorrigido")
     private Double valorCorrigido;
 
+    @Column(name = "observacao")
+    private String observacao;
+
     @Column(name = "taxa")
     private Double taxa;
 
+    @Builder.Default
     @Column(name = "deletado", columnDefinition = "TINYINT(1)")
     private Boolean deletado = false;
 
