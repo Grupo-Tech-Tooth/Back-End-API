@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,9 +20,9 @@ import java.time.LocalDateTime;
 public class FinanceiroResponseDto {
 
     private Long id;
-    private AgendamentoResponseDto agendamento;
-    private Cliente cliente;
-    private Medico medico;
+    private Long agendamentoId;
+    private Long clienteId;
+    private Long medicoId;
     private LocalDateTime dataPagamento;
     private FormaPagamento formaPagamento;
     private Integer parcelas;
@@ -34,9 +35,9 @@ public class FinanceiroResponseDto {
     public static FinanceiroResponseDto converter(Financeiro financeiro) {
         return new FinanceiroResponseDto(
                 financeiro.getId(),
-                AgendamentoResponseDto.converter(financeiro.getAgendamento()),
-                financeiro.getCliente(),
-                financeiro.getMedico(),
+                financeiro.getAgendamento().getId(),
+                financeiro.getCliente().getId(),
+                financeiro.getMedico().getId(),
                 financeiro.getDataPagamento(),
                 financeiro.getFormaPagamento(),
                 financeiro.getParcelas(),
@@ -46,5 +47,9 @@ public class FinanceiroResponseDto {
                 financeiro.getTaxa(),
                 financeiro.getMedico().getEspecializacao().name()
         );
+    }
+
+    public static List<FinanceiroResponseDto> converter(List<Financeiro> financeiros) {
+        return financeiros.stream().map(FinanceiroResponseDto::converter).toList();
     }
 }

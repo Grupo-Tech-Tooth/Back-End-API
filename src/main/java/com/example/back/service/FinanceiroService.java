@@ -30,9 +30,6 @@ public class FinanceiroService {
     private ClienteRepository clienteRepository;
 
     @Autowired
-    private ServicoRepository servicoRepository;
-
-    @Autowired
     private AgendamentoRepository agendamentoRepository;
 
     public Financeiro criarFinanceiro(FinanceiroDtoRequest financeiroDtoRequest) {
@@ -61,8 +58,8 @@ public class FinanceiroService {
         return financeiroRepository.save(financeiro);
     }
 
-    public List<Financeiro> listarFinanceiros() {
-        List<Financeiro> financeiros = financeiroRepository.findByAndDeletadoFalse();
+    public List<FinanceiroResponseDto> listarFinanceiros() {
+        List<FinanceiroResponseDto> financeiros = FinanceiroResponseDto.converter(financeiroRepository.findByAndDeletadoFalse());
         if (financeiros.isEmpty()) {
             throw new IllegalArgumentException("Nenhuma finança encontrada");
         }
