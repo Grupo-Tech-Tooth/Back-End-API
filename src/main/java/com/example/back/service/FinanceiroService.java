@@ -30,7 +30,7 @@ public class FinanceiroService {
     private ClienteRepository clienteRepository;
 
     @Autowired
-    private ServicoRepository servicoRepository;
+    private AgendamentoRepository agendamentoRepository;
 
     public Financeiro criarFinanceiro(FinanceiroDtoRequest financeiroDtoRequest) {
         Double valorCorrigido = 0.0;
@@ -42,9 +42,7 @@ public class FinanceiroService {
 
         Financeiro financeiro = Financeiro.builder()
                 .id(null)
-                .dataConsulta(financeiroDtoRequest.getDataConsulta())
-                .tratamentoPrincipal((servicoRepository.findById(financeiroDtoRequest.getTratamentoPrincipalId()).orElseThrow()))
-                .tratamentoAdicional(servicoRepository.findById(financeiroDtoRequest.getTratamentoAdicionalId()).orElseThrow())
+                .agendamento(agendamentoRepository.findById(financeiroDtoRequest.getIdAgendamento()).orElseThrow())
                 .cliente(clienteRepository.findById(financeiroDtoRequest.getIdPaciente()).orElseThrow())
                 .medico(medicoRepository.findById(financeiroDtoRequest.getIdMedico()).orElseThrow())
                 .dataPagamento(financeiroDtoRequest.getDataPagamento())
@@ -60,17 +58,19 @@ public class FinanceiroService {
         return financeiroRepository.save(financeiro);
     }
 
-    public List<Financeiro> listarFinanceiros() {
-        return financeiroRepository.findByAndDeletadoFalse();
+    public List<FinanceiroResponseDto> listarFinanceiros() {
+        List<FinanceiroResponseDto> financeiros = FinanceiroResponseDto.converter(financeiroRepository.findByAndDeletadoFalse());
+        if (financeiros.isEmpty()) {
+            throw new IllegalArgumentException("Nenhuma finança encontrada");
+        }
+        return financeiros;
     }
 
     public Financeiro atualizarFinanceiro(Long id, FinanceiroDtoRequest financeiroDtoRequest) {
         Financeiro financeiro = financeiroRepository.findByIdAndDeletadoFalse(id).orElseThrow();
 
-        financeiro.setDataConsulta(financeiroDtoRequest.getDataConsulta());
+        financeiro.setAgendamento(agendamentoRepository.findById(financeiroDtoRequest.getIdAgendamento()).orElseThrow());
         financeiro.setCliente(clienteRepository.findById(financeiroDtoRequest.getIdPaciente()).orElseThrow());
-        financeiro.setTratamentoPrincipal(servicoRepository.findById(financeiroDtoRequest.getTratamentoPrincipalId()).orElseThrow());
-        financeiro.setTratamentoAdicional(servicoRepository.findById(financeiroDtoRequest.getTratamentoAdicionalId()).orElseThrow());
         financeiro.setObservacao(financeiroDtoRequest.getObservacao());
         financeiro.setMedico(medicoRepository.findById(financeiroDtoRequest.getIdMedico()).orElseThrow());
         financeiro.setDataPagamento(financeiroDtoRequest.getDataPagamento());
