@@ -6,6 +6,7 @@ import com.example.back.dto.res.AgendaResponseDto;
 import com.example.back.dto.res.ServicoDTO;
 import com.example.back.entity.Agendamento;
 import com.example.back.entity.Servico;
+import com.example.back.infra.execption.ResourceNotFoundException;
 import com.example.back.repository.ServicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -140,7 +141,7 @@ public class ServicoService {
         List<Servico> servicos = servicoRepository.findByDeletadoFalse();
 
         if (servicos.isEmpty()) {
-            throw new IllegalArgumentException("Nenhum serviço encontrado");
+            throw new ResourceNotFoundException("Nenhum serviço encontrado");
         }
 
         return servicos;
