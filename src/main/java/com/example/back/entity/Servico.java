@@ -66,7 +66,7 @@ public class Servico {
                     .nome(this.name())
                     .duracaoMinutos(30)
                     .preco(BigDecimal.valueOf(this.preco))
-                    .categoria(Categoria.ENDODONTIA)
+                    .categoria(Categoria.CONSULTAS_GERAIS)
                     .descricao("Descrição do serviço " + this.name())
                     .build();
         }
