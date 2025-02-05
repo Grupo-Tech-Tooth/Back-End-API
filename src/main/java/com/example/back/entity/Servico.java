@@ -68,6 +68,7 @@ public class Servico {
                     .preco(BigDecimal.valueOf(this.preco))
                     .categoria(Categoria.CONSULTAS_GERAIS)
                     .descricao("Descrição do serviço " + this.name())
+                    .deletado(false)
                     .build();
         }
 
