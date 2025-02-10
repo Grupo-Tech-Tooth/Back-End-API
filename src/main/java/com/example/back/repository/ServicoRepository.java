@@ -1,6 +1,7 @@
 package com.example.back.repository;
 
 import com.example.back.entity.Servico;
+import com.example.back.enums.Categoria;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -25,9 +26,9 @@ public interface ServicoRepository extends JpaRepository<Servico, Long> {
             "(:nome IS NULL OR UPPER(s.nome) LIKE UPPER(CONCAT('%', :nome, '%'))) AND " +
             "(:duracao IS NULL OR s.duracaoMinutos = :duracao) AND " +
             "(:preco IS NULL OR s.preco = :preco) AND " +
-            "(:descricao IS NULL OR UPPER(s.descricao) LIKE UPPER(CONCAT('%', :descricao, '%')))")
+            "(:categoria IS NULL OR s.categoria = :categoria)")
     List<Servico> filtrarServicos(@Param("nome") String nome,
                                   @Param("duracao") Integer duracao,
                                   @Param("preco") BigDecimal preco,
-                                  @Param("descricao") String descricao);
+                                  @Param("categoria") Categoria categoria);
 }
