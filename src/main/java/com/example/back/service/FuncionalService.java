@@ -73,7 +73,7 @@ public class FuncionalService {
 
     public Funcional atualizarFuncional(Long id, FuncionalRequestDto funcional) {
 
-        Funcional funcionalDb = funcionalRepository.findById(id)
+            Funcional funcionalDb = funcionalRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Funcional não encontrado"));
 
         funcionalDb.setNome(funcional.getNome());
@@ -151,7 +151,7 @@ public class FuncionalService {
     }
 
     public List<FuncionalResponseDto> filtrarFuncionais(String nome, String email, String cpf, String departamento) {
-        List<Funcional> funcionaisFiltrados = funcionalRepository.findAll().stream()
+            List<Funcional> funcionaisFiltrados = funcionalRepository.findByLoginInfo_AtivoTrue().stream()
                 .filter(funcional -> nome == null || funcional.getNome().toUpperCase().contains(nome.toUpperCase()) ||
                         (funcional.getSobrenome() != null && funcional.getSobrenome().toUpperCase().contains(nome.toUpperCase())))
                 .filter(funcional -> email == null || funcional.getLoginInfo().getEmail().toUpperCase().contains(email.toUpperCase()))

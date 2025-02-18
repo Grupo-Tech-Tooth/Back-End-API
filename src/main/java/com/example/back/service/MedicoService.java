@@ -155,7 +155,7 @@ public class MedicoService {
     }
 
     public List<MedicoResponseDto> filtrarMedicos(String nome, String email, String cpf, String especializacao) {
-        return medicoRepository.findAll().stream()
+        return medicoRepository.findByLoginInfo_DeletadoFalse().stream()
                 .filter(medico -> nome == null || medico.getNome().toUpperCase().contains(nome.toUpperCase()) ||
                         (medico.getSobrenome() != null && medico.getSobrenome().toUpperCase().contains(nome.toUpperCase())))
                 .filter(medico -> email == null || medico.getLoginInfo().getEmail().toUpperCase().contains(email.toUpperCase()))
