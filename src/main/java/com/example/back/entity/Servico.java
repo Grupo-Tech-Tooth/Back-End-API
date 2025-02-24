@@ -35,7 +35,7 @@ public class Servico {
     @Column(nullable = false)
     private Categoria categoria;
 
-    @Column(name = "deletado", columnDefinition = "TINYINT(1)")
+    @Column(name = "deletado", columnDefinition = "BOOLEAN")
     private Boolean deletado = false;
 
     @Column(name = "deletado_em")
@@ -44,7 +44,7 @@ public class Servico {
     public enum Tipo {
         Consulta(1L, 20.0),
         Limpeza(2L, 30.0),
-        Cirugia(3L, 50.0),
+        Cirurgia(3L, 50.0),
         Manutencao(4L, 40.0),
         Clareamento(5L, 60.0),
         Implante(6L, 70.0),
