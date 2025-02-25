@@ -47,20 +47,53 @@ public class AgendamentoService {
 
     private static final Logger log = LoggerFactory.getLogger(AgendamentoService.class);
 
-    public AgendamentoDTO criar(AgendamentoCreateDTO dto){
+    public void inicializarDisponibilidade(Agenda agenda, LocalDate data) {
+        LocalDateTime inicio = LocalDateTime.of(data, LocalTime.of(7, 0));
+        LocalDateTime fim = LocalDateTime.of(data, LocalTime.of(18, 45));
+
+        List<LocalDateTime> novosHorarios = new ArrayList<>();
+        while (inicio.isBefore(fim) || inicio.equals(fim)) {
+            novosHorarios.add(inicio);
+            inicio = inicio.plusMinutes(15);
+        }
+
+        // 🔹 Mantém os horários dos outros dias intactos
+        List<LocalDateTime> disponibilidadeAtual = agenda.getDisponibilidade();
+        if (disponibilidadeAtual == null) {
+            disponibilidadeAtual = new ArrayList<>();
+        }
+
+        // 🔹 Remove horários já agendados
+        List<Agendamento> agendamentosDoDia = agendamentoRepository.findByMedicoAndDataHoraBetween(agenda.getMedico(), inicio, fim);
+        for (Agendamento agendamento : agendamentosDoDia) {
+            novosHorarios.remove(agendamento.getDataHora());
+        }
+
+        // 🔹 Adiciona os novos horários sem remover os antigos
+        disponibilidadeAtual.addAll(novosHorarios);
+
+        // 🔹 Remove possíveis duplicatas
+        disponibilidadeAtual = disponibilidadeAtual.stream().distinct().collect(Collectors.toList());
+
+        log.info("Atualizando disponibilidade para o médico {} no dia {}: {}", agenda.getMedico().getId(), data, novosHorarios);
+
+        agenda.setDisponibilidade(disponibilidadeAtual);
+        agendaRepository.save(agenda);
+    }
+
+    public AgendamentoDTO criar(AgendamentoCreateDTO dto) {
         validarRegrasDeNegocio(dto);
 
         Cliente cliente = clienteRepository.findById(dto.clienteId())
                 .orElseThrow(() -> {
-                    new ResourceNotFoundException("Cliente não encontrado");
                     log.error("Cliente não encontrado");
-                    return null;
+                    throw new ResourceNotFoundException("Cliente não encontrado");
                 });
 
-        Medico medico = dto.medicoId() != null
+        Medico medico = (dto.medicoId() != null)
                 ? medicoRepository.findById(dto.medicoId()).orElseThrow(() -> {
-                    log.error("Médico não encontrado");
-                    throw  new ResourceNotFoundException("Médico não encontrado");
+            log.error("Médico não encontrado");
+            throw new ResourceNotFoundException("Médico não encontrado");
         })
                 : escolherMedicoAleatorio(dto.dataHora(), dto);
 
@@ -76,12 +109,37 @@ public class AgendamentoService {
                     throw new ResourceNotFoundException("Agenda não encontrada para o médico");
                 });
 
-        List<LocalDateTime> disponibilidade = agenda.getDisponibilidade();
-        if (disponibilidade.contains(dto.dataHora())) {
+        // 🔹 Verificar se a agenda tem horários disponíveis. Se não, inicializar.
+        if (agenda.getDisponibilidade() == null || agenda.getDisponibilidade().isEmpty() ||
+                agenda.getDisponibilidade().stream().noneMatch(h -> h.toLocalDate().equals(dto.dataHora().toLocalDate()))) {
+
+            log.warn("Agenda do médico {} sem horários disponíveis para o dia {}. Inicializando...", medico.getId(), dto.dataHora().toLocalDate());
+            inicializarDisponibilidade(agenda, dto.dataHora().toLocalDate());
+        }
+
+        List<LocalDateTime> disponibilidade = new ArrayList<>(agenda.getDisponibilidade()); // Clonar a lista para evitar referência errada
+
+        log.info("Horários disponíveis para o médico {}: {}", medico.getId(), disponibilidade);
+        log.info("Tentando agendar para: {}", dto.dataHora());
+
+        // ✅ Verifica se já existe um agendamento para esse médico no mesmo horário
+        boolean existeAgendamento = agendamentoRepository.existsByMedicoAndDataHora(medico, dto.dataHora());
+        if (existeAgendamento) {
+            log.error("Já existe um agendamento para este médico nesse horário.");
+            throw new BusinessException("Já existe um agendamento para este médico nesse horário.");
+        }
+
+        if (!disponibilidade.contains(dto.dataHora())) {
             log.error("Horário indisponível para agendamento");
             throw new BusinessException("Horário indisponível para agendamento");
         }
-        disponibilidade.add(dto.dataHora());
+
+        // 🔹 Remove somente o horário exato da consulta, sem alterar outros dias
+        disponibilidade = disponibilidade.stream()
+                .filter(horario -> !horario.equals(dto.dataHora()))
+                .collect(Collectors.toList());
+
+        // 🔹 Mantém horários de outros dias intactos
         agenda.setDisponibilidade(disponibilidade);
         agendaRepository.save(agenda);
 

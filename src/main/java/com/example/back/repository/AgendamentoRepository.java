@@ -2,6 +2,7 @@ package com.example.back.repository;
 
 import com.example.back.dto.req.AgendamentoDTO;
 import com.example.back.entity.Agendamento;
+import com.example.back.entity.Medico;
 import org.hibernate.dialect.function.TruncFunction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -30,4 +31,6 @@ public interface AgendamentoRepository extends JpaRepository<Agendamento, Long> 
 
     @Query("SELECT a FROM Agendamento a WHERE a.dataHora BETWEEN :inicio AND :fim")
     List<Agendamento> findAgendamentosDoDia(LocalDateTime inicio, LocalDateTime fim);
+    List<Agendamento> findByMedicoAndDataHoraBetween(Medico medico, LocalDateTime inicio, LocalDateTime fim);
+    boolean existsByMedicoAndDataHora(Medico medico, LocalDateTime dataHora);
 }
