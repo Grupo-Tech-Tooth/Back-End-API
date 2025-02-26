@@ -132,10 +132,10 @@ public class MedicoController {
         List<LocalDate> diasDisponiveis = medicoService.getDiasIndisponiveis(medicoId);
 
         if (diasDisponiveis.isEmpty()) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok(new DiasDisponiveisResponse(diasDisponiveis));
         }
 
-        return ResponseEntity.ok(new DiasDisponiveisResponse(diasDisponiveis));
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{medicoId}/agenda/horarios-indisponiveis")
