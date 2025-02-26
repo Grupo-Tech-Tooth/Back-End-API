@@ -150,19 +150,14 @@ public class FuncionalService {
         return funcionais;
     }
 
-    public List<FuncionalResponseDto> filtrarFuncionais(String nome, String email, String cpf, String departamento) {
+    public List<FuncionalResponseDto> filtrarFuncionais(String nome, String email, String departamento) {
             List<Funcional> funcionaisFiltrados = funcionalRepository.findByLoginInfo_AtivoTrue().stream()
                 .filter(funcional -> nome == null || funcional.getNome().toUpperCase().contains(nome.toUpperCase()) ||
                         (funcional.getSobrenome() != null && funcional.getSobrenome().toUpperCase().contains(nome.toUpperCase())))
                 .filter(funcional -> email == null || funcional.getLoginInfo().getEmail().toUpperCase().contains(email.toUpperCase()))
-                .filter(funcional -> cpf == null || funcional.getCpf().toUpperCase().contains(cpf.toUpperCase()))
                 .filter(funcional -> departamento == null || (funcional.getDepartamento() != null &&
                         funcional.getDepartamento().toUpperCase().contains(departamento.toUpperCase())))
                 .toList();
-
-        if (funcionaisFiltrados.isEmpty()) {
-            throw new IllegalArgumentException("Nenhum funcional encontrado");
-        }
 
         return FuncionalResponseDto.converter(funcionaisFiltrados); // Usa o metodo estático para listas
     }

@@ -111,14 +111,14 @@ public class MedicoController {
         return ResponseEntity.ok(comissao);
     }
 
-    @GetMapping("/medicos/filtrar")
+    @GetMapping("/filtrar")
     public ResponseEntity<List<MedicoResponseDto>> filtrarMedicos(
             @RequestParam(required = false) String nome,
             @RequestParam(required = false) String email,
-            @RequestParam(required = false) String cpf,
+            @RequestParam(required = false) String crm,
             @RequestParam(required = false) String especializacao) {
 
-        List<MedicoResponseDto> medicos = medicoService.filtrarMedicos(nome, email, cpf, especializacao);
+        List<MedicoResponseDto> medicos = medicoService.filtrarMedicos(nome, email, crm, especializacao);
 
         if (medicos.isEmpty()) {
             return ResponseEntity.noContent().build();
