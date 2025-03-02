@@ -9,6 +9,7 @@ import com.example.back.infra.execption.BusinessException;
 import com.example.back.infra.execption.ResourceNotFoundException;
 import com.example.back.repository.*;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -147,10 +148,52 @@ public class AgendamentoService {
         agendamento.setStatus("Pendente");
         agendamento.setDeletado(false);
 
+        //Precisa salvar o agendamento antes de colocar ele na pilha - Não tirar ele daqui
+        agendamentoRepository.save(agendamento);
+
         // Adiciona o agendamento recém-criado à pilha
         pilhaAgendamentoService.adicionarNaPilha(AgendamentoMapper.toDTO(agendamento));
 
-        return AgendamentoMapper.toDTO(agendamentoRepository.save(agendamento));
+        return AgendamentoMapper.toDTO(agendamento);
+    }
+
+    public AgendamentoDTO encaixe(@Valid AgendamentoCreateDTO dto){
+        Cliente cliente = clienteRepository.findById(dto.clienteId())
+                .orElseThrow(() -> {
+                    log.error("Cliente não encontrado");
+                    throw new ResourceNotFoundException("Cliente não encontrado");
+                });
+
+        Medico medico = (dto.medicoId() != null)
+                ? medicoRepository.findById(dto.medicoId()).orElseThrow(() -> {
+            log.error("Médico não encontrado");
+            throw new ResourceNotFoundException("Médico não encontrado");
+        })
+                : escolherMedicoAleatorio(dto.dataHora(), dto);
+
+        Servico servico = servicoRepository.findById(dto.servicoId())
+                .orElseThrow(() -> {
+                    log.error("Serviço não encontrado");
+                    throw new ResourceNotFoundException("Serviço não encontrado");
+                });
+
+        Agenda agenda = agendaRepository.findByMedicoId(medico.getId())
+                .orElseThrow(() -> {
+                    log.error("Agenda não encontrada para o médico");
+                    throw new ResourceNotFoundException("Agenda não encontrada para o médico");
+                });
+
+        Agendamento agendamento = AgendamentoMapper.toEntity(dto, cliente, medico, servico, agenda);
+        agendamento.setStatus("Confirmado");
+        agendamento.setDeletado(false);
+
+        //Precisa salvar o agendamento antes de colocar ele na pilha - Não tirar ele daqui
+        agendamentoRepository.save(agendamento);
+
+        // Adiciona o agendamento recém-criado à pilha
+        pilhaAgendamentoService.adicionarNaPilha(AgendamentoMapper.toDTO(agendamento));
+
+        return AgendamentoMapper.toDTO(agendamento);
     }
 
     private void    validarRegrasDeNegocio(AgendamentoCreateDTO dto) {

@@ -53,6 +53,11 @@ public class AgendamentoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(agendamentoService.criar(dto));
     }
 
+    @PostMapping("/encaixe")
+    public ResponseEntity<AgendamentoDTO> encaixe(@RequestBody @Valid AgendamentoCreateDTO dto){
+        return ResponseEntity.status(HttpStatus.CREATED).body(agendamentoService.encaixe(dto));
+    }
+
     @GetMapping
     public ResponseEntity<List<AgendamentoDTO>> buscarTodos() {
         List<AgendamentoDTO> agendamentos = agendamentoService.buscarTodosAgendamentos();
