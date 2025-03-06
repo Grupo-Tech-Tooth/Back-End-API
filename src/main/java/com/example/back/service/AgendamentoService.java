@@ -48,6 +48,8 @@ public class AgendamentoService {
     private static final Logger log = LoggerFactory.getLogger(AgendamentoService.class);
 
     public void inicializarDisponibilidade(Agenda agenda, LocalDate data) {
+        log.info("Inicializando disponibilidade para o médico {} no dia {}", agenda.getMedico().getId(), data);
+
         LocalDateTime inicio = LocalDateTime.of(data, LocalTime.of(7, 0));
         LocalDateTime fim = LocalDateTime.of(data, LocalTime.of(18, 45));
 
@@ -57,25 +59,15 @@ public class AgendamentoService {
             inicio = inicio.plusMinutes(15);
         }
 
-        // 🔹 Mantém os horários dos outros dias intactos
         List<LocalDateTime> disponibilidadeAtual = agenda.getDisponibilidade();
         if (disponibilidadeAtual == null) {
             disponibilidadeAtual = new ArrayList<>();
         }
 
-        // 🔹 Remove horários já agendados
-        List<Agendamento> agendamentosDoDia = agendamentoRepository.findByMedicoAndDataHoraBetween(agenda.getMedico(), inicio, fim);
-        for (Agendamento agendamento : agendamentosDoDia) {
-            novosHorarios.remove(agendamento.getDataHora());
-        }
-
-        // 🔹 Adiciona os novos horários sem remover os antigos
         disponibilidadeAtual.addAll(novosHorarios);
-
-        // 🔹 Remove possíveis duplicatas
         disponibilidadeAtual = disponibilidadeAtual.stream().distinct().collect(Collectors.toList());
 
-        log.info("Atualizando disponibilidade para o médico {} no dia {}: {}", agenda.getMedico().getId(), data, novosHorarios);
+        log.info("Disponibilidade atualizada: {}", disponibilidadeAtual);
 
         agenda.setDisponibilidade(disponibilidadeAtual);
         agendaRepository.save(agenda);

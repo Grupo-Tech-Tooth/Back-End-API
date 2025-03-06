@@ -183,12 +183,13 @@ public class MedicoService {
         Agenda agenda = agendaRepository.findByMedicoId(medicoId)
                 .orElseThrow(() -> new EntityNotFoundException("Agenda não encontrada para o médico com ID " + medicoId));
 
-       List<LocalTime> diasOcupados = agenda.getDisponibilidade().stream()
-                .filter(dataHora -> dataHora.toLocalDate().equals(dia))
-                .map(LocalDateTime::toLocalTime)
+        // Filtra os horários ocupados (agendados) para o dia específico
+        List<LocalTime> horariosOcupados = agenda.getDisponibilidade().stream()
+                .filter(dataHora -> dataHora.toLocalDate().equals(dia)) // Filtra pelo dia
+                .map(LocalDateTime::toLocalTime) // Converte para LocalTime
                 .collect(Collectors.toList());
 
-        return diasOcupados;
+        return horariosOcupados;
     }
 
     public Optional<Long> buscarIdDoMedicoPorCpf(String cpf) {
