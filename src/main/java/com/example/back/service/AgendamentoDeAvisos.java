@@ -34,6 +34,10 @@ public class AgendamentoDeAvisos {
 
         List<Agendamento> consultasDeAmanha = agendamentoService.buscarPorData(dataDeAmanha);
 
+        if (consultasDeAmanha.isEmpty()) {
+            throw new RuntimeException("Não tem consultas para enviar avisos");
+        }
+
         for (Agendamento consulta : consultasDeAmanha) {
             String email = consulta.getCliente().getLoginInfo().getEmail();
             try {
@@ -59,10 +63,13 @@ public class AgendamentoDeAvisos {
 
     @Scheduled(cron = "0 30 17 * * *", zone = "America/Sao_Paulo")
     public void enviarAvisosNoDia() {
-        System.out.println("Executando tarefa de envio de avisos no dia");
 
         LocalDate dataDeHoje = LocalDate.now();
         List<Agendamento> consultasDeHoje = agendamentoService.buscarPorData(dataDeHoje);
+
+        if (consultasDeHoje.isEmpty()) {
+            throw new RuntimeException("Não tem consultas para enviar avisos");
+        }
 
         for (Agendamento consulta : consultasDeHoje) {
             try {

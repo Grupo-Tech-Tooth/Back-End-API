@@ -24,15 +24,10 @@ public class EmailController {
     @GetMapping
     public ResponseEntity<String> enviarEmail(){
 
-
-        try{
         enviarEmail.enviarAvisosUmDiaAntes();
         enviarEmail.enviarAvisosNoDia();
 
         return ResponseEntity.ok("Foi");
-        }catch (Exception e){
-            return ResponseEntity.status(500).body("Deu merda");
-        }
 
     }
 }
