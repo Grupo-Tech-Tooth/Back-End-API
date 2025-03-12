@@ -139,7 +139,7 @@ public class MedicoController {
     }
 
     @GetMapping("/{medicoId}/agenda/horarios-indisponiveis")
-    public ResponseEntity<HorariosDisponiveisResponse> getHorariosDisponiveis(
+    public ResponseEntity<HorariosDisponiveisResponse> getHorariosIndisponiveis(
             @PathVariable Long medicoId,
             @RequestParam("dia") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dia) {
         List<LocalTime> horariosDisponiveis = medicoService.getHorariosIndisponiveis(medicoId, dia);
