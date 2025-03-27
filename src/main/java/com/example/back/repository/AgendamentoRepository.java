@@ -21,6 +21,7 @@ public interface AgendamentoRepository extends JpaRepository<Agendamento, Long> 
     // buscar por id do cliente em ordem decrescente, do mais recente para o mais antigo
     List<Agendamento> findAllByClienteIdOrderByDataHoraDesc(Long clienteId);
     Optional<AgendamentoDTO> findByClienteIdOrderByDataHoraDesc(Long clienteId);
+    @Query("SELECT a FROM Agendamento a WHERE a.dataHora BETWEEN :inicio AND :fim AND a.status != 'Cancelado' AND a.deletado = false")
     List<Agendamento> findByDataHoraBetween(LocalDateTime inicio, LocalDateTime fim);
     boolean existsByClienteIdAndDataHoraBetween(Long clienteId, LocalDateTime inicio, LocalDateTime fim);
     boolean existsByMedicoIdAndDataHoraBetween(Long medicoId, LocalDateTime inicio, LocalDateTime fim);
