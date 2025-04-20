@@ -76,6 +76,7 @@ public class DataLoader implements CommandLineRunner {
             loginInfo.setSenha(passwordEncoder.encode("123123"));
             loginInfo.setFuncionario(gerente);
             loginInfo.setAtivo(true);
+            loginInfo.setHierarquia(Hierarquia.GERENTE);
 
             gerente.setLoginInfo(loginInfo);
 
