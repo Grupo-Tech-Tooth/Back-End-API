@@ -54,7 +54,7 @@ public class MedicoService {
         // Criando o médico a partir do DTO
         Medico medico = medicoDto.toMedico(); // Usa o método toMedico do DTO
 
-        //Criação da senha
+        //Criação da senha (Padrão 3 primeiras letras do Sobrenome + 3 últimos digitos do cpf)
         String primeirasLetras =medicoDto.getSobrenome().substring(0,3);
         String cpfNumerico = medicoDto.getCpf().replaceAll("\\D", "");
         String ultimosTresDigitos = cpfNumerico.substring(cpfNumerico.length() - 3);
