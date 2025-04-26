@@ -126,14 +126,16 @@ public class FuncionalController {
         }
     }
 
-    @GetMapping("/funcionais/filtrar")
+    @GetMapping("/filtrar")
     public ResponseEntity<List<FuncionalResponseDto>> filtrarFuncionais(
             @RequestParam(required = false) String nome,
             @RequestParam(required = false) String email,
-            @RequestParam(required = false) String cpf,
             @RequestParam(required = false) String departamento) {
 
-        List<FuncionalResponseDto> funcionais = funcionalService.filtrarFuncionais(nome, email, cpf, departamento);
+        List<FuncionalResponseDto> funcionais = funcionalService.filtrarFuncionais(nome, email, departamento);
+        if (funcionais.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
         return ResponseEntity.ok(funcionais);
     }
 

@@ -118,27 +118,35 @@ public class FinanceiroService {
     public List<FinanceiroResponseDto> getFinanceiroData(EspecializacaoOdontologica especializacao) {
         EspecializacaoOdontologica especializacaoEnum = EspecializacaoOdontologica.valueOf(especializacao.name());
 
-        return financeiroRepository.findByMedicoEspecializacao(especializacaoEnum).stream()
+        return financeiroRepository.findByMedicoEspecializacaoAndDeletadoFalse(especializacaoEnum).stream()
                 .map(FinanceiroResponseDto::converter)
                 .collect(Collectors.toList());
     }
 
     public List<FinanceiroResponseDto> getFinanceiroTodos() {
-        return financeiroRepository.findAll().stream()
+        return financeiroRepository.findAllByDeletadoFalse().stream()
                 .map(FinanceiroResponseDto::converter)
                 .collect(Collectors.toList());
     }
 
     public Map<DayOfWeek, Double> getSomaTransacoesPorDiaDaSemanaMesAtual() {
+        // 1️⃣ Define o intervalo do mês atual
         LocalDateTime inicio = LocalDate.now().withDayOfMonth(1).atStartOfDay();
         LocalDateTime fim = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth()).atTime(LocalTime.MAX);
 
-        List<Financeiro> transacoes = financeiroRepository.findByDataPagamentoBetween(inicio, fim);
-        Map<DayOfWeek, Double> somaPorDiaDaSemana = new EnumMap<>(DayOfWeek.class);
+        // 2️⃣ Busca transações não deletadas no período
+        List<Financeiro> transacoes = financeiroRepository.findByDataPagamentoBetweenAndDeletadoFalse(inicio, fim);
 
+        // 3️⃣ Inicializa um EnumMap com todos os dias da semana (0.0 por padrão)
+        Map<DayOfWeek, Double> somaPorDiaDaSemana = new EnumMap<>(DayOfWeek.class);
+        Arrays.stream(DayOfWeek.values()).forEach(dia -> somaPorDiaDaSemana.put(dia, 0.0));
+
+        // 4️⃣ Soma os valores por dia (ignorando valores nulos)
         for (Financeiro transacao : transacoes) {
-            DayOfWeek diaDaSemana = transacao.getDataPagamento().getDayOfWeek();
-            somaPorDiaDaSemana.put(diaDaSemana, somaPorDiaDaSemana.getOrDefault(diaDaSemana, 0.0) + transacao.getValorBruto());
+            if (transacao.getDataPagamento() != null && transacao.getValorBruto() != null) {
+                DayOfWeek diaDaSemana = transacao.getDataPagamento().getDayOfWeek();
+                somaPorDiaDaSemana.merge(diaDaSemana, transacao.getValorBruto(), Double::sum);
+            }
         }
 
         return somaPorDiaDaSemana;
@@ -161,7 +169,7 @@ public class FinanceiroService {
             LocalDateTime start = startOfWeek.atStartOfDay();
             LocalDateTime end = endOfWeek.atTime(LocalTime.MAX);
 
-            List<Financeiro> transactions = financeiroRepository.findByDataPagamentoBetween(start, end);
+            List<Financeiro> transactions = financeiroRepository.findByDataPagamentoBetweenAndDeletadoFalse(start, end);
             double sumWeek = transactions.stream().mapToDouble(Financeiro::getValorBruto).sum();
 
             sumByWeek.put("Semana " + week, sumWeek);
@@ -190,7 +198,7 @@ public class FinanceiroService {
             LocalDateTime inicio = inicioMes.atStartOfDay();
             LocalDateTime fim = fimMes.atTime(LocalTime.MAX);
 
-            List<Financeiro> transacoes = financeiroRepository.findByDataPagamentoBetween(inicio, fim);
+            List<Financeiro> transacoes = financeiroRepository.findByDataPagamentoBetweenAndDeletadoFalse(inicio, fim);
             double somaMes = transacoes.stream().mapToDouble(Financeiro::getValorBruto).sum();
 
             somaPorMes.put(mes, somaMes);

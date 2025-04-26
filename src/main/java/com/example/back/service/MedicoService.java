@@ -54,7 +54,7 @@ public class MedicoService {
         // Criando o médico a partir do DTO
         Medico medico = medicoDto.toMedico(); // Usa o método toMedico do DTO
 
-        //Criação da senha
+        //Criação da senha (Padrão 3 primeiras letras do Sobrenome + 3 últimos digitos do cpf)
         String primeirasLetras =medicoDto.getSobrenome().substring(0,3);
         String cpfNumerico = medicoDto.getCpf().replaceAll("\\D", "");
         String ultimosTresDigitos = cpfNumerico.substring(cpfNumerico.length() - 3);
@@ -154,12 +154,12 @@ public class MedicoService {
         return medico.calcularComissao(valorServico); // Usa o método de calcular comissões da classe Medico
     }
 
-    public List<MedicoResponseDto> filtrarMedicos(String nome, String email, String cpf, String especializacao) {
-        return medicoRepository.findAll().stream()
+    public List<MedicoResponseDto> filtrarMedicos(String nome, String email, String crm, String especializacao) {
+        return medicoRepository.findByLoginInfo_DeletadoFalse().stream()
                 .filter(medico -> nome == null || medico.getNome().toUpperCase().contains(nome.toUpperCase()) ||
                         (medico.getSobrenome() != null && medico.getSobrenome().toUpperCase().contains(nome.toUpperCase())))
                 .filter(medico -> email == null || medico.getLoginInfo().getEmail().toUpperCase().contains(email.toUpperCase()))
-                .filter(medico -> cpf == null || medico.getCpf().toUpperCase().contains(cpf.toUpperCase()))
+                .filter(medico -> crm == null || medico.getCrm().toUpperCase().contains(crm.toUpperCase()))
                 .filter(medico -> especializacao == null || (medico.getEspecializacao() != null &&
                         medico.getEspecializacao().name().equalsIgnoreCase(especializacao)))
                 .map(MedicoResponseDto::converter)
@@ -183,12 +183,13 @@ public class MedicoService {
         Agenda agenda = agendaRepository.findByMedicoId(medicoId)
                 .orElseThrow(() -> new EntityNotFoundException("Agenda não encontrada para o médico com ID " + medicoId));
 
-       List<LocalTime> diasOcupados = agenda.getDisponibilidade().stream()
-                .filter(dataHora -> dataHora.toLocalDate().equals(dia))
-                .map(LocalDateTime::toLocalTime)
+        // Filtra os horários ocupados (agendados) para o dia específico
+        List<LocalTime> horariosOcupados = agenda.getDisponibilidade().stream()
+                .filter(dataHora -> dataHora.toLocalDate().equals(dia)) // Filtra pelo dia
+                .map(LocalDateTime::toLocalTime) // Converte para LocalTime
                 .collect(Collectors.toList());
 
-        return diasOcupados;
+        return horariosOcupados;
     }
 
     public Optional<Long> buscarIdDoMedicoPorCpf(String cpf) {

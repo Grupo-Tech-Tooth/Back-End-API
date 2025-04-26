@@ -13,8 +13,9 @@ import java.util.Optional;
 @Repository
 public interface FinanceiroRepository extends JpaRepository<Financeiro, Long> {
     List<Financeiro> findByAndDeletadoFalse();
+    List<Financeiro> findAllByDeletadoFalse();
     Optional<Financeiro> findByIdAndDeletadoFalse(Long id);
-    List<Financeiro> findByMedicoEspecializacao(EspecializacaoOdontologica especializacao);
-    @Query("SELECT f FROM Financeiro f WHERE f.dataPagamento BETWEEN :inicio AND :fim")
-    List<Financeiro> findByDataPagamentoBetween(LocalDateTime inicio, LocalDateTime fim);
+    List<Financeiro> findByMedicoEspecializacaoAndDeletadoFalse(EspecializacaoOdontologica especializacao);
+    @Query("SELECT f FROM Financeiro f WHERE f.deletado = false AND f.dataPagamento BETWEEN :inicio AND :fim")
+    List<Financeiro> findByDataPagamentoBetweenAndDeletadoFalse(LocalDateTime inicio, LocalDateTime fim);
 }

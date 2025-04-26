@@ -3,6 +3,7 @@ package com.example.back.controller;
 import com.example.back.dto.req.ServicoDtoRequest;
 import com.example.back.dto.res.ServicoDTO;
 import com.example.back.entity.Servico;
+import com.example.back.enums.Categoria;
 import com.example.back.repository.ServicoRepository;
 import com.example.back.service.ServicoService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -80,7 +81,7 @@ public class ServicosController {
             @RequestParam(required = false) String nome,
             @RequestParam(required = false) Integer duracao,
             @RequestParam(required = false) BigDecimal preco,
-            @RequestParam(required = false) String descricao) {
+            @RequestParam(required = false) String categoria) { // Alterado para String
 
         if (duracao != null && duracao <= 0) {
             throw new IllegalArgumentException("A duração deve ser maior que zero.");
@@ -90,7 +91,17 @@ public class ServicosController {
             throw new IllegalArgumentException("O preço deve ser maior que zero.");
         }
 
-        List<ServicoDtoRequest> servicos = servicoService.filtrarServicos(nome, duracao, preco, descricao);
+        // Converter String para Enum (se não for null)
+        Categoria categoriaEnum = null;
+        if (categoria != null) {
+            try {
+                categoriaEnum = Categoria.valueOf(categoria.toUpperCase()); // Converte string para Enum
+            } catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException("Categoria inválida: " + categoria);
+            }
+        }
+
+        List<ServicoDtoRequest> servicos = servicoService.filtrarServicos(nome, duracao, preco, categoriaEnum);
         return ResponseEntity.ok(servicos);
     }
 

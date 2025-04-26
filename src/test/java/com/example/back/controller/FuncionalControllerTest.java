@@ -175,9 +175,9 @@ class FuncionalControllerTest {
 
         funcional.setLoginInfo(loginInfo);
 
-        when(funcionalService.filtrarFuncionais(nome, null, null, null)).thenReturn(List.of(new FuncionalResponseDto(funcional)));
+        when(funcionalService.filtrarFuncionais(nome, null, null)).thenReturn(List.of(new FuncionalResponseDto(funcional)));
 
-        ResponseEntity<List<FuncionalResponseDto>> resposta = funcionalController.filtrarFuncionais(nome, null, null, null);
+        ResponseEntity<List<FuncionalResponseDto>> resposta = funcionalController.filtrarFuncionais(nome, null, null);
 
         assertEquals(200, resposta.getStatusCodeValue());
         assertNotNull(resposta.getBody());
@@ -300,10 +300,10 @@ class FuncionalControllerTest {
         funcional.setLoginInfo(loginInfo);
 
         List<Funcional> funcionaisFiltrados = List.of(funcional);
-        when(funcionalService.filtrarFuncionais(nome, email, cpf, departamento))
+        when(funcionalService.filtrarFuncionais(nome, email, departamento))
                 .thenReturn(FuncionalResponseDto.converter(funcionaisFiltrados));
 
-        ResponseEntity<List<FuncionalResponseDto>> resposta = funcionalController.filtrarFuncionais(nome, email, cpf, departamento);
+        ResponseEntity<List<FuncionalResponseDto>> resposta = funcionalController.filtrarFuncionais(nome, email, departamento);
 
         assertEquals(200, resposta.getStatusCodeValue());
         assertNotNull(resposta.getBody());
@@ -318,11 +318,11 @@ class FuncionalControllerTest {
     void filtrarFuncionaisSemResultados() {
         String nome = "Inexistente";
 
-        when(funcionalService.filtrarFuncionais(nome, null, null, null))
+        when(funcionalService.filtrarFuncionais(nome, null, null))
                 .thenThrow(new IllegalArgumentException("Nenhum funcional encontrado"));
 
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                funcionalController.filtrarFuncionais(nome, null, null, null));
+                funcionalController.filtrarFuncionais(nome, null, null));
 
         assertEquals("Nenhum funcional encontrado", exception.getMessage());
     }
