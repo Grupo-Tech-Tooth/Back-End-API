@@ -125,7 +125,7 @@ public class ClienteController {
         List<ClienteResponseDto> clientes = service.buscarClientesComUltimosAgendamentos();
 
         if (clientes.isEmpty()) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.status(204).build();
         }
 
         return ResponseEntity.ok(clientes);
@@ -136,7 +136,7 @@ public class ClienteController {
         FluxoSemanal fluxoMensal = service.buscarFluxoMensal();
 
         if (fluxoMensal == null) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.status(204).build();
         }
 
         return ResponseEntity.ok(fluxoMensal);
@@ -151,7 +151,7 @@ public class ClienteController {
         List<ClienteResponseDto> clientes = service.filtrarClientes(nome, email, telefone, cpf);
 
         if (clientes.isEmpty()) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.status(204).build();
         }
 
         return ResponseEntity.ok(clientes);
