@@ -109,8 +109,8 @@ public class ClienteService {
     public ClienteResponseDto atualizarCliente(Long id, AtualizarClienteRequestDto dto) {
         Cliente clienteDb = buscarClientePorId(id);
 
-        Medico medico = (Medico) medicoRepository.findByIdAndLoginInfoDeletadoFalse(dto.getMedicoId())
-                .orElseThrow(() -> new ResourceNotFoundException("Médico não encontrado"));
+//        Medico medico = (Medico) medicoRepository.findByIdAndLoginInfoDeletadoFalse(dto.getMedicoId())
+//                .orElseThrow(() -> new ResourceNotFoundException("Médico não encontrado"));
 
         clienteDb.setNome(dto.getNome());
         clienteDb.setSobrenome(dto.getSobrenome());
@@ -123,7 +123,7 @@ public class ClienteService {
         clienteDb.setAlergias(dto.getAlergias());
         clienteDb.setMedicamentos(dto.getMedicamentos());
         clienteDb.setObservacoes(dto.getObservacoes());
-        clienteDb.setMedico(medico);
+//        clienteDb.setMedico(medico);
 
         LoginInfo loginInfo = clienteDb.getLoginInfo();
         loginInfo.setEmail(dto.getEmail());
