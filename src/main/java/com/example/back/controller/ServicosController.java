@@ -70,7 +70,7 @@ public class ServicosController {
         }
 
         if(servicos.isEmpty()) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.status(204).build();
         }
 
         return ResponseEntity.ok(servicos);
