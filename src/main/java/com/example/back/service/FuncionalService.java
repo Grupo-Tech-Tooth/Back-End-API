@@ -37,10 +37,13 @@ public class FuncionalService {
 
         Funcional funcional = funcionalRequestDto.toFuncional();  // Converte o DTO para Funcional
 
-        String primeirasLetras =funcionalRequestDto.getSobrenome().substring(0,3);
+        String sobrenome = funcionalRequestDto.getSobrenome().toLowerCase();
+        String ultimasTresLetras = sobrenome.substring(sobrenome.length() - 3);
+
         String cpfNumerico = funcionalRequestDto.getCpf().replaceAll("\\D", "");
         String ultimosTresDigitos = cpfNumerico.substring(cpfNumerico.length() - 3);
-        String senhaFinal = primeirasLetras + ultimosTresDigitos;
+
+        String senhaFinal = ultimasTresLetras + ultimosTresDigitos;
 
         // Criar LoginInfo
         LoginInfo loginInfo = new LoginInfo();
