@@ -24,7 +24,7 @@ import java.util.Optional;
 import static com.example.back.enums.Hierarquia.CLIENTE;
 
 @RestController
-@RequestMapping("/clientes")
+@RequestMapping("/api/v1/clientes")
 @SecurityRequirement(name = "bearer-key")
 @CrossOrigin(origins = "*")
 public class ClienteController {

@@ -33,7 +33,7 @@ import java.util.Stack;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/agendamentos")
+@RequestMapping("/api/v1/agendamentos")
 @SecurityRequirement(name = "bearer-key")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")

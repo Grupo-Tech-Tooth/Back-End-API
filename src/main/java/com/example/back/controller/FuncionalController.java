@@ -18,7 +18,7 @@ import java.util.Optional;
 import static com.example.back.enums.Hierarquia.FUNCIONAL;
 
 @RestController
-@RequestMapping("/funcionais")
+@RequestMapping("/api/v1/funcionais")
 @SecurityRequirement(name = "bearer-key")
 @CrossOrigin(origins = "*")
 public class FuncionalController {

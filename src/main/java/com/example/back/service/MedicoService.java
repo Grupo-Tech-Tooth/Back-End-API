@@ -55,7 +55,7 @@ public class MedicoService {
         Medico medico = medicoDto.toMedico(); // Usa o método toMedico do DTO
 
         //Criação da senha (Padrão 3 primeiras letras do Sobrenome + 3 últimos digitos do cpf)
-        String primeirasLetras =medicoDto.getSobrenome().substring(0,3);
+        String primeirasLetras =medicoDto.getSobrenome().substring(0,3).toLowerCase();
         String cpfNumerico = medicoDto.getCpf().replaceAll("\\D", "");
         String ultimosTresDigitos = cpfNumerico.substring(cpfNumerico.length() - 3);
         String senhaFinal = primeirasLetras + ultimosTresDigitos;
@@ -155,16 +155,39 @@ public class MedicoService {
     }
 
     public List<MedicoResponseDto> filtrarMedicos(String nome, String email, String crm, String especializacao) {
+        String nomeUpper = nome != null ? nome.toUpperCase() : null;
+        String emailUpper = email != null ? email.toUpperCase() : null;
+        String crmUpper = crm != null ? crm.toUpperCase() : null;
+        String especializacaoUpper = especializacao != null ? especializacao.toUpperCase() : null;
+
         return medicoRepository.findByLoginInfo_DeletadoFalse().stream()
-                .filter(medico -> nome == null || medico.getNome().toUpperCase().contains(nome.toUpperCase()) ||
-                        (medico.getSobrenome() != null && medico.getSobrenome().toUpperCase().contains(nome.toUpperCase())))
-                .filter(medico -> email == null || medico.getLoginInfo().getEmail().toUpperCase().contains(email.toUpperCase()))
-                .filter(medico -> crm == null || medico.getCrm().toUpperCase().contains(crm.toUpperCase()))
-                .filter(medico -> especializacao == null || (medico.getEspecializacao() != null &&
-                        medico.getEspecializacao().name().equalsIgnoreCase(especializacao)))
+                .filter(medico -> {
+                    if (nomeUpper == null) return true;
+                    String nomeMedico = medico.getNome() != null ? medico.getNome().toUpperCase() : "";
+                    String sobrenomeMedico = medico.getSobrenome() != null ? medico.getSobrenome().toUpperCase() : "";
+                    return nomeMedico.contains(nomeUpper) || sobrenomeMedico.contains(nomeUpper);
+                })
+                .filter(medico -> {
+                    if (emailUpper == null) return true;
+                    String emailMedico = medico.getLoginInfo() != null && medico.getLoginInfo().getEmail() != null
+                            ? medico.getLoginInfo().getEmail().toUpperCase()
+                            : "";
+                    return emailMedico.contains(emailUpper);
+                })
+                .filter(medico -> {
+                    if (crmUpper == null) return true;
+                    String crmMedico = medico.getCrm() != null ? medico.getCrm().toUpperCase() : "";
+                    return crmMedico.contains(crmUpper);
+                })
+                .filter(medico -> {
+                    if (especializacaoUpper == null) return true;
+                    return medico.getEspecializacao() != null &&
+                            medico.getEspecializacao().name().equalsIgnoreCase(especializacaoUpper);
+                })
                 .map(MedicoResponseDto::converter)
                 .toList();
     }
+
 
     // Método para obter os dias disponíveis na agenda do médico
     public List<LocalDate> getDiasIndisponiveis(Long medicoId) {
