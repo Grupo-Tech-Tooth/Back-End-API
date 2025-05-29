@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/medicos")
+@RequestMapping("/api/v1/medicos")
 @SecurityRequirement(name = "bearer-key")
 @CrossOrigin(origins = "*")
 public class MedicoController {

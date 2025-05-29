@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/servicos")
+@RequestMapping("/api/v1/servicos")
 @SecurityRequirement(name = "bearer-key")
 @CrossOrigin(origins = "http://localhost:3000")
 public class ServicosController {
