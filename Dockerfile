@@ -17,10 +17,13 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copia o JAR gerado do estágio de build
-COPY --from=build /app/target/tech-tooth-0.0.1-SNAPSHOT.jar ./tech-tooth.jar
+COPY --from=build /app/target/back-0.0.1-SNAPSHOT.jar ./back.jar
+
+# Configurações do Spring Boot
+ENV SPRING_PROFILES_ACTIVE=prod
 
 # Expõe a porta 8080
 EXPOSE 8080
 
 # Define o ponto de entrada
-ENTRYPOINT ["java", "-jar", "tech-tooth.jar"]
+ENTRYPOINT ["java", "-jar", "back.jar"]

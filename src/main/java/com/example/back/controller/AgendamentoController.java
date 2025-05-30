@@ -33,7 +33,7 @@ import java.util.Stack;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/agendamentos")
+@RequestMapping("/api/v1/agendamentos")
 @SecurityRequirement(name = "bearer-key")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
@@ -51,6 +51,11 @@ public class AgendamentoController {
     @PostMapping
     public ResponseEntity<AgendamentoDTO> criar(@RequestBody @Valid AgendamentoCreateDTO dto){
         return ResponseEntity.status(HttpStatus.CREATED).body(agendamentoService.criar(dto));
+    }
+
+    @PostMapping("/encaixe")
+    public ResponseEntity<AgendamentoDTO> encaixe(@RequestBody @Valid AgendamentoCreateDTO dto){
+        return ResponseEntity.status(HttpStatus.CREATED).body(agendamentoService.encaixe(dto));
     }
 
     @GetMapping

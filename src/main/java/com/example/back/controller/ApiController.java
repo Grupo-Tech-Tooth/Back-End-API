@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @RestController
-@RequestMapping("/API")
+@RequestMapping("/API2222")
 @CrossOrigin(origins = "*")
 public class ApiController {
     //cria um cliente http

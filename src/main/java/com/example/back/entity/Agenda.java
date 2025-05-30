@@ -21,10 +21,11 @@ public class Agenda {
     @JoinColumn(name = "medico_id", nullable = false)
     private Medico medico;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "disponibilidade", joinColumns = @JoinColumn(name = "agenda_id"))
     @Column(name = "disponibilidade")
     private List<LocalDateTime> disponibilidade;
+
 
     @OneToMany(mappedBy = "agenda", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Agendamento> agendamentos = new ArrayList<>();

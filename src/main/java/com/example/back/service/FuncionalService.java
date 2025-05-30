@@ -37,10 +37,13 @@ public class FuncionalService {
 
         Funcional funcional = funcionalRequestDto.toFuncional();  // Converte o DTO para Funcional
 
-        String primeirasLetras =funcionalRequestDto.getSobrenome().substring(0,3);
+        String sobrenome = funcionalRequestDto.getSobrenome().toLowerCase();
+        String ultimasTresLetras = sobrenome.substring(sobrenome.length() - 3);
+
         String cpfNumerico = funcionalRequestDto.getCpf().replaceAll("\\D", "");
         String ultimosTresDigitos = cpfNumerico.substring(cpfNumerico.length() - 3);
-        String senhaFinal = primeirasLetras + ultimosTresDigitos;
+
+        String senhaFinal = ultimasTresLetras + ultimosTresDigitos;
 
         // Criar LoginInfo
         LoginInfo loginInfo = new LoginInfo();
@@ -73,7 +76,7 @@ public class FuncionalService {
 
     public Funcional atualizarFuncional(Long id, FuncionalRequestDto funcional) {
 
-        Funcional funcionalDb = funcionalRepository.findById(id)
+            Funcional funcionalDb = funcionalRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Funcional não encontrado"));
 
         funcionalDb.setNome(funcional.getNome());
@@ -150,19 +153,14 @@ public class FuncionalService {
         return funcionais;
     }
 
-    public List<FuncionalResponseDto> filtrarFuncionais(String nome, String email, String cpf, String departamento) {
-        List<Funcional> funcionaisFiltrados = funcionalRepository.findAll().stream()
+    public List<FuncionalResponseDto> filtrarFuncionais(String nome, String email, String departamento) {
+            List<Funcional> funcionaisFiltrados = funcionalRepository.findByLoginInfo_AtivoTrue().stream()
                 .filter(funcional -> nome == null || funcional.getNome().toUpperCase().contains(nome.toUpperCase()) ||
                         (funcional.getSobrenome() != null && funcional.getSobrenome().toUpperCase().contains(nome.toUpperCase())))
                 .filter(funcional -> email == null || funcional.getLoginInfo().getEmail().toUpperCase().contains(email.toUpperCase()))
-                .filter(funcional -> cpf == null || funcional.getCpf().toUpperCase().contains(cpf.toUpperCase()))
                 .filter(funcional -> departamento == null || (funcional.getDepartamento() != null &&
                         funcional.getDepartamento().toUpperCase().contains(departamento.toUpperCase())))
                 .toList();
-
-        if (funcionaisFiltrados.isEmpty()) {
-            throw new IllegalArgumentException("Nenhum funcional encontrado");
-        }
 
         return FuncionalResponseDto.converter(funcionaisFiltrados); // Usa o metodo estático para listas
     }
