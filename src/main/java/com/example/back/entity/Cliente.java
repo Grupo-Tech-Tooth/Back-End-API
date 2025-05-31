@@ -29,7 +29,7 @@ public class Cliente extends Usuario {
     private String medicamentos;
 
     @ManyToOne
-    @JoinColumn(name = "medico_id", nullable = false)
+    @JoinColumn(name = "medico_id", nullable = true)
     private Medico medico;
 
     @Lob

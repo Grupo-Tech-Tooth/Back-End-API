@@ -57,8 +57,8 @@ public class ClienteService {
             throw new IllegalArgumentException("Cliente já existe com esse CPF");
         }
 
-        Medico medico = (Medico) medicoRepository.findByIdAndLoginInfoDeletadoFalse(dto.getMedicoId())
-                .orElseThrow(() -> new ResourceNotFoundException("Médico não encontrado"));
+//        Medico medico = (Medico) medicoRepository.findByIdAndLoginInfoDeletadoFalse(dto.getMedicoId())
+//                .orElseThrow(() -> new ResourceNotFoundException("Médico não encontrado"));
 
         dto.setHierarquia(Hierarquia.CLIENTE);
         Cliente cliente = new Cliente();
@@ -72,7 +72,7 @@ public class ClienteService {
         cliente.setNumeroResidencia(dto.getNumeroResidencia());
         cliente.setAlergias(dto.getAlergias());
         cliente.setMedicamentos(dto.getMedicamentos());
-        cliente.setMedico(medico);
+//        cliente.setMedico(medico);
 
         LoginInfo loginInfo = new LoginInfo();
         loginInfo.setEmail(dto.getEmail());
@@ -224,12 +224,12 @@ public class ClienteService {
 
     public List<ClienteResponseDto> filtrarClientes(String nome, String email, String telefone, String cpf) {
         // Filtragem inicial
-        List<Cliente> clientes = clienteRepository.findAll().stream()
+        List<Cliente> clientes = clienteRepository.findByLoginInfoDeletadoFalse().stream()
                 .filter(cliente -> nome == null || cliente.getNome().toUpperCase().contains(nome.toUpperCase()) ||
                         (cliente.getSobrenome() != null && cliente.getSobrenome().toUpperCase().contains(nome.toUpperCase())))
-                .filter(cliente -> email == null || cliente.getLoginInfo().getEmail().equalsIgnoreCase(email))
-                .filter(cliente -> telefone == null || cliente.getTelefone().equalsIgnoreCase(telefone))
-                .filter(cliente -> cpf == null || cliente.getCpf().equals(cpf)) // Filtro por CPF
+                .filter(cliente -> email == null || cliente.getLoginInfo().getEmail().toUpperCase().contains(email.toUpperCase()))
+                .filter(cliente -> telefone == null || cliente.getTelefone().contains(telefone))
+                .filter(cliente -> cpf == null || cliente.getCpf().contains(cpf)) // Filtro por CPF
                 .toList();
 
         // Conversão para DTO

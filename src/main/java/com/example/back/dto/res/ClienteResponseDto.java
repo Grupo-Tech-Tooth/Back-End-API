@@ -46,7 +46,7 @@ public class ClienteResponseDto {
         this.numeroResidencia = cliente.getNumeroResidencia();
         this.alergias = cliente.getAlergias();
         this.medicamentos = cliente.getMedicamentos();
-        this.medicoId = cliente.getMedico().getId();
+        this.medicoId = cliente.getMedico() != null ? cliente.getMedico().getId() : null;
         this.dataNascimento = cliente.getDataNascimento();
         this.genero = cliente.getGenero();
         this.observacoes = cliente.getObservacoes();
