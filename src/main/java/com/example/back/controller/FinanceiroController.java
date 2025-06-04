@@ -44,6 +44,20 @@ public class FinanceiroController {
         return ResponseEntity.status(200).body(financeiros);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<FinanceiroResponseDto> buscarFinanceiroPorId(@PathVariable Long id) {
+
+        List<FinanceiroResponseDto> financeiro = financeiroService.buscarFinanceiroPorId(id);
+
+        return financeiro.stream()
+
+                .findFirst()
+
+                .map(ResponseEntity::ok)
+
+                .orElse(ResponseEntity.status(404).build());
+}
+
     @PutMapping("/{id}")
     public ResponseEntity<Financeiro> atualizarFinanceiro(@PathVariable Long id, @Valid @RequestBody FinanceiroDtoRequest dto) {
         Financeiro financeiro = financeiroService.atualizarFinanceiro(id, dto);

@@ -18,4 +18,6 @@ public interface FinanceiroRepository extends JpaRepository<Financeiro, Long> {
     List<Financeiro> findByMedicoEspecializacaoAndDeletadoFalse(EspecializacaoOdontologica especializacao);
     @Query("SELECT f FROM Financeiro f WHERE f.deletado = false AND f.dataPagamento BETWEEN :inicio AND :fim")
     List<Financeiro> findByDataPagamentoBetweenAndDeletadoFalse(LocalDateTime inicio, LocalDateTime fim);
+    @Query("SELECT f FROM Financeiro f WHERE f.cliente.id = :clienteId AND f.deletado = false")
+    List<Financeiro> findByClienteIdAndDeletadoFalse(Long clienteId);
 }

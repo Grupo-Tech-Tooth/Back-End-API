@@ -106,6 +106,12 @@ public class FinanceiroService {
         financeiroRepository.save(financeiro);
     }
 
+    public List<FinanceiroResponseDto> buscarFinanceiroPorId(Long clienteId) {
+        return financeiroRepository.findByClienteIdAndDeletadoFalse(clienteId).stream()
+                .map(FinanceiroResponseDto::converter)
+                .collect(Collectors.toList());
+    }
+
     public List<FinanceiroResponseDto> filtrarFinancas(String nomePaciente, LocalDate dataPagamento, String metodoPagamento) {
         return financeiroRepository.findByAndDeletadoFalse().stream()
                 .filter(financeiro -> nomePaciente == null || financeiro.getCliente().getNome().toUpperCase().contains(nomePaciente.toUpperCase()))
