@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/medicos")
+@RequestMapping("/api/v1/medicos")
 @SecurityRequirement(name = "bearer-key")
 @CrossOrigin(origins = "*")
 public class MedicoController {
@@ -111,14 +111,14 @@ public class MedicoController {
         return ResponseEntity.ok(comissao);
     }
 
-    @GetMapping("/medicos/filtrar")
+    @GetMapping("/filtrar")
     public ResponseEntity<List<MedicoResponseDto>> filtrarMedicos(
             @RequestParam(required = false) String nome,
             @RequestParam(required = false) String email,
-            @RequestParam(required = false) String cpf,
+            @RequestParam(required = false) String crm,
             @RequestParam(required = false) String especializacao) {
 
-        List<MedicoResponseDto> medicos = medicoService.filtrarMedicos(nome, email, cpf, especializacao);
+        List<MedicoResponseDto> medicos = medicoService.filtrarMedicos(nome, email, crm, especializacao);
 
         if (medicos.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -132,14 +132,14 @@ public class MedicoController {
         List<LocalDate> diasDisponiveis = medicoService.getDiasIndisponiveis(medicoId);
 
         if (diasDisponiveis.isEmpty()) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok(new DiasDisponiveisResponse(diasDisponiveis));
         }
 
-        return ResponseEntity.ok(new DiasDisponiveisResponse(diasDisponiveis));
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{medicoId}/agenda/horarios-indisponiveis")
-    public ResponseEntity<HorariosDisponiveisResponse> getHorariosDisponiveis(
+    public ResponseEntity<HorariosDisponiveisResponse> getHorariosIndisponiveis(
             @PathVariable Long medicoId,
             @RequestParam("dia") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dia) {
         List<LocalTime> horariosDisponiveis = medicoService.getHorariosIndisponiveis(medicoId, dia);

@@ -1,17 +1,21 @@
 package com.example.back.config;
 
-import com.example.back.entity.Funcional;
-import com.example.back.entity.LoginInfo;
-import com.example.back.entity.Servico;
+import com.example.back.controller.ClienteController;
+import com.example.back.dto.req.*;
+import com.example.back.dto.res.ClienteResponseDto;
+import com.example.back.entity.*;
+import com.example.back.enums.FormaPagamento;
 import com.example.back.enums.Hierarquia;
-import com.example.back.repository.FuncionalRepository;
-import com.example.back.repository.LoginInfoRepository;
-import com.example.back.repository.ServicoRepository;
+import com.example.back.repository.*;
+import com.example.back.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Arrays;
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.util.*;
 
 // Essa classe ja cria um usuario admin para testes
 
@@ -22,18 +26,36 @@ public class DataLoader implements CommandLineRunner {
     private final PasswordEncoder passwordEncoder;
     private final ServicoRepository servicoRepository;
     private final FuncionalRepository funcionalRepository;
+    private final ClienteRepository clienteRepository;
+    private final MedicoRepository medicoRepository;
 
-    public DataLoader(LoginInfoRepository loginInfoRepository, PasswordEncoder passwordEncoder, ServicoRepository servicoRepository, FuncionalRepository funcionalRepository) {
+    @Autowired
+    ClienteService clienteService;
+
+    @Autowired
+    MedicoService medicoService;
+
+    @Autowired
+    AgendamentoService agendamentoService;
+
+    @Autowired
+    FinanceiroService financeiroService;
+
+    @Autowired
+    EmailService emailService;
+
+    public DataLoader(LoginInfoRepository loginInfoRepository, PasswordEncoder passwordEncoder, ServicoRepository servicoRepository, FuncionalRepository funcionalRepository, ClienteRepository clienteRepository, MedicoRepository medicoRepository, MedicoRepository medicoRepository1) {
         this.loginInfoRepository = loginInfoRepository;
         this.passwordEncoder = passwordEncoder;
         this.servicoRepository = servicoRepository;
         this.funcionalRepository = funcionalRepository;
+        this.clienteRepository = clienteRepository;
+        this.medicoRepository = medicoRepository1;
     }
 
     @Override
     public void run(String... args) throws Exception {
 
-        // Verifica se ja existe um usuario admin
 
         if (!loginInfoRepository.buscarPorEmail("aluno@gmail.com").isPresent()) {
             LoginInfo loginInfo = new LoginInfo();
@@ -54,6 +76,7 @@ public class DataLoader implements CommandLineRunner {
             loginInfo.setSenha(passwordEncoder.encode("123123"));
             loginInfo.setFuncionario(gerente);
             loginInfo.setAtivo(true);
+            loginInfo.setHierarquia(Hierarquia.GERENTE);
 
             gerente.setLoginInfo(loginInfo);
 
@@ -66,6 +89,9 @@ public class DataLoader implements CommandLineRunner {
                     .forEach(tipoCarteira -> servicoRepository.save(tipoCarteira.getServico()));
         }
 
+
+        // Envio de e-mail para avisar que o sistema foi iniciado
+        emailService.sendEmail("grupotech@sptech.school", "Projeto Iniciado", "O Back-end do Projeto acaba de ser iniciado com sucesso");
     }
 
 }

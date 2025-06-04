@@ -3,7 +3,9 @@ version: '3.8'
 services:
   app:
     build: .
-    container_name: patrickpessanha/api-tech-tooth:latest
+    container_name: tallyon26655/api-tech-tooth:latest
     restart: always
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
     ports:
       - "8080:8080"

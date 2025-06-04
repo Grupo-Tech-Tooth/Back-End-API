@@ -6,6 +6,7 @@ import com.example.back.dto.res.AgendaResponseDto;
 import com.example.back.dto.res.ServicoDTO;
 import com.example.back.entity.Agendamento;
 import com.example.back.entity.Servico;
+import com.example.back.enums.Categoria;
 import com.example.back.infra.execption.ResourceNotFoundException;
 import com.example.back.repository.ServicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,8 +86,8 @@ public class ServicoService {
     }
 
 
-    public List<ServicoDtoRequest> filtrarServicos(String nome, Integer duracao, BigDecimal preco, String descricao) {
-        List<Servico> servicos = servicoRepository.filtrarServicos(nome, duracao, preco, descricao);
+    public List<ServicoDtoRequest> filtrarServicos(String nome, Integer duracao, BigDecimal preco, Categoria categoria) {
+        List<Servico> servicos = servicoRepository.filtrarServicos(nome, duracao, preco, categoria);
 
         return servicos.stream()
                 .map(servico -> new ServicoDtoRequest(

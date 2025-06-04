@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/emails")
+@RequestMapping("/api/v1/emails")
 @SecurityRequirement(name = "bearer-key")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
@@ -24,15 +24,10 @@ public class EmailController {
     @GetMapping
     public ResponseEntity<String> enviarEmail(){
 
-
-        try{
         enviarEmail.enviarAvisosUmDiaAntes();
         enviarEmail.enviarAvisosNoDia();
 
         return ResponseEntity.ok("Foi");
-        }catch (Exception e){
-            return ResponseEntity.status(500).body("Deu merda");
-        }
 
     }
 }
