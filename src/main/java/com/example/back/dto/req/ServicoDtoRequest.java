@@ -12,7 +12,7 @@ public record ServicoDtoRequest(
         Integer duracaoMinutos,
         @Positive
         Double preco,
-        @NotBlank
+
         String descricao,
         @NotNull(message = "Categoria não pode ser nula")
         Categoria categoria
