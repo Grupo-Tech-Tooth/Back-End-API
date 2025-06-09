@@ -1,28 +1,97 @@
-## Type
-O _type_ pode ser um desses tipos:
 
-| Prefixo | Descrição           | Significado                                    |
-|---------|---------------------|------------------------------------------------|
-| feat    | Features            | Uma nova funcionalidade                        |
-| fix     | Correções de Erros  | Uma correção de bug                            |
-| docs    | Documentação        | Apenas mudanças na documentação               |
-| style   | Estilos             | Mudanças em relação a estilização              |
-| refactor| Refatoração de Código | Uma alteração de código que não corrige um bug nem adiciona uma funcionalidade |
-| perf    | Melhorias de Performance | Uma alteração de código que melhora o desempenho |
-| test    | Testes              | Adição de testes em falta ou correção de testes existentes |
-| build   | Builds              | Mudanças que afetam o sistema de build ou dependências externas (exemplos de escopos: gulp, broccoli, npm) |
-| ci      | Integrações Contínuas | Alterações em nossos arquivos e scripts de configuração de CI (exemplos de escopos: Travis, Circle, BrowserStack, SauceLabs) |
-| chore   | Tarefas             | Outras mudanças que não modificam arquivos de código-fonte ou de teste |
-| revert  | Reverter            | Reverte um commit anterior                    |
+# 📦 Manual de Instalação — Back-End API (Java Spring Boot)
 
+## ✅ Pré-requisitos
 
-## Categoria de códigos
-Os _códigos HTTP_ (ou HTTPS) possuem três dígitos, sendo que o primeiro dígito significa a classificação dentro das possíveis cinco categorias.
+Antes de iniciar, certifique-se de que você tem instalado:
 
-| Código | Descrição   | Significado |
-|--------|-------------|-------------|
-| 1XX    | Informativo | A solicitação foi aceita ou o processo continua em andamento; |
-| 2XX    | Confirmação | A ação foi concluída ou entendida; |
-| 3XX    | Redirecionamento | Indica que algo mais precisa ser feito ou precisou ser feito para completar a solicitação; |
-| 4XX    | Erro do cliente | Indica que a solicitação não pode ser concluída ou contém a sintaxe incorreta; |
-| 5XX    | Erro no servidor | O servidor falhou ao concluir a solicitação. |
+- [Java 17+](https://adoptopenjdk.net/)
+- [Maven](https://maven.apache.org/)
+- [Docker](https://www.docker.com/) *(opcional, mas recomendado)*
+- Banco de Dados MySQL (ou configure no `application.properties`)
+
+## 🚀 Como rodar o projeto
+
+### 1. Clone este repositório em sua máquina
+
+```bash
+git clone <URL-do-repositório>
+```
+
+Ou descompacte o `.zip` que você recebeu.
+
+### 2. Configure o banco de dados
+
+No arquivo:
+
+```
+src/main/resources/application.properties
+```
+
+Adicione suas credenciais:
+
+```properties
+spring.datasource.url=jdbc:mysql://localhost:3306/seu_banco
+spring.datasource.username=seu_usuario
+spring.datasource.password=sua_senha
+```
+
+Se você tiver um script `.sql`, crie as tabelas no seu MySQL.
+
+### 3. Compile e execute
+
+Entre na raiz do projeto (onde está o `pom.xml`) e rode:
+
+```bash
+./mvnw spring-boot:run
+```
+
+ou, se preferir compilar:
+
+```bash
+./mvnw clean install
+java -jar target/*.jar
+```
+
+### 4. Acesse o sistema
+
+Após iniciado, acesse via navegador ou Postman:
+
+```
+http://localhost:8080
+```
+
+Endpoints disponíveis incluem:
+
+- `/agendamento`
+- `/cliente`
+- `/medico`
+- `/servicos`
+
+## 🐳 Rodando com Docker (opcional)
+
+Você pode subir o projeto com:
+
+```bash
+docker-compose up --build
+```
+
+Verifique o `docker-compose.yml` para configurar o banco de dados, se necessário.
+
+## ➕ Adicionando novos recursos (entidades / APIs)
+
+Para adicionar um novo recurso:
+
+1. Crie a entidade no pacote `model`.
+2. Crie o repositório (`JpaRepository`).
+3. Crie o `Service` com a lógica de negócio.
+4. Crie o `Controller` com os endpoints (`@RestController`).
+
+## 🧠 Dica sobre CRUD e HTTP
+
+| CRUD   | Ação      | Verbo HTTP | Anotação Spring |
+|--------|-----------|------------|------------------|
+| Create | Criar     | POST       | `@PostMapping`   |
+| Read   | Ler       | GET        | `@GetMapping`    |
+| Update | Atualizar | PUT        | `@PutMapping`    |
+| Delete | Deletar   | DELETE     | `@DeleteMapping` |
