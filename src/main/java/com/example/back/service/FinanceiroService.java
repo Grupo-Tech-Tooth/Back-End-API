@@ -116,7 +116,8 @@ public class FinanceiroService {
         return financeiroRepository.findByAndDeletadoFalse().stream()
                 .filter(financeiro -> nomePaciente == null || financeiro.getCliente().getNome().toUpperCase().contains(nomePaciente.toUpperCase()))
                 .filter(financeiro -> dataPagamento == null || financeiro.getDataPagamento().toLocalDate().equals(dataPagamento))
-                .filter(financeiro -> metodoPagamento == null || financeiro.getFormaPagamento().getLabel().toUpperCase().contains(metodoPagamento.toUpperCase()))
+                .filter(financeiro -> metodoPagamento == null ||
+                        financeiro.getFormaPagamento().name().equalsIgnoreCase(metodoPagamento))
                 .map(FinanceiroResponseDto::converter)
                 .collect(Collectors.toList());
     }

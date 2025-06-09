@@ -59,7 +59,7 @@ public class FinanceiroController {
 }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Financeiro> atualizarFinanceiro(@PathVariable Long id, @Valid @RequestBody FinanceiroDtoRequest dto) {
+    public ResponseEntity<Financeiro> atualizarFinanceiro(@PathVariable Long id, @RequestBody FinanceiroDtoRequest dto) {
         Financeiro financeiro = financeiroService.atualizarFinanceiro(id, dto);
         return ResponseEntity.status(200).body(financeiro);
     }
